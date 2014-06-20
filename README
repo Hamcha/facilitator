@@ -1,24 +1,13 @@
 Unity NAT Facilitator for FreeBSD
 
 WHAT
-Unity's NAT Facilitator (which is basically Raknet's) doesn't compile on FreeBSD because FreeBSD uses a patched raknet or something. Also Unity likes outdated raknet for some reason.
+Unity's NAT Facilitator (which is basically Raknet's) doesn't compile on FreeBSD because Raknet is crap.
 
-This is a stripped out version that uses the Raknet from ports (devel/raknet) and works with the latest raknet.
+This fixes the raknet files to have them actually compile.
 
 HOWTO
 
-1. Install devel/raknet from ports
-   DO NOT CLEAN THE WORK FOLDER AFTER INSTALLATION
-
-2. Go into the work folder (probably /usr/ports/devel/raknet/work) and do:
-       make RakNetDynamic
-       cp Lib/DLL/libRakNetDynamic.so /usr/local/lib
-
-3. Go back into the repo's folder and do
-       make
-
-4. You're done, just call ./Facilitator and you're all set!
-   (use ./Facilitator --help for cmd line parameters)
+Just "make"
 
 LICENSE
 

@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
 	peer->SetMaximumIncomingConnections(connectionCount);
 	char ipList[ MAXIMUM_NUMBER_OF_INTERNAL_IDS ][ 16 ];
 	unsigned int binaryAddresses[MAXIMUM_NUMBER_OF_INTERNAL_IDS];
-	SocketLayer::GetMyIP( ipList, binaryAddresses );
+	SocketLayer::Instance()->GetMyIP( ipList, binaryAddresses );
 	//SocketDescriptor sd(facilitatorPort,ipList[0]);
 	SocketDescriptor sd(facilitatorPort,0);
 	if (!peer->Startup(connectionCount, 30, &sd, 1))
