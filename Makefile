@@ -6,7 +6,7 @@ DEFINES = -DUNITY_FACILITATOR
 CFLAGS  = -Wall -lpthread $(DEFINES)
 DEBUG   = -ggdb
 INCLUDE = .
-PROGRAMNAME = Facilitator
+PROGRAMNAME = facilitator
 PROGRAMSOURCES = Facilitator.cpp
 
 # -------------------------------------
