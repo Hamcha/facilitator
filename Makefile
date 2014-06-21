@@ -87,6 +87,9 @@ $(PROGRAMNAME): $(COMMON_OBJECTS) $(RAKNET_OBJECTS)
 	$(CC) $(DEBUG) -I$(INCLUDE) -I$(RAKNET_INCLUDE) -I$(COMMON_INCLUDE) $(CFLAGS) $(COMMON_OBJECTS) $(RAKNET_OBJECTS) $(PROGRAMSOURCES) -o $(PROGRAMNAME)
 	chmod +x $(PROGRAMNAME)
 
+install: all
+	mv facilitator /usr/local/bin/facilitator
+
 clean:
 	rm -f $(PROGRAMNAME)
 	rm -f $(RAKNET_OBJECTS)
