@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. /etc/rc.subr
+
+name=facilitator
+rcvar=facilitator_enable
+
+command="/usr/local/bin/facilitator"
+facilitator_chdir="/var/log"
+start_cmd="/usr/local/bin/facilitator -d"
+load_rc_config $name
+run_rc_command "$1"
