@@ -36,7 +36,7 @@ namespace DataStructures
 	template <class KeyType, class DataType, int order>
 	struct RAK_DLL_EXPORT Page
 	{
-		// We use the same data structure for both leaf and index nodes.  
+		// We use the same data structure for both leaf and index nodes.
 		// It uses a little more memory for index nodes but reduces
 		// memory fragmentation, allocations, and deallocations.
 		bool isLeaf;
@@ -141,7 +141,7 @@ namespace DataStructures
 
 		Page<KeyType, DataType, order>* leaf = GetLeafFromKey(key);
 		int childIndex;
-		
+
 		if (GetIndexOf(key, leaf, &childIndex))
 		{
 			out=leaf->data[childIndex];
@@ -209,8 +209,8 @@ namespace DataStructures
 			root=root->children[0];
 			pagePool.Release(oldRoot, __FILE__,__LINE__);
 			// memset(oldRoot,0,sizeof(root));
-		}		
-	
+		}
+
 		return true;
 	}
 	template<class KeyType, class DataType, int order>
@@ -271,7 +271,7 @@ namespace DataStructures
 				{
 					returnAction->action=ReturnAction::SET_BRANCH_KEY;
 					returnAction->key1=cur->children[0]->keys[0];
-				}				
+				}
 			}
 
 			if (cur->children[branchIndex]->size < order/2)
@@ -360,7 +360,7 @@ namespace DataStructures
 					returnAction->action=ReturnAction::SET_BRANCH_KEY;
 					returnAction->key1=dest->keys[0];
 				}
-				
+
 				dest->keys[dest->size]=rightRootKey;
 				dest->children[dest->size+1]=source->children[0];
 
@@ -458,7 +458,7 @@ namespace DataStructures
 					source->previous->next=source->next;
 				if (source->next)
 					source->next->previous=source->previous;
-			}			
+			}
 
 			// Free the source node
 			pagePool.Release(source, __FILE__,__LINE__);
@@ -577,7 +577,7 @@ namespace DataStructures
 				}
 				else
 				{
-					
+
 					for (; sourceIndex < insertionIndex; sourceIndex++, destIndex++)
 					{
 						newPage->children[destIndex]=cur->children[sourceIndex+1];
@@ -596,7 +596,7 @@ namespace DataStructures
 					returnAction->key1=newPage->keys[0];
 					for (int i=0; i < destIndex-1; i++)
 						newPage->keys[i]=newPage->keys[i+1];
-					
+
 				}
 				cur->size=order/2;
 			}
@@ -734,7 +734,7 @@ namespace DataStructures
 				{
 					returnAction->action=ReturnAction::REPLACE_KEY1_WITH_KEY2;
 					if (key > cur->children[branchIndex]->keys[0])
-					{						
+					{
 						RotateLeft(cur, branchIndex, returnAction);
 
 						int insertionIndex;
@@ -752,16 +752,16 @@ namespace DataStructures
 						dest->data[dest->size]=source->data[0];
 						dest->size++;
 						source->keys[0]=key;
-						source->data[0]=data;	
+						source->data[0]=data;
 					}
 					cur->keys[branchIndex-1]=cur->children[branchIndex]->keys[0];
-					
+
 					return 0;
 				}
 				else if (CanRotateRight(cur, branchIndex))
 				{
 					returnAction->action=ReturnAction::REPLACE_KEY1_WITH_KEY2;
-					
+
 					if (key < cur->children[branchIndex]->keys[cur->children[branchIndex]->size-1])
 					{
 						RotateRight(cur, branchIndex, returnAction);
@@ -769,17 +769,17 @@ namespace DataStructures
 						int insertionIndex;
 						GetIndexOf(key, cur->children[branchIndex], &insertionIndex);
 						InsertIntoNode(key, data, insertionIndex, 0, cur->children[branchIndex], 0);
-						
+
 					}
 					else
 					{
 						// Insert to the head of the right leaf instead and change our key
 						returnAction->key1=cur->children[branchIndex+1]->keys[0];
-						InsertIntoNode(key, data, 0, 0, cur->children[branchIndex+1], 0);						
+						InsertIntoNode(key, data, 0, 0, cur->children[branchIndex+1], 0);
 						returnAction->key2=key;
 					}
 					cur->keys[branchIndex]=cur->children[branchIndex+1]->keys[0];
-					return 0;					
+					return 0;
 				}
 			}
 
@@ -794,13 +794,13 @@ namespace DataStructures
 				if (newPage->isLeaf==false)
 				{
 					RakAssert(returnAction->action==ReturnAction::PUSH_KEY_TO_PARENT);
-					newPage->size--; 
+					newPage->size--;
 					return InsertIntoNode(returnAction->key1, data, branchIndex, newPage, cur, returnAction);
 				}
 				else
 				{
 					return InsertIntoNode(newPage->keys[0], data, branchIndex, newPage, cur, returnAction);
-				}				
+				}
 			}
 		}
 		else
@@ -808,14 +808,14 @@ namespace DataStructures
 			if (branchIndex==childIndex+1)
 			{
 				*success=false;
-				return 0; // Already exists				
+				return 0; // Already exists
 			}
 			else
 			{
 				return InsertIntoNode(key, data, branchIndex, 0, cur, returnAction);
 			}
 		}
-		
+
 		return 0;
 	}
 	template<class KeyType, class DataType, int order>
@@ -948,7 +948,7 @@ namespace DataStructures
 			{
 				for (i=0; i < ptr->size+1; i++)
 					queue.Push(ptr->children[i], __FILE__, __LINE__ );
-			}			
+			}
 			pagePool.Release(ptr, __FILE__,__LINE__);
 		//	memset(ptr,0,sizeof(root));
 		};

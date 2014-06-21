@@ -14,7 +14,7 @@ ByteQueue::ByteQueue()
 ByteQueue::~ByteQueue()
 {
 	Clear(__FILE__, __LINE__);
-	
+
 
 }
 void ByteQueue::WriteBytes(const char *in, unsigned length, const char *file, unsigned int line)
@@ -82,7 +82,7 @@ bool ByteQueue::ReadBytes(char *out, unsigned maxLengthToRead, bool peek)
 
 	if (peek==false)
 		IncrementReadOffset(bytesToRead);
-		
+
 	return true;
 }
 char* ByteQueue::PeekContiguousBytes(unsigned int *outLength) const

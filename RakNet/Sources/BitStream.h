@@ -1,5 +1,5 @@
 /// \file BitStream.h
-/// \brief This class allows you to write and read native types as a string of bits.  
+/// \brief This class allows you to write and read native types as a string of bits.
 /// \details BitStream is used extensively throughout RakNet and is designed to be used by users as well.
 ///
 /// This file is part of RakNet Copyright 2003 Jenkins Software LLC
@@ -69,7 +69,7 @@ namespace RakNet
 		/// Resets the bitstream for reuse.
 		void Reset( void );
 
-		/// \brief Bidirectional serialize/deserialize any integral type to/from a bitstream.  
+		/// \brief Bidirectional serialize/deserialize any integral type to/from a bitstream.
 		/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// \param[in] writeToBitstream true to write from your data to this bitstream.  False to read from this bitstream and write to your data
 		/// \param[in] inOutTemplateVar The value to write
@@ -77,7 +77,7 @@ namespace RakNet
 		template <class templateType>
 			bool Serialize(bool writeToBitstream, templateType &inOutTemplateVar);
 
-		/// \brief Bidirectional serialize/deserialize any integral type to/from a bitstream. 
+		/// \brief Bidirectional serialize/deserialize any integral type to/from a bitstream.
 		/// \details If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
 		/// \param[in] writeToBitstream true to write from your data to this bitstream.  False to read from this bitstream and write to your data
@@ -105,7 +105,7 @@ namespace RakNet
 		template <class templateType>
 			bool SerializeCompressed(bool writeToBitstream, templateType &inOutTemplateVar);
 
-		/// \brief Bidirectional serialize/deserialize any integral type to/from a bitstream.  
+		/// \brief Bidirectional serialize/deserialize any integral type to/from a bitstream.
 		/// \details If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
 		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
@@ -136,7 +136,7 @@ namespace RakNet
 		/// \param[in] floatMax Predetermined maximum value of f
 		bool SerializeFloat16(bool writeToBitstream, float &inOutFloat, float floatMin, float floatMax);
 
-		/// \brief Bidirectional serialize/deserialize a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
+		/// \brief Bidirectional serialize/deserialize a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.
 		/// \details Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
 		/// \param[in] writeToBitstream true to write from your data to this bitstream.  False to read from this bitstream and write to your data
@@ -178,7 +178,7 @@ namespace RakNet
 			templateType &m10, templateType &m11, templateType &m12,
 			templateType &m20, templateType &m21, templateType &m22 );
 
-		/// \brief Bidirectional serialize/deserialize numberToSerialize bits to/from the input. 
+		/// \brief Bidirectional serialize/deserialize numberToSerialize bits to/from the input.
 		/// \details Right aligned data means in the case of a partial byte, the bits are aligned
 		/// from the right (bit 0) rather than the left (as in the normal
 		/// internal representation) You would set this to true when
@@ -191,7 +191,7 @@ namespace RakNet
 		/// \return true if \a writeToBitstream is true.  true if \a writeToBitstream is false and the read was successful.  false if \a writeToBitstream is false and the read was not successful.
 		bool SerializeBits(bool writeToBitstream, unsigned char* inOutByteArray, const BitSize_t numberOfBitsToSerialize, const bool rightAlignedBits = true );
 
-		/// \brief Write any integral type to a bitstream.  
+		/// \brief Write any integral type to a bitstream.
 		/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// \param[in] inTemplateVar The value to write
 		// TODO - RakNet 4 Remove write, use only the WriteRef version, but rename it to Write
@@ -200,13 +200,13 @@ namespace RakNet
 		template <class templateType>
 			void WriteRef(const templateType &inTemplateVar);
 
-		/// \brief Write the dereferenced pointer to any integral type to a bitstream.  
+		/// \brief Write the dereferenced pointer to any integral type to a bitstream.
 		/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// \param[in] inTemplateVar The value to write
 		template <class templateType>
 			void WritePtr(templateType *inTemplateVar);
 
-		/// \brief Write any integral type to a bitstream.  
+		/// \brief Write any integral type to a bitstream.
 		/// \details If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
 		/// \param[in] currentValue The current value to write
@@ -219,7 +219,7 @@ namespace RakNet
 		template <class templateType>
 			void WriteDelta(templateType currentValue);
 
-		/// \brief Write any integral type to a bitstream.  
+		/// \brief Write any integral type to a bitstream.
 		/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
@@ -228,7 +228,7 @@ namespace RakNet
 		template <class templateType>
 			void WriteCompressed(templateType inTemplateVar);
 
-		/// \brief Write any integral type to a bitstream.  
+		/// \brief Write any integral type to a bitstream.
 		/// \details If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
 		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
@@ -243,21 +243,21 @@ namespace RakNet
 		template <class templateType>
 			void WriteCompressedDelta(templateType currentValue);
 
-		/// \brief Read any integral type from a bitstream.  
+		/// \brief Read any integral type from a bitstream.
 		/// \details Define __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// \param[in] outTemplateVar The value to read
 		/// \return true on success, false on failure.
 		template <class templateType>
 			bool Read(templateType &outTemplateVar);
 
-		/// \brief Read into a pointer to any integral type from a bitstream.  
+		/// \brief Read into a pointer to any integral type from a bitstream.
 		/// \details Define __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// \param[in] outTemplateVar The value to read
 		/// \return true on success, false on failure.
 		template <class templateType>
 			bool ReadPtr(templateType *outTemplateVar);
 
-		/// \brief Read any integral type from a bitstream.  
+		/// \brief Read any integral type from a bitstream.
 		/// \details If the written value differed from the value compared against in the write function,
 		/// var will be updated.  Otherwise it will retain the current value.
 		/// ReadDelta is only valid from a previous call to WriteDelta
@@ -266,7 +266,7 @@ namespace RakNet
 		template <class templateType>
 			bool ReadDelta(templateType &outTemplateVar);
 
-		/// \brief Read any integral type from a bitstream.  
+		/// \brief Read any integral type from a bitstream.
 		/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 		/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
@@ -276,7 +276,7 @@ namespace RakNet
 		template <class templateType>
 			bool ReadCompressed(templateType &outTemplateVar);
 
-		/// \brief Read any integral type from a bitstream.  
+		/// \brief Read any integral type from a bitstream.
 		/// \details If the written value differed from the value compared against in the write function,
 		/// var will be updated.  Otherwise it will retain the current value.
 		/// the current value will be updated.
@@ -310,14 +310,14 @@ namespace RakNet
 		void Write( BitStream *bitStream );
 		void Write( BitStream &bitStream, BitSize_t numberOfBits );
 		void Write( BitStream &bitStream );\
-		
+
 		/// \brief Write a float into 2 bytes, spanning the range between \a floatMin and \a floatMax
 		/// \param[in] x The float to write
 		/// \param[in] floatMin Predetermined minimum value of f
 		/// \param[in] floatMax Predetermined maximum value of f
 		void WriteFloat16( float x, float floatMin, float floatMax );
 
-		/// \brief Write a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
+		/// \brief Write a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.
 		/// \details Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
 		/// \param[in] x x
@@ -327,7 +327,7 @@ namespace RakNet
 		void WriteNormVector( templateType x, templateType y, templateType z );
 
 		/// \brief Write a vector, using 10 bytes instead of 12.
-		/// \details Loses accuracy to about 3/10ths and only saves 2 bytes, 
+		/// \details Loses accuracy to about 3/10ths and only saves 2 bytes,
 		/// so only use if accuracy is not important.
 		/// \param[in] x x
 		/// \param[in] y y
@@ -365,7 +365,7 @@ namespace RakNet
 		/// \param[in] floatMax Predetermined maximum value of f
 		bool ReadFloat16( float &outFloat, float floatMin, float floatMax );
 
-		/// \brief Read a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
+		/// \brief Read a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.
 		/// \details Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
 		/// \param[in] x x
@@ -376,7 +376,7 @@ namespace RakNet
 		bool ReadNormVector( templateType &x, templateType &y, templateType &z );
 
 		/// \brief Read 3 floats or doubles, using 10 bytes, where those float or doubles comprise a vector.
-		/// \details Loses accuracy to about 3/10ths and only saves 2 bytes, 
+		/// \details Loses accuracy to about 3/10ths and only saves 2 bytes,
 		/// so only use if accuracy is not important.
 		/// \param[in] x x
 		/// \param[in] y y
@@ -478,7 +478,7 @@ namespace RakNet
 		void WriteBits( const unsigned char* inByteArray, BitSize_t numberOfBitsToWrite, const bool rightAlignedBits = true );
 
 		/// \brief Align the bitstream to the byte boundary and then write the
-		/// specified number of bits.  
+		/// specified number of bits.
 		/// \details This is faster than WriteBits but
 		/// wastes the bits to do the alignment and requires you to call
 		/// ReadAlignedBits at the corresponding read position.
@@ -495,7 +495,7 @@ namespace RakNet
 		/// \param[in] maxBytesToWrite Max bytes to write
 		void WriteAlignedBytesSafe( const char *inByteArray, const unsigned int inputLength, const unsigned int maxBytesToWrite );
 
-		/// \brief Read bits, starting at the next aligned bits. 
+		/// \brief Read bits, starting at the next aligned bits.
 		/// \details Note that the modulus 8 starting offset of the sequence must be the same as
 		/// was used with WriteBits. This will be a problem with packet
 		/// coalescence unless you byte align the coalesced packets.
@@ -517,14 +517,14 @@ namespace RakNet
 		bool ReadAlignedBytesSafeAlloc( char **outByteArray, int &inputLength, const unsigned int maxBytesToRead );
 		bool ReadAlignedBytesSafeAlloc( char **outByteArray, unsigned int &inputLength, const unsigned int maxBytesToRead );
 
-		/// \brief Align the next write and/or read to a byte boundary.  
+		/// \brief Align the next write and/or read to a byte boundary.
 		/// \details This can be used to 'waste' bits to byte align for efficiency reasons It
 		/// can also be used to force coalesced bitstreams to start on byte
 		/// boundaries so so WriteAlignedBits and ReadAlignedBits both
 		/// calculate the same offset when aligning.
 		inline void AlignWriteToByteBoundary( void ) {numberOfBitsUsed += 8 - ( (( numberOfBitsUsed - 1 ) & 7) + 1 );}
 
-		/// \brief Align the next write and/or read to a byte boundary.  
+		/// \brief Align the next write and/or read to a byte boundary.
 		/// \details This can be used to 'waste' bits to byte align for efficiency reasons It
 		/// can also be used to force coalesced bitstreams to start on byte
 		/// boundaries so so WriteAlignedBits and ReadAlignedBits both
@@ -627,7 +627,7 @@ namespace RakNet
 		template <>
 			void WriteRef(const RakString &var);
 
-		/// \brief Write a systemAddress.  
+		/// \brief Write a systemAddress.
 		/// \details If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
 		/// \param[in] currentValue The current value to write
@@ -641,7 +641,7 @@ namespace RakNet
 		template <>
 			void WriteDelta(RakNetGUID currentValue, RakNetGUID lastValue);
 
-		/// \brief Write an networkID.  
+		/// \brief Write an networkID.
 		/// \details If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
 		/// \param[in] currentValue The current value to write
@@ -649,7 +649,7 @@ namespace RakNet
 		template <>
 			void WriteDelta(NetworkID currentValue, NetworkID lastValue);
 
-		/// \brief Write a bool delta.  
+		/// \brief Write a bool delta.
 		/// \details Same thing as just calling Write
 		/// \param[in] currentValue The current value to write
 		/// \param[in] lastValue The last value to compare against
@@ -691,14 +691,14 @@ namespace RakNet
 		template <>
 			void WriteCompressed(RakString var);
 
-		/// \brief Write a bool delta.  
+		/// \brief Write a bool delta.
 		/// \details Same thing as just calling Write
 		/// \param[in] currentValue The current value to write
 		/// \param[in] lastValue The last value to compare against
 		template <>
 			void WriteCompressedDelta(bool currentValue, bool lastValue);
 
-		/// \brief Save as WriteCompressedDelta(bool currentValue, templateType lastValue) 
+		/// \brief Save as WriteCompressedDelta(bool currentValue, templateType lastValue)
 		/// when we have an unknown second bool
 		template <>
 			void WriteCompressedDelta(bool currentValue);
@@ -1113,7 +1113,7 @@ namespace RakNet
 		Write((const char*)inTemplateVar);
 	}
 
-	/// \brief Write any integral type to a bitstream.  
+	/// \brief Write any integral type to a bitstream.
 	/// \details If the current value is different from the last value
 	/// the current value will be written.  Otherwise, a single bit will be written
 	/// \param[in] currentValue The current value to write
@@ -1133,7 +1133,7 @@ namespace RakNet
 	}
 
 		/*
-	/// \brief Write a systemAddress.  
+	/// \brief Write a systemAddress.
 	/// \details If the current value is different from the last value
 	/// the current value will be written.  Otherwise, a single bit will be written
 	/// \param[in] currentValue The current value to write
@@ -1166,7 +1166,7 @@ namespace RakNet
 			}
 		}
 
-	/// \brief Write a systemAddress.  
+	/// \brief Write a systemAddress.
 	/// \details If the current value is different from the last value
 	/// the current value will be written.  Otherwise, a single bit will be written
 	/// \param[in] currentValue The current value to write
@@ -1206,7 +1206,7 @@ namespace RakNet
 		Write(currentValue);
 	}
 
-	/// \brief Write any integral type to a bitstream.  
+	/// \brief Write any integral type to a bitstream.
 	/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 	/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
@@ -1323,7 +1323,7 @@ namespace RakNet
 		WriteCompressed((const char*) inTemplateVar);
 	}
 
-	/// \brief Write any integral type to a bitstream.  
+	/// \brief Write any integral type to a bitstream.
 	/// \details If the current value is different from the last value
 	/// the current value will be written.  Otherwise, a single bit will be written
 	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
@@ -1356,7 +1356,7 @@ namespace RakNet
 		Write(currentValue);
 	}
 
-	/// \brief Save as WriteCompressedDelta(templateType currentValue, templateType lastValue) 
+	/// \brief Save as WriteCompressedDelta(templateType currentValue, templateType lastValue)
 	/// when we have an unknown second parameter
 	template <class templateType>
 		inline void BitStream::WriteCompressedDelta(templateType currentValue)
@@ -1365,7 +1365,7 @@ namespace RakNet
 		WriteCompressed(currentValue);
 	}
 
-	/// \brief Save as WriteCompressedDelta(bool currentValue, templateType lastValue) 
+	/// \brief Save as WriteCompressedDelta(bool currentValue, templateType lastValue)
 	/// when we have an unknown second bool
 	template <>
 		inline void BitStream::WriteCompressedDelta(bool currentValue)
@@ -1547,7 +1547,7 @@ namespace RakNet
 		return RakString::Deserialize((char*) varString,this);
 	}
 
-	/// \brief Read any integral type from a bitstream.  
+	/// \brief Read any integral type from a bitstream.
 	/// \details If the written value differed from the value compared against in the write function,
 	/// var will be updated.  Otherwise it will retain the current value.
 	/// ReadDelta is only valid from a previous call to WriteDelta
@@ -1571,7 +1571,7 @@ namespace RakNet
 		return Read(outTemplateVar);
 	}
 
-	/// \brief Read any integral type from a bitstream.  
+	/// \brief Read any integral type from a bitstream.
 	/// \details Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
 	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 	/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
@@ -1677,7 +1677,7 @@ namespace RakNet
 		return RakString::DeserializeCompressed((char*) outTemplateVar,this,false);
 	}
 
-	/// \brief Read any integral type from a bitstream.  
+	/// \brief Read any integral type from a bitstream.
 	/// \details If the written value differed from the value compared against in the write function,
 	/// var will be updated.  Otherwise it will retain the current value.
 	/// the current value will be updated.

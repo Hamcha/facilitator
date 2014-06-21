@@ -1,6 +1,6 @@
 /// \file DS_List.h
 /// \internal
-/// \brief Array based list.  
+/// \brief Array based list.
 /// \details Usually the Queue class is used instead, since it has all the same functionality and is only worse at random access.
 ///
 /// This file is part of RakNet Copyright 2003 Jenkins Software LLC
@@ -9,7 +9,7 @@
 
 
 #ifndef __LIST_H
-#define __LIST_H 
+#define __LIST_H
 
 #include "RakAssert.h"
 #include <string.h> // memmove
@@ -27,102 +27,102 @@ namespace DataStructures
 	/// \note ONLY USE THIS FOR SHALLOW COPIES.  I don't bother with operator= to improve performance.
 	template <class list_type>
 	class RAK_DLL_EXPORT List
-	{	
+	{
 	public:
 		/// Default constructor
 		List();
 
 		// Destructor
 		~List();
-		
+
 		/// \brief Copy constructor.
-		/// \param[in]  original_copy The list to duplicate 
+		/// \param[in]  original_copy The list to duplicate
 		List( const List& original_copy );
-		
+
 		/// \brief Assign one list to another.
 		List& operator= ( const List& original_copy );
-		
+
 		/// \brief Access an element by its index in the array.
-		/// \param[in]  position The index into the array. 
-		/// \return The element at position \a position. 
+		/// \param[in]  position The index into the array.
+		/// \return The element at position \a position.
 		list_type& operator[] ( const unsigned int position ) const;
 
 		/// \brief Access an element by its index in the array.
-		/// \param[in]  position The index into the array. 
-		/// \return The element at position \a position. 
+		/// \param[in]  position The index into the array.
+		/// \return The element at position \a position.
 		list_type& Get ( const unsigned int position ) const;
 
 		/// \brief Push an element at the end of the stack.
-		/// \param[in] input The new element. 
+		/// \param[in] input The new element.
 		void Push(const list_type &input, const char *file, unsigned int line );
 
 		/// \brief Pop an element from the end of the stack.
 		/// \pre Size()>0
-		/// \return The element at the end. 
+		/// \return The element at the end.
 		list_type& Pop(void);
-		
+
 		/// \brief Insert an element at position \a position in the list.
-		/// \param[in] input The new element. 
-		/// \param[in] position The position of the new element. 		
+		/// \param[in] input The new element.
+		/// \param[in] position The position of the new element.
 		void Insert( const list_type &input, const unsigned int position, const char *file, unsigned int line );
-		
+
 		/// \brief Insert at the end of the list.
-		/// \param[in] input The new element. 
+		/// \param[in] input The new element.
 		void Insert( const list_type &input, const char *file, unsigned int line );
-		
-		/// \brief Replace the value at \a position by \a input.  
+
+		/// \brief Replace the value at \a position by \a input.
 		/// \details If the size of the list is less than @em position, it increase the capacity of
 		/// the list and fill slot with @em filler.
-		/// \param[in] input The element to replace at position @em position. 
-		/// \param[in] filler The element use to fill new allocated capacity. 
-		/// \param[in] position The position of input in the list. 		
+		/// \param[in] input The element to replace at position @em position.
+		/// \param[in] filler The element use to fill new allocated capacity.
+		/// \param[in] position The position of input in the list.
 		void Replace( const list_type &input, const list_type filler, const unsigned int position, const char *file, unsigned int line );
-		
+
 		/// \brief Replace the last element of the list by \a input.
-		/// \param[in] input The element used to replace the last element. 
+		/// \param[in] input The element used to replace the last element.
 		void Replace( const list_type &input );
-		
-		/// \brief Delete the element at position \a position. 
-		/// \param[in] position The index of the element to delete 
+
+		/// \brief Delete the element at position \a position.
+		/// \param[in] position The index of the element to delete
 		void RemoveAtIndex( const unsigned int position );
 
 		/// \brief Delete the element at position \a position.
 		/// \note - swaps middle with end of list, only use if list order does not matter
-		/// \param[in] position The index of the element to delete 
+		/// \param[in] position The index of the element to delete
 		void RemoveAtIndexFast( const unsigned int position );
-		
+
 		/// \brief Delete the element at the end of the list.
 		void RemoveFromEnd(const unsigned num=1);
-		
+
 		/// \brief Returns the index of the specified item or MAX_UNSIGNED_LONG if not found.
-		/// \param[in] input The element to check for 
-		/// \return The index or position of @em input in the list. 
+		/// \param[in] input The element to check for
+		/// \return The index or position of @em input in the list.
 		/// \retval MAX_UNSIGNED_LONG The object is not in the list
 		/// \retval [Integer] The index of the element in the list
 		unsigned int GetIndexOf( const list_type &input ) const;
-		
+
 		/// \return The number of elements in the list
 		unsigned int Size( void ) const;
-		
-		/// \brief Clear the list		
+
+		/// \brief Clear the list
 		void Clear( bool doNotDeallocateSmallBlocks, const char *file, unsigned int line );
-		
+
 		/// \brief Preallocate the list, so it needs fewer reallocations at runtime.
 		void Preallocate( unsigned countNeeded, const char *file, unsigned int line );
 
 		/// \brief Frees overallocated members, to use the minimum memory necessary.
-		/// \attention 
-		/// This is a slow operation		
+		/// \attention
+		/// This is a slow operation
 		void Compress( const char *file, unsigned int line );
-		
+
 	private:
 		/// An array of user values
 		list_type* listArray;
-		
-		/// Number of elements in the list 		
+
+		/// Number of elements in the list
 		unsigned int list_size;
-		
-		/// Size of \a array 		
+
+		/// Size of \a array
 		unsigned int allocation_size;
 	};
 	template <class list_type>
@@ -312,7 +312,7 @@ namespace DataStructures
 				// set old array to point to the newly allocated and twice as large array
 				RakNet::OP_DELETE_ARRAY(listArray, file, line);
 			}
-			
+
 			listArray = new_array;
 		}
 
@@ -512,7 +512,7 @@ namespace DataStructures
 			listArray = new_array;
 		}
 	}
-	
+
 } // End namespace
 
 #endif

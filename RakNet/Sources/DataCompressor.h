@@ -1,5 +1,5 @@
 /// \file DataCompressor.h
-/// \brief DataCompressor does compression on a block of data.  
+/// \brief DataCompressor does compression on a block of data.
 /// \details Not very good compression, but it's small and fast so is something you can use per-message at runtime.
 ///
 /// This file is part of RakNet Copyright 2003 Jenkins Software LLC

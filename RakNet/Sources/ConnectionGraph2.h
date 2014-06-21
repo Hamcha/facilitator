@@ -23,13 +23,13 @@ class RakPeerInterface;
 /// \brief A one hop connection graph.
 /// \details Sends ID_CONNECTION_GRAPH_DISCONNECTION_NOTIFICATION, ID_CONNECTION_GRAPH_CONNECTION_LOST, ID_CONNECTION_GRAPH_NEW_CONNECTION<BR>
 /// All identifiers are followed by SystemAddress, then RakNetGUID
-/// Also stores the list for you, which you can access with GetConnectionListForRemoteSystem 
+/// Also stores the list for you, which you can access with GetConnectionListForRemoteSystem
 /// \ingroup CONNECTION_GRAPH_GROUP
 class RAK_DLL_EXPORT ConnectionGraph2 : public PluginInterface2
 {
 public:
 
-	/// \brief Given a remote system identified by RakNetGUID, return the list of SystemAddresses and RakNetGUIDs they are connected to 
+	/// \brief Given a remote system identified by RakNetGUID, return the list of SystemAddresses and RakNetGUIDs they are connected to
 	/// \param[in] remoteSystemGuid Which system we are referring to. This only works for remote systems, not ourselves.
 	/// \param[out] saOut A preallocated array to hold the output list of SystemAddress. Can be 0 if you don't care.
 	/// \param[out] guidOut A preallocated array to hold the output list of RakNetGUID. Can be 0 if you don't care.
@@ -57,7 +57,7 @@ public:
 	};
 	/// \internal
 	static int RemoteSystemComp( const RakNetGUID &key, RemoteSystem * const &data );
-	
+
 protected:
 	/// \internal
 	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );

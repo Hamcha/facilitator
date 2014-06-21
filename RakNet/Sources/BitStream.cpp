@@ -17,14 +17,14 @@
 #include "SocketIncludes.h"
 
 #if defined(_XBOX) || defined(X360)
-                            
+
 #elif defined(_WIN32)
 #include <winsock2.h> // htonl
 #include <memory.h>
 #include <cmath>
 #include <float.h>
 #elif defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-                        
+
 #else
 #include <arpa/inet.h>
 #include <memory.h>
@@ -54,7 +54,7 @@ BitStream::BitStream()
 	//data = ( unsigned char* ) rakMalloc_Ex( 32, __FILE__, __LINE__ );
 	data = ( unsigned char* ) stackData;
 
-#ifdef _DEBUG	
+#ifdef _DEBUG
 	//	RakAssert( data );
 #endif
 	//memset(data, 0, 32);
@@ -119,7 +119,7 @@ void BitStream::SetNumberOfBitsAllocated( const BitSize_t lengthInBits )
 {
 #ifdef _DEBUG
 	RakAssert( lengthInBits >= ( BitSize_t ) numberOfBitsAllocated );
-#endif	
+#endif
 	numberOfBitsAllocated = lengthInBits;
 }
 
@@ -592,7 +592,7 @@ bool BitStream::ReadBits( unsigned char *inOutByteArray, BitSize_t numberOfBitsT
 			offset++;
 
 			numberOfBitsToRead=0;
-		}		
+		}
 	}
 
 	return true;
@@ -704,7 +704,7 @@ void BitStream::AddBitsAndReallocate( const BitSize_t numberOfBitsToWrite )
 				data = ( unsigned char* ) rakMalloc_Ex( (size_t) amountToAllocate, __FILE__, __LINE__ );
 
 				// need to copy the stack data over to our new memory area too
-				memcpy ((void *)data, (void *)stackData, (size_t) BITS_TO_BYTES( numberOfBitsAllocated )); 
+				memcpy ((void *)data, (void *)stackData, (size_t) BITS_TO_BYTES( numberOfBitsAllocated ));
 			}
 		}
 		else
@@ -899,7 +899,7 @@ void BitStream::AssertCopyData( void )
 bool BitStream::IsNetworkOrderInternal(void)
 {
 #if defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-             
+
 #else
 	static const bool isNetworkOrder=(htonl(12345) == 12345);
 	return isNetworkOrder;
@@ -1081,4 +1081,4 @@ void BitStream::WriteFloat16( float inOutFloat, float floatMin, float floatMax )
 #pragma warning( pop )
 #endif
 
-#endif // #if _MSC_VER < 1299 
+#endif // #if _MSC_VER < 1299

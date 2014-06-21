@@ -8,7 +8,7 @@
 
 
 #ifndef __MULTILIST_H
-#define __MULTILIST_H 
+#define __MULTILIST_H
 
 #include "RakAssert.h"
 #include <string.h> // memmove
@@ -56,7 +56,7 @@ namespace DataStructures
 	/// bool operator<( const MyClass *myClass, const int &inputKey ) {return myClass->value < inputKey;}
 	/// At least one type has to be a reference to a class
 	/// MLKeyRef is a helper class to turn a native type into a class, so you can compare that native type against a pointer to a different class
-	/// Used for he Multilist, when _DataType != _KeyType 
+	/// Used for he Multilist, when _DataType != _KeyType
 	template < class templateType >
 	class MLKeyRef
 	{
@@ -116,13 +116,13 @@ namespace DataStructures
 		_DataType &PopOpposite(const char *file=__FILE__, unsigned int line=__LINE__);
 		_DataType &PeekOpposite(void) const;
 
-		/// \brief Stack,Queue: Inserts at index indicated, elements are shifted. 
+		/// \brief Stack,Queue: Inserts at index indicated, elements are shifted.
 		/// Ordered list: Inserts, position is ignored
-		void InsertAtIndex(const _DataType &d, _IndexType index, const char *file=__FILE__, unsigned int line=__LINE__);	
-		
+		void InsertAtIndex(const _DataType &d, _IndexType index, const char *file=__FILE__, unsigned int line=__LINE__);
+
 		/// \brief Unordered list, removes at index indicated, swaps last element with that element.
 		/// Otherwise, array is shifted left to overwrite removed element
-		/// \details Index[0] returns the same as Pop() for a queue. 
+		/// \details Index[0] returns the same as Pop() for a queue.
 		/// Same as PopOpposite() for the list and ordered list
 		void RemoveAtIndex(_IndexType position, const char *file=__FILE__, unsigned int line=__LINE__);
 
@@ -141,7 +141,7 @@ namespace DataStructures
 
 		/// \brief Iterate over the list, calling the function pointer on each element.
 		void ForEach(void (*func)(_DataType &item, const char *file, unsigned int line), const char *file, unsigned int line);
-		void ForEach(void (*func)(_DataType &item));	
+		void ForEach(void (*func)(_DataType &item));
 
 		/// \brief Returns if the list is empty.
 		bool IsEmpty(void) const;
@@ -149,7 +149,7 @@ namespace DataStructures
 		/// \brief Returns the number of elements used in the list.
 		_IndexType GetSize(void) const;
 
-		/// \brief Empties the list. The list is not deallocated if it is small, 
+		/// \brief Empties the list. The list is not deallocated if it is small,
 		/// unless \a deallocateSmallBlocks is true
 		void Clear( bool deallocateSmallBlocks=true, const char *file=__FILE__, unsigned int line=__LINE__ );
 
@@ -160,7 +160,7 @@ namespace DataStructures
 		/// \brief Empty one item from the list, first calling RakNet::OP_Delete on that item.
 		void ClearPointer( _KeyType key, const char *file=__FILE__, unsigned int line=__LINE__ );
 
-		/// \brief Reverses the elements in the list, and flips the sort order 
+		/// \brief Reverses the elements in the list, and flips the sort order
 		/// returned by GetSortOrder() if IsSorted() returns true at the time the function is called
 		void ReverseList(void);
 
@@ -185,7 +185,7 @@ namespace DataStructures
 		bool GetSortOrder(void) const;
 
 		/// \brief Returns true if the list is currently believed to be in a sorted state.
-		/// \details Doesn't actually check for sortedness, just if Sort() 
+		/// \details Doesn't actually check for sortedness, just if Sort()
 		/// was recently called, or MultilistType is ML_ORDERED_LIST
 		bool IsSorted(void) const;
 
@@ -201,7 +201,7 @@ namespace DataStructures
 		/// Intersection is items common to both lists.
 		static void FindIntersection(
 			Multilist& source1,
-			Multilist& source2, 
+			Multilist& source2,
 			Multilist& intersection,
 			Multilist& uniqueToSource1,
 			Multilist& uniqueToSource2);
@@ -221,11 +221,11 @@ namespace DataStructures
 
 		/// An array of user values
 		_DataType* data;
-		
-		/// Number of elements in the list 		
+
+		/// Number of elements in the list
 		_IndexType dataSize;
-		
-		/// Size of \a array 		
+
+		/// Size of \a array
 		_IndexType allocationSize;
 
 		/// Array index for the head of the queue
@@ -330,7 +330,7 @@ namespace DataStructures
 			else
 				return data[ queueHead + position ];
 		}
-		
+
 		return data[position];
 	}
 
@@ -645,8 +645,8 @@ namespace DataStructures
 			else
 				--queueTail;
 		}
-		
-		
+
+
 		dataSize--;
 		DeallocateIfNeeded(file,line);
 	}
@@ -842,7 +842,7 @@ namespace DataStructures
 		if (dataSize>1)
 		{
 			if (ascendingSort)
-				QSortAscending(0,dataSize-1);		
+				QSortAscending(0,dataSize-1);
 			else
 				QSortDescending(0,dataSize-1);
 		}
@@ -904,7 +904,7 @@ namespace DataStructures
 			QSortAscending(leftEdge, left);
 
 		if (right!=rightEdge)
-			QSortAscending(right, rightEdge);		
+			QSortAscending(right, rightEdge);
 	}
 
 	template <const MultilistType _MultilistType, class _DataType, class _KeyType, class _IndexType>
@@ -952,7 +952,7 @@ namespace DataStructures
 			QSortDescending(leftEdge, left);
 
 		if (right!=rightEdge)
-			QSortDescending(right, rightEdge);		
+			QSortDescending(right, rightEdge);
 	}
 
 	template <const MultilistType _MultilistType, class _DataType, class _KeyType, class _IndexType>
@@ -1087,7 +1087,7 @@ namespace DataStructures
 	template <const MultilistType _MultilistType, class _DataType, class _KeyType, class _IndexType>
 	void Multilist<_MultilistType, _DataType, _KeyType, _IndexType>::FindIntersection(
 		Multilist& source1,
-		Multilist& source2, 
+		Multilist& source2,
 		Multilist& intersection,
 		Multilist& uniqueToSource1,
 		Multilist& uniqueToSource2)
@@ -1100,7 +1100,7 @@ namespace DataStructures
 		intersection.Clear(true,__FILE__, __LINE__);
 		uniqueToSource1.Clear(true,__FILE__, __LINE__);
 		uniqueToSource2.Clear(true,__FILE__, __LINE__);
-		
+
 		while (index1 < source1.GetSize() && index2 < source2.GetSize())
 		{
 			if (source1[index1]<source2[index2])
@@ -1163,7 +1163,7 @@ namespace DataStructures
 			return;
 		if (dataSize <= preallocationSize )
 			return;
-		
+
 		_IndexType newAllocationSize = dataSize<<1; // * 2
 
 		ReallocToSize(newAllocationSize,file,line);

@@ -29,7 +29,7 @@ void Log::print_log(const char* format, ...)
 {
 	if (!outputStream)
 		return;
-	print_timestamp("LOG");;	
+	print_timestamp("LOG");
 	va_list va;
 	va_start( va, format );
 	vfprintf(outputStream, format, va);
@@ -80,7 +80,7 @@ void Log::stats_log(const char* format, ...)
 	{
 		if (!outputStream)
 			return;
-		print_timestamp("STATS");		
+		print_timestamp("STATS");
 		va_list va;
 		va_start( va, format );
 		vfprintf(outputStream, format, va);
@@ -112,16 +112,14 @@ bool Log::EnableFileLogging(char* file)
 {
 	logfile = file;
 	outputStream = fopen(logfile, "a");
-#ifndef WIN32
 	setlinebuf(outputStream);
-#endif
 	return true;
 }
 
 void Log::RotateLogFile(int sig)
 {
 	if (logfile != NULL)
-	{	
+	{
 		char savedLogFile[MAX_LOG_NAME_SIZE];
 		fclose(outputStream);		// Does a flush internally
 		time_t currentTime = time(0);
@@ -129,9 +127,7 @@ void Log::RotateLogFile(int sig)
 			print_log("Error creating new log file");
 		rename(logfile, savedLogFile);
 		outputStream = fopen(logfile, "a");
-#ifndef WIN32
 		setlinebuf(outputStream);
-#endif
 	}
 	else
 	{

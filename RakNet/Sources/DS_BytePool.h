@@ -29,7 +29,7 @@ namespace DataStructures
 		unsigned char* Allocate(int bytesWanted, const char *file, unsigned int line);
 		void Release(unsigned char *data, const char *file, unsigned int line);
 		void Clear(const char *file, unsigned int line);
-	protected:	
+	protected:
 		MemoryPool<unsigned char[128]> pool128;
 		MemoryPool<unsigned char[512]> pool512;
 		MemoryPool<unsigned char[2048]> pool2048;

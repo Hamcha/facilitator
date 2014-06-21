@@ -186,7 +186,7 @@ void DirectoryDeltaTransfer::OnDownloadRequest(Packet *packet)
 }
 PluginReceiveResult DirectoryDeltaTransfer::OnReceive(Packet *packet)
 {
-	switch (packet->data[0]) 
+	switch (packet->data[0])
 	{
 	case ID_DDT_DOWNLOAD_REQUEST:
 		OnDownloadRequest(packet);

@@ -69,7 +69,7 @@ namespace big
 		--limb_degree;
 
 		uint32_t msl_degree = Degree(n[limb_degree]);
-		
+
 		return msl_degree + limb_degree*32;
 	}
 
@@ -137,7 +137,7 @@ namespace big
 			do if (lhs[--lhs_limbs] != 0) return false; while (lhs_limbs > rhs_limbs);
 		else if (lhs_limbs < rhs_limbs)
 			do if (rhs[--rhs_limbs] != 0) return true; while (lhs_limbs < rhs_limbs);
-	
+
 		while (lhs_limbs--) if (lhs[lhs_limbs] != rhs[lhs_limbs]) return lhs[lhs_limbs] < rhs[lhs_limbs];
 		return false; // equal
 	}
@@ -147,7 +147,7 @@ namespace big
 			do if (lhs[--lhs_limbs] != 0) return true; while (lhs_limbs > rhs_limbs);
 		else if (lhs_limbs < rhs_limbs)
 			do if (rhs[--rhs_limbs] != 0) return false; while (lhs_limbs < rhs_limbs);
-	
+
 		while (lhs_limbs--) if (lhs[lhs_limbs] != rhs[lhs_limbs]) return lhs[lhs_limbs] > rhs[lhs_limbs];
 		return false; // equal
 	}
@@ -606,7 +606,7 @@ loop_done:
 		Multiply(limbs/2, cross_product, xsum, ysum);
 
 		// Subtract out the high and low products
-		int32_t cross_carry = Subtract(cross_product, limbs, product, limbs); 
+		int32_t cross_carry = Subtract(cross_product, limbs, product, limbs);
 		cross_carry += Subtract(cross_product, limbs, product + limbs, limbs);
 
 		// Fix the extra high carry bits of the result
@@ -658,16 +658,16 @@ loop_done:
 	{
 		uint32_t remainder = N[limbs-1] < divisor ? N[limbs-1] : 0;
 		uint32_t counter = N[limbs-1] < divisor ? limbs-1 : limbs;
-	
+
 		while (counter--) remainder = (uint32_t)((((uint64_t)remainder << 32) | N[counter]) % divisor);
-	
+
 		return remainder;
 	}
 
 	/*
 	 * 'A' is overwritten with the quotient of the operation
 	 * Returns the remainder of 'A' / divisor for a 32-bit divisor
-	 * 
+	 *
 	 * Does not check for divide-by-zero
 	 */
     uint32_t Divide32(
@@ -682,7 +682,7 @@ loop_done:
 			A[ii] = (uint32_t)(n / divisor);
 			r = n % divisor;
 		}
-	
+
 		return (uint32_t)r;
 	}
 
@@ -727,7 +727,7 @@ loop_done:
 	 * Computes multiplicative inverse of given number
 	 * Such that: result * u = 1
 	 * Using Extended Euclid's Algorithm (GCDe)
-	 * 
+	 *
 	 * This is not always possible, so it will return false iff not possible.
 	 */
 	bool MulInverse(
@@ -1175,7 +1175,7 @@ loop_done:
 
 	/*
 	 * Computes: result = GCD(a, b)  (greatest common divisor)
-	 * 
+	 *
 	 * Length of result is the length of the smallest argument
 	 */
 	void GCD(
@@ -1226,7 +1226,7 @@ loop_done:
 	 * Computes: result = (1/u) (Mod v)
 	 * Such that: result * u (Mod v) = 1
 	 * Using Extended Euclid's Algorithm (GCDe)
-	 * 
+	 *
 	 * This is not always possible, so it will return false iff not possible.
 	 */
 	bool InvMod(
@@ -1793,7 +1793,7 @@ loop_done:
 
 			if (!Equal(limbs, a, n1) && !(t[0] & 1)) return false;
 		}
-		
+
 		return true;
 	}
 

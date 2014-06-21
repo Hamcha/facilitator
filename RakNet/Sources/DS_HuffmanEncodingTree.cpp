@@ -8,7 +8,7 @@
 #include "DS_HuffmanEncodingTree.h"
 #include "DS_Queue.h"
 #include "BitStream.h"
-#include "RakAssert.h" 
+#include "RakAssert.h"
 
 #ifdef _MSC_VER
 #pragma warning( push )
@@ -164,7 +164,7 @@ void HuffmanEncodingTree::GenerateFromFrequencyTable( unsigned int frequencyTabl
 
 // Pass an array of bytes to array and a preallocated BitStream to receive the output
 void HuffmanEncodingTree::EncodeArray( unsigned char *input, size_t sizeInBytes, RakNet::BitStream * output )
-{		
+{
 	unsigned counter;
 
 	// For each input byte, Write out the corresponding series of 1's and 0's that give the encoded representation

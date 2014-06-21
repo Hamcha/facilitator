@@ -39,7 +39,7 @@ protected:
 	Queue<structureType*> queue;
 	SimpleMutex queueMutex;
 };
-	
+
 template <class structureType>
 void ThreadsafeAllocatingQueue<structureType>::Push(structureType *s)
 {
@@ -59,7 +59,7 @@ structureType *ThreadsafeAllocatingQueue<structureType>::PopInaccurate(void)
 		s=queue.Pop();
 	else
 		s=0;
-	queueMutex.Unlock();	
+	queueMutex.Unlock();
 	return s;
 }
 
@@ -70,11 +70,11 @@ structureType *ThreadsafeAllocatingQueue<structureType>::Pop(void)
 	queueMutex.Lock();
 	if (queue.IsEmpty())
 	{
-		queueMutex.Unlock();	
+		queueMutex.Unlock();
 		return 0;
 	}
 	s=queue.Pop();
-	queueMutex.Unlock();	
+	queueMutex.Unlock();
 	return s;
 }
 

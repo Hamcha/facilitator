@@ -114,7 +114,7 @@ void ConnectionGraph2::OnNewConnection(SystemAddress systemAddress, RakNetGUID r
 	{
 		if (addresses[i]==systemAddress)
 			continue;
-		
+
 		bs.Write(addresses[i]);
 		bs.Write(guids[i]);
 		count++;
@@ -164,9 +164,9 @@ PluginReceiveResult ConnectionGraph2::OnReceive(Packet *packet)
 				bs.Read(saag.guid);
 				remoteSystems[idx]->remoteConnections.Insert(saag,saag,true,__FILE__,__LINE__);
 			}
-		}		
+		}
 	}
-	
+
 	return RR_CONTINUE_PROCESSING;
 }
 

@@ -19,44 +19,44 @@ class DataBlockEncryptor
 {
 
 public:
-	
+
 	// Constructor
 	DataBlockEncryptor();
-	
+
 	// Destructor
 	~DataBlockEncryptor();
-	
-	/// \return true if SetKey has been called previously 
+
+	/// \return true if SetKey has been called previously
 	bool IsKeySet( void ) const;
-	
-	/// \brief Set the encryption key 
-	/// \param[in] key The new encryption key 
+
+	/// \brief Set the encryption key
+	/// \param[in] key The new encryption key
 	void SetKey( const unsigned char key[ 16 ] );
-	
-	/// \brief Unset the encryption key 
+
+	/// \brief Unset the encryption key
 	void UnsetKey( void );
-	
-	/// \brief Encryption adds 6 data bytes and then pads the number of bytes to be a multiple of 16.  
+
+	/// \brief Encryption adds 6 data bytes and then pads the number of bytes to be a multiple of 16.
 	/// \details Output should be large enough to hold this.
 	/// Output can be the same memory block as input
-	/// \param[in] input the input buffer to encrypt 
-	/// \param[in] inputLength the size of the @em input buffer 
-	/// \param[in] output the output buffer to store encrypted data 
-	/// \param[in] outputLength the size of the output buffer 
+	/// \param[in] input the input buffer to encrypt
+	/// \param[in] inputLength the size of the @em input buffer
+	/// \param[in] output the output buffer to store encrypted data
+	/// \param[in] outputLength the size of the output buffer
 	void Encrypt( unsigned char *input, unsigned int inputLength, unsigned char *output, unsigned int *outputLength, RakNetRandom *rnr );
-	
-	/// \brief Decryption removes bytes, as few as 6. 
+
+	/// \brief Decryption removes bytes, as few as 6.
 	/// \details Output should be large enough to hold this.
 	/// Output can be the same memory block as input
-	/// \param[in] input the input buffer to decrypt 
-	/// \param[in] inputLength the size of the @em input buffer 
-	/// \param[in] output the output buffer to store decrypted data 
-	/// \param[in] outputLength the size of the @em output buffer 
+	/// \param[in] input the input buffer to decrypt
+	/// \param[in] inputLength the size of the @em input buffer
+	/// \param[in] output the output buffer to store decrypted data
+	/// \param[in] outputLength the size of the @em output buffer
 	/// \return False on bad checksum or input, true on success
 	bool Decrypt( unsigned char *input, unsigned int inputLength, unsigned char *output, unsigned int *outputLength );
-	
+
 protected:
-	
+
  	keyInstance keyEncrypt;
 	keyInstance keyDecrypt;
 	cipherInstance cipherInst;

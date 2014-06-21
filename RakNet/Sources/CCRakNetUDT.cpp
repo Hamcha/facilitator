@@ -323,7 +323,7 @@ BytesPerMicrosecond CCRakNetUDT::CalculateListMedianRecursive(const BytesPerMicr
 	else
 	{
 		greaterThanMedian[greaterThanMedianListLength++]=median;
-		return CalculateListMedianRecursive(lessThanMedian, lessThanMedianListLength, lessThanSum, greaterThanMedianListLength+greaterThanSum);		
+		return CalculateListMedianRecursive(lessThanMedian, lessThanMedianListLength, lessThanSum, greaterThanMedianListLength+greaterThanSum);
 	}
 }
 
@@ -454,7 +454,7 @@ void CCRakNetUDT::OnGotPacketPair(DatagramSequenceNumberType datagramSequenceNum
 }
 // ----------------------------------------------------------------------------------------------------------------------------
 bool CCRakNetUDT::OnGotPacket(DatagramSequenceNumberType datagramSequenceNumber, bool isContinuousSend, CCTimeType curTime, uint32_t sizeInBytes, uint32_t *skippedMessageCount)
-{	
+{
 	CC_DEBUG_PRINTF_2("R%i ",datagramSequenceNumber.val);
 
 	if (datagramSequenceNumber==expectedNextSequenceNumber)
@@ -616,7 +616,7 @@ void CCRakNetUDT::UpdateWindowSizeAndAckOnAckPreSlowStart(double totalUserDataBy
 }
 // ----------------------------------------------------------------------------------------------------------------------------
 void CCRakNetUDT::UpdateWindowSizeAndAckOnAckPerSyn(CCTimeType curTime, CCTimeType rtt, bool isContinuousSend, DatagramSequenceNumberType sequenceNumber)
-{	
+{
 	(void) curTime;
 	(void) sequenceNumber;
 	if (isContinuousSend==false)
@@ -643,7 +643,7 @@ void CCRakNetUDT::UpdateWindowSizeAndAckOnAckPerSyn(CCTimeType curTime, CCTimeTy
 			average+=pingsLastInterval[i];
 		}
 		average/=sampleSize;
-		
+
 		if (hadPacketlossThisBlock==true)
 		{
 		}
@@ -774,7 +774,7 @@ void CCRakNetUDT::SetTimeBetweenSendsLimit(unsigned int bitsPerSecond)
 // 	bitsPerSecond / 1000000 = bitsPerMicrosecond
 // 	bitsPerMicrosecond / 8 = BytesPerMicrosecond
 // 	1 / BytesPerMicrosecond = MicrosecondsPerByte
-// 	1 / ( (bitsPerSecond / 1000000)  / 8 ) = 
+// 	1 / ( (bitsPerSecond / 1000000)  / 8 ) =
 // 	1 / (bitsPerSecond / 8000000) =
 // 	8000000 / bitsPerSecond
 

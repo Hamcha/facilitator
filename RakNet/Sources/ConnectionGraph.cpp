@@ -139,7 +139,7 @@ void ConnectionGraph::OnNewConnection(SystemAddress systemAddress, RakNetGUID ra
 }
 PluginReceiveResult ConnectionGraph::OnReceive(Packet *packet)
 {
-	switch (packet->data[0]) 
+	switch (packet->data[0])
 	{
 	case ID_CONNECTION_GRAPH_REQUEST:
 		OnConnectionGraphRequest(packet);
@@ -163,7 +163,7 @@ PluginReceiveResult ConnectionGraph::OnReceive(Packet *packet)
 			else
 				packet->data[0]=ID_REMOTE_DISCONNECTION_NOTIFICATION;
 			return RR_CONTINUE_PROCESSING; // Return this packet to the user
-		}		
+		}
 		return RR_STOP_PROCESSING_AND_DEALLOCATE;
 	}
 
@@ -196,7 +196,7 @@ void ConnectionGraph::AddNewConnection(RakPeerInterface *peer, SystemAddress sys
 		return;
 
 	DataStructures::OrderedList<SystemAddress,SystemAddress> ignoreList;
-	
+
 	SystemAddressAndGroupId first, second;
 	first.systemAddress=systemAddress;
 	first.groupId=groupId;
@@ -302,7 +302,7 @@ void ConnectionGraph::OnConnectionGraphUpdate(Packet *packet)
 
 	RakNet::BitStream inBitstream(packet->data, packet->length, false);
 	inBitstream.IgnoreBits(8);
-	
+
 	if (DeserializeWeightedGraph(&inBitstream, rakPeerInterface)==false)
 		return;
 
@@ -334,7 +334,7 @@ void ConnectionGraph::OnNewConnectionInternal(Packet *packet)
 	DataStructures::OrderedList<SystemAddress,SystemAddress> ignoreList;
 	DeserializeIgnoreList(ignoreList, &inBitstream);
 	ignoreList.Insert(packet->systemAddress,packet->systemAddress, false, __FILE__, __LINE__);
-	AddAndRelayConnection(ignoreList, node1, node2, ping, rakPeerInterface);	
+	AddAndRelayConnection(ignoreList, node1, node2, ping, rakPeerInterface);
 }
 bool ConnectionGraph::OnConnectionLostInternal(Packet *packet, unsigned char packetId)
 {
@@ -352,7 +352,7 @@ bool ConnectionGraph::OnConnectionLostInternal(Packet *packet, unsigned char pac
 	DataStructures::OrderedList<SystemAddress,SystemAddress> ignoreList;
 	DeserializeIgnoreList(ignoreList, &inBitstream);
 	ignoreList.Insert(packet->systemAddress, packet->systemAddress, false, __FILE__, __LINE__);
-	
+
 	return RemoveAndRelayConnection(ignoreList, packetId, node1, node2, rakPeerInterface);
 }
 bool ConnectionGraph::DeserializeIgnoreList(DataStructures::OrderedList<SystemAddress,SystemAddress> &ignoreList, RakNet::BitStream *inBitstream )

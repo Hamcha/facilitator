@@ -91,7 +91,7 @@ void Table::Cell::Set(int input)
 void Table::Cell::Set(const char *input)
 {
 	Clear();
-		
+
 	if (input)
 	{
 		i=(int)strlen(input)+1;
@@ -396,7 +396,7 @@ Table::Row* Table::AddRowColumns(unsigned rowId, Row *row, DataStructures::List<
 	{
 		if (row->cells[columnIndices[columnIndex]]->isEmpty==false)
 		{
-			newRow->cells.Insert(RakNet::OP_NEW_4<Table::Cell>( __FILE__, __LINE__, 
+			newRow->cells.Insert(RakNet::OP_NEW_4<Table::Cell>( __FILE__, __LINE__,
 				row->cells[columnIndices[columnIndex]]->i,
 				row->cells[columnIndices[columnIndex]]->c,
 				row->cells[columnIndices[columnIndex]]->ptr,
@@ -1060,7 +1060,7 @@ unsigned Table::GetAvailableRowId(void) const
 	unsigned key=0;
 	int i;
 	DataStructures::Page<unsigned, Row*, _TABLE_BPLUS_TREE_ORDER> *cur = rows.GetListHead();
-	
+
 	while (cur)
 	{
 		for (i=0; i < cur->size; i++)

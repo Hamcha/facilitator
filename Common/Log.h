@@ -7,11 +7,11 @@ class Log
 	static char* logfile;
 	static FILE* outputStream;
 	static const int MAX_LOG_NAME_SIZE = 50;
-	
+
 	public:
 	static int sDebugLevel;
 	static bool printStats;
-	
+
 	Log();
 	~Log();
 
@@ -27,20 +27,16 @@ class Log
 	static bool EnableFileLogging(char* file);
 	static void RotateLogFile(int sig);
 	static long GetLogSize();
-	
+
 	private:
 	static void print_timestamp(const char* msg);
 };
 
 // Debug levels used when logging
 enum {
-	// Only print critical error messages (nice clean log)
-	kOnlyErrors,
-	// Print probably harmless warning messages
-	kWarnings,
-	// Print various informational messages
-	kInformational,
-	// Print a lot of per event log messages (logs will be huge)
-	kFullDebug
+	kOnlyErrors, 	// Only print critical error messages (nice clean log)
+	kWarnings,  	// Print probably harmless warning messages
+	kInformational, // Print various informational messages
+	kFullDebug		// Print a lot of per event log messages (logs will be huge)
 };
 

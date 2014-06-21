@@ -1,5 +1,5 @@
 /// \file DirectoryDeltaTransfer.h
-/// \brief Simple class to send changes between directories.  
+/// \brief Simple class to send changes between directories.
 /// \details In essence, a simple autopatcher that can be used for transmitting levels, skins, etc.
 ///
 /// This file is part of RakNet Copyright 2003 Jenkins Software LLC
@@ -115,7 +115,7 @@ public:
 	/// \param[in] _incrementalReadInterface If a file in \a fileList has no data, filePullInterface will be used to read the file in chunks of size \a chunkSize
 	/// \param[in] _chunkSize How large of a block of a file to send at once
 	void SetDownloadRequestIncrementalReadInterface(IncrementalReadInterface *_incrementalReadInterface, unsigned int _chunkSize);
-	
+
 	/// \internal For plugin handling
 	virtual PluginReceiveResult OnReceive(Packet *packet);
 protected:

@@ -13,7 +13,7 @@
 #include "DS_HuffmanEncodingTreeNode.h"
 #include "BitStream.h"
 #include "Export.h"
-#include "DS_LinkedList.h" 
+#include "DS_LinkedList.h"
 
 /// This generates special cases of the huffman encoding tree using 8 bit keys with the additional condition that unused combinations of 8 bits are treated as a frequency of 1
 class RAK_DLL_EXPORT HuffmanEncodingTree
@@ -41,7 +41,7 @@ public:
 
 private:
 
-	/// The root node of the tree 
+	/// The root node of the tree
 
 	HuffmanEncodingTreeNode *root;
 

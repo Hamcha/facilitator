@@ -67,7 +67,7 @@ public:
 	/// \param[in] originalString The string that was actually sent over the network, in case you want to do your own parsing
 	virtual bool OnCommand(const char *command, unsigned numParameters, char **parameterList, TransportInterface *transport, SystemAddress systemAddress, const char *originalString)=0;
 
-	/// \brief This is called every time transport interface is registered.  
+	/// \brief This is called every time transport interface is registered.
 	/// \details If you want to save a copy of the TransportInterface pointer
 	/// This is the place to do it
 	/// \param[in] transport The new TransportInterface
@@ -128,7 +128,7 @@ public:
 	virtual void ReturnResult(const char *command,TransportInterface *transport, SystemAddress systemAddress);
 
 
-	/// \brief Since there's no way to specify a systemAddress directly, the user needs to 
+	/// \brief Since there's no way to specify a systemAddress directly, the user needs to
 	/// specify both the binary address and port.
 	/// \details Given those parameters, this returns the corresponding SystemAddress
 	/// \param[in] binaryAddress The binaryAddress portion of SystemAddress

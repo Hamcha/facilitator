@@ -1,7 +1,7 @@
 /**
-* @file 
+* @file
 * @brief CheckSum implementation from http://www.flounder.com/checksum.htm
-* 
+*
 */
 #include "CheckSum.h"
 
@@ -10,8 +10,8 @@
 * Inputs:
 *   unsigned int d: word to add
 * Result: void
-* 
-* Effect: 
+*
+* Effect:
 *   Adds the bytes of the unsigned int to the CheckSum
 ****************************************************************************/
 
@@ -37,8 +37,8 @@ void CheckSum::Add ( unsigned int value )
 * Inputs:
 *   unsigned short value:
 * Result: void
-* 
-* Effect: 
+*
+* Effect:
 *   Adds the bytes of the unsigned short value to the CheckSum
 ****************************************************************************/
 
@@ -64,8 +64,8 @@ void CheckSum::Add ( unsigned short value )
 * Inputs:
 *   unsigned char value:
 * Result: void
-* 
-* Effect: 
+*
+* Effect:
 *   Adds the byte to the CheckSum
 ****************************************************************************/
 
@@ -83,8 +83,8 @@ void CheckSum::Add ( unsigned char value )
 *   LPunsigned char b: pointer to byte array
 *   unsigned int length: count
 * Result: void
-* 
-* Effect: 
+*
+* Effect:
 *   Adds the bytes to the CheckSum
 ****************************************************************************/
 

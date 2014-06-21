@@ -12,21 +12,14 @@
 #include <signal.h>
 #include "SocketLayer.h"
 #include <stdarg.h>
-
-#ifdef WIN32
-#include <stdio.h>
-#include <time.h>
-#include <windows.h>
-#else
 #include <stdlib.h>
 #include <time.h>
-#endif
 
 NatPunchthroughServer natPunchthrough;
 bool quit;
 bool printStats = false;
 
-char* logfile = "facilitator.log";
+const char* logfile = "facilitator.log";
 const int fileBufSize = 1024;
 char pidFile[fileBufSize];
 
@@ -94,13 +87,11 @@ void ProcessPacket(Packet *packet)
 }
 
 int main(int argc, char *argv[])
-{  
-#ifndef WIN32
+{
 	setlinebuf(stdout);
-#endif
 
 	RakPeerInterface *peer = RakNetworkFactory::GetRakPeerInterface();	// The facilitator
-	
+
 	// Default values
 	int facilitatorPort = 50005;
 	int connectionCount = 1000;
@@ -111,13 +102,13 @@ int main(int argc, char *argv[])
 	bool useLogFile = false;
 	int statDelay = 30;
 	bool daemonMode = false;
-			
+
 	// Process command line arguments
 	for (int i = 1; i < argc; i++)
 	{
 		if (strlen(argv[i]) == 2 && argc>=i+1)
 		{
-			switch (argv[i][1]) 
+			switch (argv[i][1])
 			{
 				case 'd':
 				{
@@ -148,7 +139,7 @@ int main(int argc, char *argv[])
 				}
 				case 'l':
 				{
-					useLogFile = Log::EnableFileLogging(logfile);
+					useLogFile = Log::EnableFileLogging((char*)logfile);
 					break;
 				}
 				case 'e':
@@ -165,7 +156,7 @@ int main(int argc, char *argv[])
 				}
 				case 's':
 				{
-					int statDelay =  atoi(argv[i+1]);
+					statDelay = atoi(argv[i+1]);
 					i++;
 					if (statDelay < 0)
 					{
@@ -194,20 +185,18 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 	}
-#ifndef WIN32
 	if (daemonMode)
 	{
 		printf("Running in daemon mode, file logging enabled...\n");
 		if (!useLogFile)
-			useLogFile = Log::EnableFileLogging(logfile);
+			useLogFile = Log::EnableFileLogging((char*)logfile);
 		// Don't change cwd to /
 		// Beware that log/pid files are placed wherever this was launched from
 		daemon(1, 0);
 	}
-	
+
 	if (!WriteProcessID(argv[0], &pidFile[0], fileBufSize))
 		perror("Warning, failed to write own PID value to PID file\n");
-#endif
 
 	peer->SetMaximumIncomingConnections(connectionCount);
 	char ipList[ MAXIMUM_NUMBER_OF_INTERNAL_IDS ][ 16 ];
@@ -222,27 +211,24 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	peer->AttachPlugin(&natPunchthrough);
-	
+
 	Log::print_log("Unity Facilitator version 2.0.0\n");
 	Log::print_log("Listen port set to %d\n",facilitatorPort);
 	Log::print_log("%d connection count limit\n", connectionCount);
 	if (printStats)
 		Log::print_log("%d sec delay between statistics print to log\n", statDelay);
-	
+
 	// Register signal handlers
-#ifndef WIN32
 	if (signal(SIGHUP, Log::RotateLogFile) == SIG_ERR)
 		Log::error_log("Problem setting up hangup signal handler");
 	if (signal(SIGINT, shutdown) == SIG_ERR || signal(SIGTERM, shutdown) == SIG_ERR)
 		Log::error_log("Problem setting up terminate signal handler");
 	else
-#endif
 		Log::print_log("To quit press Ctrl-C\n----------------------------------------------------\n");
 
-	Packet *p;
 	while (!quit)
 	{
-		p=peer->Receive();
+		Packet *p = peer->Receive();
 		while (p)
 		{
 			ProcessPacket(p);
@@ -266,13 +252,13 @@ int main(int argc, char *argv[])
 		RakSleep(30);
 	}
 
-	if (pidFile)
+	if (pidFile != NULL)
 	{
 		if (remove(pidFile) != 0)
 			fprintf(stderr, "Failed to remove PID file at %s\n", pidFile);
 	}
 	peer->Shutdown(100,0);
 	RakNetworkFactory::DestroyRakPeerInterface(peer);
-				
+
 	return 0;
 }

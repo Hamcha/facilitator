@@ -7,7 +7,7 @@
 
 
 #ifndef __HASH_H
-#define __HASH_H 
+#define __HASH_H
 
 #include "RakAssert.h"
 #include <string.h> // memmove
@@ -30,7 +30,7 @@ namespace DataStructures
 	/// \brief Using a string as a identifier for a node, store an allocated pointer to that node
 	template <class data_type, unsigned int HASH_SIZE>
 	class RAK_DLL_EXPORT StringKeyedHash
-	{	
+	{
 	public:
 		/// Default constructor
 		StringKeyedHash();
@@ -48,7 +48,7 @@ namespace DataStructures
 		void GetItemList(DataStructures::List<data_type> &outputList,const char *file, unsigned int line);
 		unsigned int GetHashIndex(const char *str);
 
-		/// \brief Clear the list		
+		/// \brief Clear the list
 		void Clear( const char *file, unsigned int line );
 
 		struct Node

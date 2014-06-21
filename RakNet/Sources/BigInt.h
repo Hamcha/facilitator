@@ -208,7 +208,7 @@ namespace big
 	/*
 	 * 'A' is overwritten with the quotient of the operation
 	 * Returns the remainder of 'A' / divisor for a 32-bit divisor
-	 * 
+	 *
 	 * Does not check for divide-by-zero
 	 */
     uint32_t Divide32(
@@ -223,7 +223,7 @@ namespace big
 	 * Computes multiplicative inverse of given number
 	 * Such that: result * u = 1
 	 * Using Extended Euclid's Algorithm (GCDe)
-	 * 
+	 *
 	 * This is not always possible, so it will return false iff not possible.
 	 */
 	bool MulInverse(
@@ -284,7 +284,7 @@ namespace big
 	 * Computes: result = (1/u) (Mod v)
 	 * Such that: result * u (Mod v) = 1
 	 * Using Extended Euclid's Algorithm (GCDe)
-	 * 
+	 *
 	 * This is not always possible, so it will return false iff not possible.
 	 */
 	bool InvMod(
@@ -296,7 +296,7 @@ namespace big
 
 	/*
 	 * Computes: result = GCD(a, b)  (greatest common divisor)
-	 * 
+	 *
 	 * Length of result is the length of the smallest argument
 	 */
 	void GCD(

@@ -290,7 +290,7 @@ PluginReceiveResult AutoRPC::OnReceive(Packet *packet)
 		return RR_STOP_PROCESSING_AND_DEALLOCATE;
 	case ID_AUTO_RPC_UNKNOWN_REMOTE_INDEX:
 		OnRPCUnknownRemoteIndex(packet->systemAddress, packet->data+packetDataOffset, packet->length-packetDataOffset, timestamp);
-		return RR_STOP_PROCESSING_AND_DEALLOCATE;		
+		return RR_STOP_PROCESSING_AND_DEALLOCATE;
 	}
 
 	return RR_CONTINUE_PROCESSING;
@@ -413,7 +413,7 @@ void AutoRPC::OnAutoRPCCall(SystemAddress systemAddress, unsigned char *data, un
 			out.WriteCompressed(bytesOnStack);
 			out.WriteAlignedBytes((const unsigned char*) inputStack, bytesOnStack);
 			SendUnified(&out, HIGH_PRIORITY, RELIABLE_ORDERED, 0, systemAddress, false);
-			
+
 			return;
 		}
 		*/
@@ -485,7 +485,7 @@ void AutoRPC::OnAutoRPCCall(SystemAddress systemAddress, unsigned char *data, un
 		return;
 	}
 
-	
+
 //	unsigned int bytesWritten;
 //	unsigned char numParameters;
 //	unsigned int parameterLengths[64]; // 64 is arbitrary, just needs to be more than whatever might be serialized
@@ -610,7 +610,7 @@ void AutoRPC::OnRPCUnknownRemoteIndex(SystemAddress systemAddress, unsigned char
 				else
 				{
 					out.Write(false);
-				}				
+				}
 				out.WriteCompressed(numberOfBitsUsed);
 				out.Write(&extraData);
 				out.Write(hasNetworkId);

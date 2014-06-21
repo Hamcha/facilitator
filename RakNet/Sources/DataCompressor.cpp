@@ -38,7 +38,7 @@ unsigned DataCompressor::DecompressAndAllocate( RakNet::BitStream * input, unsig
 	unsigned int decompressedBytes;
 	unsigned int frequencyTable[ 256 ];
 	unsigned i;
-	
+
 	input->ReadCompressed(destinationSizeInBytes);
 	for (i=0; i < 256; i++)
 		input->ReadCompressed(frequencyTable[i]);

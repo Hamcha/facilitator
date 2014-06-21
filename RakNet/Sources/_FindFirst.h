@@ -37,13 +37,13 @@ typedef struct _finddata_t
 	unsigned long   size;
 } _finddata;
 
-/** 
+/**
  *  Hold information about the current search
  */
 typedef struct _findinfo_t
 {
 	DIR*	openedDir;
-	RakNet::RakString filter;    
+	RakNet::RakString filter;
 	RakNet::RakString dirName;
 } _findinfo;
 

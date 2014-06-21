@@ -12,7 +12,7 @@
 #endif
 
 static DataStructures::List< _findinfo_t* > fileInfo;
-	
+
 #include "RakMemoryOverride.h"
 #include "RakAssert.h"
 
@@ -41,7 +41,7 @@ long _findfirst(const char *name, _finddata_t *f)
 	}
 
 	DIR* dir = opendir(nameCopy);
-        
+
 	if(!dir) return -1;
 
 	_findinfo_t* fi = RakNet::OP_NEW<_findinfo_t>( __FILE__, __LINE__ );
@@ -59,13 +59,13 @@ long _findfirst(const char *name, _finddata_t *f)
 }
 
 #if defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
 #else
 int _findnext(long h, _finddata_t *f)
 {
 	RakAssert(h >= 0 && h < (long)fileInfo.Size());
 	if (h < 0 || h >= (long)fileInfo.Size()) return -1;
-        
+
 	_findinfo_t* fi = fileInfo[h];
 
 	while(true)
@@ -80,7 +80,7 @@ int _findnext(long h, _finddata_t *f)
                 // a stat...  don't rely on entry->d_type, as this
                 // might be unavailable!
                 struct stat filestat;
-                RakNet::RakString fullPath = fi->dirName + entry->d_name;             
+                RakNet::RakString fullPath = fi->dirName + entry->d_name;
                 if (stat(fullPath, &filestat) != 0)
                 {
                     RAKNET_DEBUG_PRINTF("Cannot stat %s\n", fullPath.C_String());
@@ -92,14 +92,14 @@ int _findnext(long h, _finddata_t *f)
                     f->attrib = _A_NORMAL;
                 } else if (S_ISDIR(filestat.st_mode))
                 {
-                    f->attrib = _A_SUBDIR;                    
+                    f->attrib = _A_SUBDIR;
                 } else continue; // We are interested in files and
                                  // directories only. Links currently
                                  // are not supported.
 
                 f->size = filestat.st_size;
                 strncpy(f->name, entry->d_name, STRING_BUFFER_SIZE);
-                
+
                 return 0;
 	}
 
@@ -116,7 +116,7 @@ int _findnext(long h, _finddata_t *f)
 int _findclose(long h)
 {
     if (h==-1) return 0;
-   
+
     if (h < 0 || h >= (long)fileInfo.Size())
     {
         RakAssert(false);
@@ -127,6 +127,6 @@ int _findclose(long h)
     closedir(fi->openedDir);
     fileInfo.RemoveAtIndex(h);
     RakNet::OP_DELETE(fi, __FILE__, __LINE__);
-    return 0;   
+    return 0;
 }
 #endif

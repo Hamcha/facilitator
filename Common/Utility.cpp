@@ -1,5 +1,4 @@
 #include "Log.h"
-#ifndef WIN32
 #include <string.h>
 #include <unistd.h>
 
@@ -25,10 +24,10 @@ bool WriteProcessID(char* processFullPath, char* pidFile, int bufSize)
 		if (!(fprintf(pidHandle, "%d", pid) > 0))
 		{
 			perror("Failed to write to pid file\n");
+			fclose(pidHandle);
 			return false;
 		}
 		fclose(pidHandle);
 	}
 	return true;
 }
-#endif
