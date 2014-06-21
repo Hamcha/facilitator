@@ -26,14 +26,14 @@ enum RNSPerSecondMetrics
 	RNS_PER_SECOND_METRICS_COUNT
 };
 
-/// \brief Network Statisics Usage 
+/// \brief Network Statisics Usage
 ///
-/// Store Statistics information related to network usage 
+/// Store Statistics information related to network usage
 struct RAK_DLL_EXPORT RakNetStatistics
 {
 	uint64_t valueOverLastSecond[RNS_PER_SECOND_METRICS_COUNT];
 	uint64_t runningTotal[RNS_PER_SECOND_METRICS_COUNT];
-	
+
 	RakNetTimeUS connectionStartTime;
 
 	uint64_t BPSLimitByCongestionControl;
@@ -72,10 +72,10 @@ struct RAK_DLL_EXPORT RakNetStatistics
 /// Verbosity level currently supports 0 (low), 1 (medium), 2 (high)
 /// \param[in] s The Statistical information to format out
 /// \param[in] buffer The buffer containing a formated report
-/// \param[in] verbosityLevel 
+/// \param[in] verbosityLevel
 /// 0 low
-/// 1 medium 
-/// 2 high 
+/// 1 medium
+/// 2 high
 /// 3 debugging congestion control
 void RAK_DLL_EXPORT StatisticsToString( RakNetStatistics *s, char *buffer, int verbosityLevel );
 

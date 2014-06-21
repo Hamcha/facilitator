@@ -461,7 +461,7 @@ void RakString::Erase(unsigned int index, unsigned int count)
 {
 	size_t len = GetLength();
 	RakAssert(index+count <= len);
-        
+
 	Clone();
 	unsigned i;
 	for (i=index; i < len-count; i++)
@@ -840,7 +840,7 @@ bool RakString::Deserialize(char *str, BitStream *bs)
 
 	if (b==false)
 		str[0]=0;
-	
+
 	str[l]=0;
 	return b;
 }
@@ -880,11 +880,7 @@ const char *RakString::ToString(uint64_t i)
 {
 	static int index=0;
 	static char buff[64][64];
-#if defined(_WIN32)
-	sprintf(buff[index], "%I64u", i);
-#else
-	sprintf(buff[index], "%llu", i);
-#endif
+	sprintf(buff[index], "%lu", i);
 	int lastIndex=index;
 	if (++index==64)
 		index=0;
@@ -961,9 +957,9 @@ RakNet::RakString RakString::Assign(const char *str,size_t pos, size_t n )
 	if (pos+n>=incomingLen)
 	{
 	n=incomingLen-pos;
-	
+
 	}
-	const char * tmpStr=&(str[pos]); 
+	const char * tmpStr=&(str[pos]);
 
 	size_t len = n+1;
 	Allocate(len);

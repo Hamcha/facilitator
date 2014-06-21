@@ -77,7 +77,7 @@ void RAK_DLL_EXPORT StatisticsToString( RakNetStatistics *s, char *buffer, int v
 				);
 			strcat(buffer,buff2);
 		}
-	}	
+	}
 	else
 	{
 		sprintf(buffer,

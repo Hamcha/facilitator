@@ -4019,31 +4019,16 @@ RakPeer::RemoteSystemStruct * RakPeer::AssignSystemAddressToRemoteSystemList( co
 							rpai.remotePortRakNetWasStartedOn_PS3=rns->remotePortRakNetWasStartedOn_PS3;
 							rpai.s=rns->s;
 							rpai.rakPeer=this;
-#ifdef _WIN32
-							int highPriority=THREAD_PRIORITY_ABOVE_NORMAL;
-#else
 							int highPriority=-10;
-#endif
 
-//#if !defined(_XBOX) && !defined(X360)
 							highPriority=0;
-//#endif
 							isRecvFromLoopThreadActive=false;
+#ifdef _DEBUG
 							int errorCode = RakNet::RakThread::Create(RecvFromLoop, &rpai, highPriority);
 							RakAssert(errorCode!=0);
+#endif
 							while ( isRecvFromLoopThreadActive == false )
 								RakSleep(10);
-
-
-							/*
-#if defined (_WIN32) && defined(USE_WAIT_FOR_MULTIPLE_EVENTS)
-							if (threadSleepTimer>0)
-							{
-								rns->recvEvent=CreateEvent(0,FALSE,FALSE,0);
-								WSAEventSelect(rns->s,rns->recvEvent,FD_READ);
-							}
-#endif
-							*/
 						}
 					}
 				}
@@ -4367,7 +4352,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 		RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-		return "Internal RPC error. Bitstream not long enough, could not see if RPC name was encoded.";
+		return (char*)"Internal RPC error. Bitstream not long enough, could not see if RPC name was encoded.";
 	}
 
 	if (nameIsEncoded)
@@ -4377,7 +4362,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 			RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-			return "Internal RPC error. Could not decode unique RPC name identifier.";
+			return (char*)"Internal RPC error. Could not decode unique RPC name identifier.";
 		}
 
 		rpcIndex = rpcMap.GetIndexFromFunctionName(uniqueIdentifier);
@@ -4389,7 +4374,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 			RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-			return "Internal RPC error. Could not read RPC index value from bitstream.";
+			return (char*)"Internal RPC error. Could not read RPC index value from bitstream.";
 		}
 	}
 	if ( incomingBitStream.Read( blockingCommand ) == false )
@@ -4397,7 +4382,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 		RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-		return "Internal RPC error. Bitstream not long enough, could not check blocking command status.";
+		return (char*)"Internal RPC error. Bitstream not long enough, could not check blocking command status.";
 	}
 
 	/*
@@ -4415,7 +4400,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 		RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-		return "Internal RPC error. Could not get RPC parameter length.";
+		return (char*)"Internal RPC error. Could not get RPC parameter length.";
 	}
 
 	if ( incomingBitStream.Read( networkIDIsEncoded ) == false )
@@ -4423,7 +4408,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 		RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-		return "Internal RPC error. Bitstream not long enough, could not see if network ID was encoded.";
+		return (char*)"Internal RPC error. Bitstream not long enough, could not see if network ID was encoded.";
 	}
 
 	if (networkIDIsEncoded)
@@ -4433,7 +4418,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 			RakAssert( 0 ); // bitstream was not long enough.  Some kind of internal error
 #endif
-			return "Internal RPC error. Could not read encoded network ID.";
+			return (char*)"Internal RPC error. Could not read encoded network ID.";
 		}
 	}
 
@@ -4441,7 +4426,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 	{
 		// Unregistered function
 		RakAssert(0);
-		return "Internal RPC error. Invalid RPC index, function not registered.";
+		return (char*)"Internal RPC error. Invalid RPC index, function not registered.";
 	}
 
 	node = rpcMap.GetNodeFromIndex(rpcIndex);
@@ -4450,7 +4435,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 		RakAssert( 0 ); // Should never happen except perhaps from threading errors?  No harm in checking anyway
 #endif
-		return "Internal RPC error. Unable to retreive RPC node from map.";
+		return (char*)"Internal RPC error. Unable to retreive RPC node from map.";
 	}
 
 	// Make sure the call type matches - if this is a pointer to a class member then networkID must be defined.  Otherwise it must not be defined
@@ -4460,7 +4445,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 		// Most likely this means this system registered a function with REGISTER_CLASS_MEMBER_RPC and the remote system called it
 		// using the unique ID for a function registered with REGISTER_STATIC_RPC.
 		RakAssert(0);
-		return "Internal RPC error. Using pointer to class member without network ID.";
+		return (char*)"Internal RPC error. Using pointer to class member without network ID.";
 	}
 
 	if (node->isPointerToMember==false && networkIDIsEncoded==true)
@@ -4469,7 +4454,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 		// Most likely this means this system registered a function with REGISTER_STATIC_RPC and the remote system called it
 		// using the unique ID for a function registered with REGISTER_CLASS_MEMBER_RPC.
 		RakAssert(0);
-		return "Internal RPC error. Network ID used for static RPC function, function incorrectly called.";
+		return (char*)"Internal RPC error. Network ID used for static RPC function, function incorrectly called.";
 	}
 
 	if (nameIsEncoded && GetRemoteSystemFromSystemAddress(systemAddress, false, true))
@@ -4511,7 +4496,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 #ifdef _DEBUG
 			RakAssert( 0 );
 #endif
-			"Internal RPC error. No data appended to call.";
+			return (char*)"Internal RPC error. No data appended to call.";
 		}
 
 		// We have to copy into a new data chunk because the user data might not be byte aligned.
@@ -4539,7 +4524,7 @@ char* RakPeer::HandleRPCPacket( const char *data, int length, SystemAddress syst
 
 			#endif
 
-			return "Internal RPC error. Not enough data to read.";
+			return (char*)"Internal RPC error. Not enough data to read.";
 		}
 
 //		if ( rpcParms.hasTimestamp )
@@ -5682,10 +5667,6 @@ bool ProcessOfflineNetworkPacket( const SystemAddress systemAddress, const char 
 				if (rcs->actionToTake==RakPeer::RequestedConnectionStruct::CONNECT && rcs->systemAddress==systemAddress)
 				{
 					connectionAttemptCancelled=true;
-#if defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-
-#endif
-
 					rakPeer->requestedConnectionQueue.RemoveAtIndex(i);
 					RakNet::OP_DELETE(rcs,__FILE__,__LINE__);
 					break;
@@ -5729,7 +5710,7 @@ bool ProcessOfflineNetworkPacket( const SystemAddress systemAddress, const char 
 				return true;
 			}
 
-			for (i=0; i < rakPeer->messageHandlerList.Size(); i++)
+			for (i=0; i < (unsigned)rakPeer->messageHandlerList.Size(); i++)
 				rakPeer->messageHandlerList[i]->OnDirectSocketReceive(data, length*8, systemAddress);
 
 			RakNetGUID guid;

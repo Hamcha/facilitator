@@ -1,32 +1,17 @@
-#if defined(_XBOX) || defined(X360)
-                            
-#elif defined(_WIN32)
-#include "WindowsIncludes.h" // Sleep
-#elif defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-                                                
-#else
 #include <pthread.h>
 #include <time.h>
 #include <sys/time.h>
-#endif
-
 
 #include "RakSleep.h"
 
 void RakSleep(unsigned int ms)
 {
-#ifdef _WIN32
-	Sleep(ms);
-#elif defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-                                                                                            
-#else
 	//Single thread sleep code thanks to Furquan Shaikh, http://somethingswhichidintknow.blogspot.com/2009/09/sleep-in-pthread.html
 	//Modified slightly from the original
 	pthread_mutex_t fakeMutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_cond_t fakeCond = PTHREAD_COND_INITIALIZER;
 	struct timespec timeToWait;
 	struct timeval now;
-	int rt;
 
 	gettimeofday(&now,NULL);
 
@@ -34,7 +19,7 @@ void RakSleep(unsigned int ms)
 	long nanoseconds = (ms - seconds * 1000) * 1000000;
 	timeToWait.tv_sec = now.tv_sec + seconds;
 	timeToWait.tv_nsec = now.tv_usec*1000 + nanoseconds;
-	
+
 	if (timeToWait.tv_nsec >= 1000000000)
 	{
 	        timeToWait.tv_nsec -= 1000000000;
@@ -42,7 +27,6 @@ void RakSleep(unsigned int ms)
 	}
 
 	pthread_mutex_lock(&fakeMutex);
-	rt = pthread_cond_timedwait(&fakeCond, &fakeMutex, &timeToWait);
+	pthread_cond_timedwait(&fakeCond, &fakeMutex, &timeToWait);
 	pthread_mutex_unlock(&fakeMutex);
-#endif
 }

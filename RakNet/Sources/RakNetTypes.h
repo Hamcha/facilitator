@@ -36,11 +36,7 @@ typedef unsigned char MessageID;
 
 typedef uint32_t BitSize_t;
 
-#if defined(_MSC_VER) && _MSC_VER > 0
-#define PRINTF_64_BIT_MODIFIER "I64"
-#else
-#define PRINTF_64_BIT_MODIFIER "ll"
-#endif
+#define PRINTF_64_BIT_MODIFIER "l"
 
 /// Describes the local socket to use for RakPeer::Startup
 struct RAK_DLL_EXPORT SocketDescriptor
@@ -251,7 +247,7 @@ struct RAK_DLL_EXPORT NetworkID
 		localSystemAddress(65535)
 	{
 	}
-	~NetworkID() {} 
+	~NetworkID() {}
 
 	/// \deprecated Use NETWORK_ID_SUPPORTS_PEER_TO_PEER in RakNetDefines.h
 	// Set this to true to use peer to peer mode for NetworkIDs.

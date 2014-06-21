@@ -7,10 +7,6 @@
 /// Usage of RakNet is subject to the appropriate license agreement.
 ///
 
-#if defined(_MSC_VER) && _MSC_VER < 1299 // VC6 doesn't support template specialization
-#include "BitStream_NoTemplate.h"
-#else
-
 #ifndef __BITSTREAM_H
 #define __BITSTREAM_H
 
@@ -22,15 +18,6 @@
 #include "RakAssert.h"
 #include <math.h>
 #include <float.h>
-
-#ifdef _MSC_VER
-#pragma warning( push )
-#endif
-
-// MSWin uses _copysign, others use copysign...
-#ifndef _WIN32
-#define _copysign copysign
-#endif
 
 /// The namespace RakNet is not consistently used.  It's only purpose is to avoid compiler errors for classes whose names are very common.
 /// For the most part I've tried to avoid this simply by using names very likely to be unique for my classes.
@@ -1911,17 +1898,15 @@ namespace RakNet
 	template <class templateType>
 	BitStream& operator>>(BitStream& in, templateType& c)
 	{
+#ifdef _DEBUG
 		bool success = in.Read(c);
 		RakAssert(success);
+#else
+		in.Read(c);
+#endif
 		return in;
 	}
 
 }
 
-#ifdef _MSC_VER
-#pragma warning( pop )
 #endif
-
-#endif
-
-#endif // VC6
