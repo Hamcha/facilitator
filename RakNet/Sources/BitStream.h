@@ -1119,60 +1119,6 @@ namespace RakNet
 		}
 	}
 
-		/*
-	/// \brief Write a systemAddress.
-	/// \details If the current value is different from the last value
-	/// the current value will be written.  Otherwise, a single bit will be written
-	/// \param[in] currentValue The current value to write
-	/// \param[in] lastValue The last value to compare against
-	template <>
-		inline void BitStream::WriteDelta(SystemAddress currentValue, SystemAddress lastValue)
-	{
-		if (currentValue==lastValue)
-		{
-			Write(false);
-		}
-		else
-		{
-			Write(true);
-			Write(currentValue);
-		}
-	}
-
-	template <>
-		inline void BitStream::WriteDelta(RakNetGUID currentValue, RakNetGUID lastValue)
-		{
-			if (currentValue==lastValue)
-			{
-				Write(false);
-			}
-			else
-			{
-				Write(true);
-				Write(currentValue);
-			}
-		}
-
-	/// \brief Write a systemAddress.
-	/// \details If the current value is different from the last value
-	/// the current value will be written.  Otherwise, a single bit will be written
-	/// \param[in] currentValue The current value to write
-	/// \param[in] lastValue The last value to compare against
-	template <>
-		inline void BitStream::WriteDelta(NetworkID currentValue, NetworkID lastValue)
-	{
-		if (currentValue==lastValue)
-		{
-			Write(false);
-		}
-		else
-		{
-			Write(true);
-			Write(currentValue);
-		}
-	}
-	*/
-
 	/// \brief Write a bool delta. Same thing as just calling Write
 	/// \param[in] currentValue The current value to write
 	/// \param[in] lastValue The last value to compare against
@@ -1764,9 +1710,9 @@ namespace RakNet
 		if (qx < 0.0) qx=0.0;
 		if (qy < 0.0) qy=0.0;
 		if (qz < 0.0) qz=0.0;
-		qx = _copysign( (double) qx, (double) (m21 - m12) );
-		qy = _copysign( (double) qy, (double) (m02 - m20) );
-		qz = _copysign( (double) qz, (double) (m10 - m01) );
+		qx = copysign( (double) qx, (double) (m21 - m12) );
+		qy = copysign( (double) qy, (double) (m02 - m20) );
+		qz = copysign( (double) qz, (double) (m10 - m01) );
 
 		WriteNormQuat(qw,qx,qy,qz);
 	}
