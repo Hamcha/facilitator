@@ -8,6 +8,11 @@ I also took the liberty to try and fix the gagillion warnings that G++ complains
 HOWTO
 
 Just "make"
+"make install" will put the executable file in /usr/local/bin
+
+EXTRA
+
+freebsd.service is a FreeBSD rc.d service so you can run it a boot time or stop it when running as deamon
 
 LICENSE
 
