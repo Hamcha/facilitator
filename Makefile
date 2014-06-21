@@ -16,10 +16,8 @@ RAKNET_INCLUDE = RakNet/Sources
 RAKNET_SOURCES = \
 $(RAKNET_INCLUDE)/BigInt.cpp\
 $(RAKNET_INCLUDE)/BitStream.cpp\
-$(RAKNET_INCLUDE)/BitStream_NoTemplate.cpp\
 $(RAKNET_INCLUDE)/CCRakNetUDT.cpp\
 $(RAKNET_INCLUDE)/CheckSum.cpp\
-$(RAKNET_INCLUDE)/ConsoleServer.cpp\
 $(RAKNET_INCLUDE)/DS_BytePool.cpp\
 $(RAKNET_INCLUDE)/DS_ByteQueue.cpp\
 $(RAKNET_INCLUDE)/DS_HuffmanEncodingTree.cpp\

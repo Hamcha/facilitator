@@ -30,7 +30,6 @@
 #include "StringCompressor.h"
 #include "StringTable.h"
 #include "NetworkIDObject.h"
-#include "RakNetTypes.h"
 #include "SHA1.h"
 #include "RakSleep.h"
 #include "RouterInterface.h"

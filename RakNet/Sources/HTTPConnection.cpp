@@ -15,7 +15,6 @@
 /// Software Foundation; either version 2 of the License, or (at your
 /// option) any later version.
 
-#include "NativeFeatureIncludes.h"
 #if _RAKNET_SUPPORT_HTTPConnection==1
 
 #include "TCPInterface.h"
@@ -27,6 +26,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 using namespace RakNet;
 
@@ -49,7 +49,6 @@ void HTTPConnection::Post(const char *remote_path, const char *data, const char 
 	op.data=data;
 	op.remotePath=remote_path;
 	outgoingPosts.Push(op, __FILE__, __LINE__ );
-	//printf("Adding outgoing post\n");
 }
 
 bool HTTPConnection::HasBadResponse(int *code, RakNet::RakString *data)
@@ -67,16 +66,11 @@ void HTTPConnection::CloseConnection()
 {
 	if (incomingData.IsEmpty()==false)
 	{
-//		printf("\n\n----------------------- PUSHING -------------\n\n");
-//		printf(incomingData.C_String());
-//		printf("\n------------------------------------\n\n");
-		//printf("Pushing result\n");
 		results.Push(incomingData, __FILE__, __LINE__ );
 	}
 	incomingData.Clear();
 	tcp->CloseConnection(server);
 	connectionState=CS_NONE;
-//	printf("Disconnecting\n");
 }
 void HTTPConnection::Update(void)
 {
@@ -84,7 +78,6 @@ void HTTPConnection::Update(void)
 	sa = tcp->HasCompletedConnectionAttempt();
 	while (sa!=UNASSIGNED_SYSTEM_ADDRESS)
 	{
-//		printf("Connected\n");
 		connectionState=CS_CONNECTED;
 		server=sa;
 		sa = tcp->HasCompletedConnectionAttempt();
@@ -93,7 +86,6 @@ void HTTPConnection::Update(void)
 	sa = tcp->HasFailedConnectionAttempt();
 	while (sa!=UNASSIGNED_SYSTEM_ADDRESS)
 	{
-		//printf("Failed connected\n");
 		CloseConnection();
 		sa = tcp->HasFailedConnectionAttempt();
 	}
@@ -101,7 +93,6 @@ void HTTPConnection::Update(void)
 	sa = tcp->HasLostConnection();
 	while (sa!=UNASSIGNED_SYSTEM_ADDRESS)
 	{
-		//printf("Lost connection\n");
 		CloseConnection();
 		sa = tcp->HasLostConnection();
 	}
@@ -114,7 +105,6 @@ void HTTPConnection::Update(void)
 			if (outgoingPosts.IsEmpty())
 				return;
 
-			//printf("Connecting\n");
 			server = tcp->Connect(host, port, false);
 			connectionState = CS_CONNECTING;
 		}
@@ -125,10 +115,8 @@ void HTTPConnection::Update(void)
 		break;
 	case CS_CONNECTED:
 		{
-			//printf("Connected\n");
 			if (outgoingPosts.IsEmpty())
 			{
-				//printf("Closed connection (nothing to do)\n");
 				CloseConnection();
 				return;
 			}
@@ -137,7 +125,6 @@ void HTTPConnection::Update(void)
 			tcp->StartSSLClient(server);
 #endif
 
-			//printf("Sending request\n");
 			currentProcessingRequest = outgoingPosts.Pop();
 			RakString request("POST %s HTTP/1.0\r\n"
 				"Host: %s:%i\r\n"
@@ -151,7 +138,6 @@ void HTTPConnection::Update(void)
 				currentProcessingRequest.contentType.C_String(),
 				(unsigned) currentProcessingRequest.data.GetLength(),
 				currentProcessingRequest.data.C_String());
-	//		request.URLEncode();
 			tcp->Send(request.C_String(), (unsigned int) request.GetLength(), server,false);
 			connectionState=CS_PROCESSING;
 		}
@@ -160,9 +146,6 @@ void HTTPConnection::Update(void)
 		{
 		}
 	}
-
-//	if (connectionState==CS_PROCESSING && currentProcessingRequest.data.IsEmpty()==false)
-//		outgoingPosts.PushAtHead(currentProcessingRequest);
 }
 bool HTTPConnection::HasRead(void) const
 {
@@ -174,16 +157,12 @@ RakString HTTPConnection::Read(void)
 		return RakString();
 
 	RakNet::RakString resultStr = results.Pop();
-    // const char *start_of_body = strstr(resultStr.C_String(), "\r\n\r\n");
 	const char *start_of_body = strpbrk(resultStr.C_String(), "\001\002\003%");
-    
+
     if(! start_of_body)
     {
 		return RakString();
     }
-
-	// size_t len = strlen(start_of_body);
-	//printf("Returning result with length %i\n", len);
 	return RakNet::RakString::NonVariadic(start_of_body);
 }
 SystemAddress HTTPConnection::GetServerAddress(void) const
@@ -204,7 +183,6 @@ void HTTPConnection::ProcessTCPPacket(Packet *packet)
 			if(response_code > 299)
 			{
 				badResponses.Push(BadResponse(packet->data, response_code), __FILE__, __LINE__ );
-				//printf("Closed connection (Bad response 2)\n");
 				CloseConnection();
 				return;
 			}
@@ -214,8 +192,6 @@ void HTTPConnection::ProcessTCPPacket(Packet *packet)
 		incomingTemp.URLDecode();
 		incomingData += incomingTemp;
 
-	//	printf((const char*) packet->data);
-	//	printf("\n");
 
 		RakAssert(strlen((char *)packet->data) == packet->length); // otherwise it contains Null bytes
 
@@ -225,29 +201,18 @@ void HTTPConnection::ProcessTCPPacket(Packet *packet)
 		// provide a length header and supply that many bytes
 		if(start_of_body && connectionState == CS_PROCESSING)
 		{
-			/*
-			// The stupid programmer that wrote this originally didn't think that just because the header contains this value doesn't mean you got the whole message
-			if (strstr((const char*) packet->data, "\r\nConnection: close\r\n"))
-			{
-				CloseConnection();
-			}
-			else
-			{
-			*/
-				long length_of_headers = (long)(start_of_body + 4 - incomingData.C_String());
+			long length_of_headers = (long)(start_of_body + 4 - incomingData.C_String());
 
-				const char *length_header = strstr(incomingData, "\r\nLength: ");
-				if(length_header)
+			const char *length_header = strstr(incomingData, "\r\nLength: ");
+			if(length_header)
+			{
+				long length = atol(length_header + 10) + length_of_headers;
+
+				if((long) incomingData.GetLength() >= length)
 				{
-					long length = atol(length_header + 10) + length_of_headers;
-
-					if((long) incomingData.GetLength() >= length)
-					{
-						//printf("Closed connection (Got all data due to length header)\n");
-						CloseConnection();
-					}
+					CloseConnection();
 				}
-			//}
+			}
 		}
 	}
 }

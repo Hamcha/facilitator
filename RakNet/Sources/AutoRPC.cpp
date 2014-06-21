@@ -1,4 +1,3 @@
-#include "NativeFeatureIncludes.h"
 #if _RAKNET_SUPPORT_AutoRPC==1
 
 #include "AutoRPC.h"
@@ -12,6 +11,8 @@
 #include "NetworkIDObject.h"
 #include "NetworkIDManager.h"
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 using namespace RakNet;
 

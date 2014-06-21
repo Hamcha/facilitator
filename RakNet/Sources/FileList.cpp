@@ -1,34 +1,22 @@
 #include "FileList.h"
 #include <stdio.h> // RAKNET_DEBUG_PRINTF
 #include "RakAssert.h"
-#if defined(_WIN32) || defined(__CYGWIN__)
-	#include <io.h>
-#elif !defined ( __APPLE__ ) && !defined ( __APPLE_CC__ ) && !defined ( __PPC__ ) && !defined ( __FreeBSD__ )
+#if !defined ( __APPLE__ ) && !defined ( __APPLE_CC__ ) && !defined ( __PPC__ ) && !defined ( __FreeBSD__ )
 	#include <sys/io.h>
 #endif
 #include "DS_Queue.h"
-#ifdef _WIN32 
-// For mkdir
-#include <direct.h>
-#else
 #include <sys/stat.h>
-#endif
 //#include "SHA1.h"
 #include "StringCompressor.h"
 #include "BitStream.h"
 #include "FileOperations.h"
 #include "SuperFastHash.h"
-#include "RakAssert.h"
 #include "LinuxStrings.h"
 
 #define MAX_FILENAME_LENGTH 512
 static const unsigned HASH_LENGTH=sizeof(unsigned int);
 
 // alloca
-#if defined(_XBOX) || defined(X360)
-#elif defined(_WIN32)
-#include <malloc.h>
-#else
 #if !defined ( __FreeBSD__ )
 #include <alloca.h>
 #endif
@@ -37,14 +25,8 @@ static const unsigned HASH_LENGTH=sizeof(unsigned int);
 #include <sys/stat.h>
 #include "_FindFirst.h"
 #include <stdint.h> //defines intptr_t
-#endif
 
 #include "RakAlloca.h"
-
-//int RAK_DLL_EXPORT FileListNodeComp( char * const &key, const FileListNode &data )
-//{
-//	return strcmp(key, data.filename);
-//}
 
 
 #ifdef _MSC_VER
@@ -59,7 +41,7 @@ void FLP_Printf::OnAddFilesFromDirectoryStarted(FileList *fileList, char *dir) {
 /// Called for each directory, when that directory begins processing
 void FLP_Printf::OnDirectory(FileList *fileList, char *dir, unsigned int directoriesRemaining) {
 	(void) fileList;
-	RAKNET_DEBUG_PRINTF("Adding %s. %i remaining.\n", dir, directoriesRemaining);}	
+	RAKNET_DEBUG_PRINTF("Adding %s. %i remaining.\n", dir, directoriesRemaining);}
 
 FileList::FileList()
 {
@@ -94,7 +76,6 @@ void FileList::AddFile(const char *filepath, const char *filename, FileListNodeC
 	}
 
 
-#if !defined(_XBOX) && !defined(_X360)
 	bool usedAlloca=false;
 	if (length < MAX_ALLOCA_STACK_ALLOCATION)
 	{
@@ -102,7 +83,6 @@ void FileList::AddFile(const char *filepath, const char *filename, FileListNodeC
 		usedAlloca=true;
 	}
 	else
-#endif
 	{
 		data = (char*) rakMalloc_Ex( length, __FILE__, __LINE__ );
 	}
@@ -111,9 +91,7 @@ void FileList::AddFile(const char *filepath, const char *filename, FileListNodeC
 	AddFile(filename, filepath, data, length, length, context);
 	fclose(fp);
 
-#if !defined(_XBOX) && !defined(_X360)
 	if (usedAlloca==false)
-#endif
 		rakFree_Ex(data, __FILE__, __LINE__ );
 
 }
@@ -164,7 +142,7 @@ void FileList::AddFile(const char *filename, const char *fullPathToFile, const c
 	n.context=context;
 	n.filename=filename;
 	n.fullPathToFile=fullPathToFile;
-		
+
 	fileList.Insert(n, __FILE__, __LINE__);
 }
 void FileList::AddFilesFromDirectory(const char *applicationDirectory, const char *subDirectory, bool writeHash, bool writeData, bool recursive, FileListNodeContext context)
@@ -192,7 +170,7 @@ void FileList::AddFilesFromDirectory(const char *applicationDirectory, const cha
 	}
 	else
 		dirSoFar[0]=0;
-	
+
 	if (subDirectory)
 	{
 		strcat(dirSoFar, subDirectory);
@@ -233,7 +211,7 @@ void FileList::AddFilesFromDirectory(const char *applicationDirectory, const cha
                     {
                         continue;
                     }
-                    
+
 			if ((fileInfo.attrib & (_A_HIDDEN | _A_SUBDIR | _A_SYSTEM))==0)
 			{
 				strcpy(fullPath, dirSoFar);
@@ -353,7 +331,7 @@ bool FileList::Deserialize(RakNet::BitStream *inBitStream)
 #endif
 	if (b==false || fileListSize > 10000)
 		return false; // Sanity check
-	Clear();	
+	Clear();
 	unsigned i;
 	for (i=0; i < fileListSize; i++)
 	{
@@ -380,7 +358,7 @@ bool FileList::Deserialize(RakNet::BitStream *inBitStream)
 			n.dataLengthBytes=0;
 			n.data=0;
 		}
-		
+
 		b=inBitStream->Read(fileLenMatchesDataLen);
 		if (fileLenMatchesDataLen)
 			n.fileLengthBytes=(unsigned) n.dataLengthBytes;
@@ -610,7 +588,7 @@ void FileList::PopulateDataFromDisk(const char *applicationDirectory, bool write
 				fileList.RemoveAtIndex(i);
 			}
 			else
-				i++;			
+				i++;
 		}
 	}
 }
@@ -632,7 +610,7 @@ void FileList::WriteDataToDisk(const char *applicationDirectory)
 		strcpy(fullPath, applicationDirectory);
 		FixEndingSlash(fullPath);
 		strcat(fullPath,fileList[i].filename.C_String());
-		
+
 		// Security - Don't allow .. in the filename anywhere so you can't write outside of the root directory
 		for (j=1; j < fileList[i].filename.GetLength(); j++)
 		{

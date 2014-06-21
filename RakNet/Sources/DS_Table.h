@@ -7,10 +7,6 @@
 #ifndef __TABLE_H
 #define __TABLE_H
 
-#ifdef _MSC_VER
-#pragma warning( push )
-#endif
-
 #include "DS_List.h"
 #include "DS_BPlusTree.h"
 #include "RakMemoryOverride.h"

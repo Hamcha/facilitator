@@ -21,7 +21,6 @@
 #include <arpa/inet.h>
 #endif
 
-#include <string.h> // strncasecmp
 #include "Itoa.h"
 #include "SocketLayer.h"
 #include <stdlib.h>
@@ -93,10 +92,10 @@ void SystemAddress::ToString(bool writePort, char *dest) const
 	}
 
 #if defined(_XBOX) || defined(X360)
-                                                                                                                      
+
 #else
 
-	
+
 	in_addr in;
 	in.s_addr = binaryAddress;
 //	cellSysmoduleLoadModule(CELL_SYSMODULE_NETCTL);
@@ -166,7 +165,7 @@ void SystemAddress::SetBinaryAddress(const char *str)
 		}
 
 #if defined(_XBOX) || defined(X360)
-                                                                                                                                                                                                                                                        
+
 #else
 		if (IPPart[0])
 			binaryAddress=inet_addr(IPPart);
@@ -313,7 +312,7 @@ bool RakNetGUID::FromString(const char *source)
 		return false;
 
 #if defined(_XBOX) || defined(_X360)
-                   
+
 #elif defined(WIN32)
 	g=_strtoui64(source, (char **)NULL, 10);
 #else

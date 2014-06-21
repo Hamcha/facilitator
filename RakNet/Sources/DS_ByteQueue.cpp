@@ -1,8 +1,7 @@
 #include "DS_ByteQueue.h"
 #include <string.h> // Memmove
-#include <stdlib.h> // realloc
 #include <stdio.h>
-
+#include <stdbool.h>
 
 using namespace DataStructures;
 
