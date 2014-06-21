@@ -7,8 +7,7 @@
 
 #include "DS_HuffmanEncodingTree.h"
 #include "DS_Queue.h"
-#include "BitStream.h"
-#include "RakAssert.h"
+#include <stdbool.h>
 
 #ifdef _MSC_VER
 #pragma warning( push )

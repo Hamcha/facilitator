@@ -6,24 +6,19 @@
 
 
 #include "RakNetTypes.h"
-#include "RakAssert.h"
 #include <string.h>
+#include <strings.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-#if defined(_XBOX) || defined(X360)
-#elif defined(_WIN32)
-// IP_DONTFRAGMENT is different between winsock 1 and winsock 2.  Therefore, Winsock2.h must be linked againt Ws2_32.lib
-// winsock.h must be linked against WSock32.lib.  If these two are mixed up the flag won't work correctly
-#include <winsock2.h>
-#else
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#endif
 
 #include "Itoa.h"
 #include "SocketLayer.h"
-#include <stdlib.h>
 
 bool NonNumericHostString( const char *host )
 {

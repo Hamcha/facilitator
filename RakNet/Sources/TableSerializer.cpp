@@ -1,8 +1,7 @@
 #include "TableSerializer.h"
-#include "DS_Table.h"
 #include "BitStream.h"
 #include "StringCompressor.h"
-#include "RakAssert.h"
+#include <stdbool.h>
 
 void TableSerializer::SerializeTable(DataStructures::Table *in, RakNet::BitStream *out)
 {
@@ -42,7 +41,7 @@ void TableSerializer::SerializeColumns(DataStructures::Table *in, RakNet::BitStr
 		{
 			stringCompressor->EncodeString(columns[i].columnName, _TABLE_MAX_COLUMN_NAME_LENGTH, out);
 			out->Write((unsigned char)columns[i].columnType);
-		}		
+		}
 	}
 }
 bool TableSerializer::DeserializeTable(unsigned char *serializedTable, unsigned int dataLength, DataStructures::Table *out)

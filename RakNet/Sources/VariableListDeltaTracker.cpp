@@ -1,4 +1,6 @@
 #include "VariableListDeltaTracker.h"
+#include <stdbool.h>
+#include <string.h>
 
 using namespace RakNet;
 

@@ -1,4 +1,5 @@
 #include "InlineFunctor.h"
+#include <stdbool.h>
 
 void InlineFunctor::HandleResult(bool wasCancelled, void *context)
 {
