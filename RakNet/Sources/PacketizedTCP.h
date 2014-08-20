@@ -24,22 +24,22 @@ public:
 
 	/// Starts the TCP server on the indicated port
 	/// \param[in] threadPriority Passed to thread creation routine. Use THREAD_PRIORITY_NORMAL for Windows. WARNING!!! On Linux, 0 means highest priority! You MUST set this to something valid based on the values used by your other threads
-	bool Start(unsigned short port, unsigned short maxIncomingConnections, int threadPriority=-99999);
+	bool Start(unsigned short port, unsigned short maxIncomingConnections, int threadPriority = -99999);
 
 	/// Stops the TCP server
 	void Stop(void);
 
 	/// Sends a byte stream
-	void Send( const char *data, unsigned length, SystemAddress systemAddress, bool broadcast );
+	void Send(const char *data, unsigned length, SystemAddress systemAddress, bool broadcast);
 
 	// Sends a concatenated list of byte streams
-	bool SendList( const char **data, const int *lengths, const int numParameters, SystemAddress systemAddress, bool broadcast );
+	bool SendList(const char **data, const int *lengths, const int numParameters, SystemAddress systemAddress, bool broadcast);
 
 	/// Returns data received
-	Packet* Receive( void );
+	Packet* Receive(void);
 
 	/// Disconnects a player/address
-	void CloseConnection( SystemAddress systemAddress );
+	void CloseConnection(SystemAddress systemAddress);
 
 	/// Has a previous call to connect succeeded?
 	/// \return UNASSIGNED_SYSTEM_ADDRESS = no. Anything else means yes.
@@ -56,8 +56,8 @@ public:
 	SystemAddress HasLostConnection(void);
 
 	// Only currently tested with FileListTransfer!
-	void AttachPlugin( PluginInterface2 *plugin );
-	void DetachPlugin( PluginInterface2 *plugin );
+	void AttachPlugin(PluginInterface2 *plugin);
+	void DetachPlugin(PluginInterface2 *plugin);
 
 protected:
 	void ClearAllConnections(void);

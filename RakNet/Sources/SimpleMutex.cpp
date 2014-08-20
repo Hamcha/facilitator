@@ -14,7 +14,7 @@ SimpleMutex::SimpleMutex() : isInitialized(false)
 
 SimpleMutex::~SimpleMutex()
 {
-	if (isInitialized==false)
+	if (isInitialized == false)
 		return;
 #ifdef _WIN32
 	//	CloseHandle(hMutex);
@@ -33,9 +33,8 @@ SimpleMutex::~SimpleMutex()
 void SimpleMutex::Lock(void)
 {
 	// Initialize in the Lock() call in case this object was created globally during initialization
-	if (isInitialized==false)
+	if (isInitialized == false)
 		Init();
-
 #ifdef _WIN32
 	/*
 	DWORD d = WaitForSingleObject(hMutex, INFINITE);
@@ -67,17 +66,16 @@ void SimpleMutex::Lock(void)
 	RakAssert(d==WAIT_OBJECT_0);
 	*/
 	EnterCriticalSection(&criticalSection);
-
 #else
 	int error = pthread_mutex_lock(&hMutex);
 	(void) error;
-	RakAssert(error==0);
+	RakAssert(error == 0);
 #endif
 }
 
 void SimpleMutex::Unlock(void)
 {
-	if (isInitialized==false)
+	if (isInitialized == false)
 		return;
 #ifdef _WIN32
 	//	ReleaseMutex(hMutex);
@@ -85,7 +83,7 @@ void SimpleMutex::Unlock(void)
 #else
 	int error = pthread_mutex_unlock(&hMutex);
 	(void) error;
-	RakAssert(error==0);
+	RakAssert(error == 0);
 #endif
 }
 
@@ -98,7 +96,7 @@ void SimpleMutex::Init(void)
 #else
 	int error = pthread_mutex_init(&hMutex, 0);
 	(void) error;
-	RakAssert(error==0);
+	RakAssert(error == 0);
 #endif
-	isInitialized=true;
+	isInitialized = true;
 }

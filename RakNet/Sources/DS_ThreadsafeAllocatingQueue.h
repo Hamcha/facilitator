@@ -44,7 +44,7 @@ template <class structureType>
 void ThreadsafeAllocatingQueue<structureType>::Push(structureType *s)
 {
 	queueMutex.Lock();
-	queue.Push(s, __FILE__, __LINE__ );
+	queue.Push(s, __FILE__, __LINE__);
 	queueMutex.Unlock();
 }
 
@@ -55,10 +55,10 @@ structureType *ThreadsafeAllocatingQueue<structureType>::PopInaccurate(void)
 	if (queue.IsEmpty())
 		return 0;
 	queueMutex.Lock();
-	if (queue.IsEmpty()==false)
-		s=queue.Pop();
+	if (queue.IsEmpty() == false)
+		s = queue.Pop();
 	else
-		s=0;
+		s = 0;
 	queueMutex.Unlock();
 	return s;
 }
@@ -68,12 +68,11 @@ structureType *ThreadsafeAllocatingQueue<structureType>::Pop(void)
 {
 	structureType *s;
 	queueMutex.Lock();
-	if (queue.IsEmpty())
-	{
+	if (queue.IsEmpty()) {
 		queueMutex.Unlock();
 		return 0;
 	}
-	s=queue.Pop();
+	s = queue.Pop();
 	queueMutex.Unlock();
 	return s;
 }
@@ -83,10 +82,10 @@ structureType *ThreadsafeAllocatingQueue<structureType>::Allocate(const char *fi
 {
 	structureType *s;
 	memoryPoolMutex.Lock();
-	s=memoryPool.Allocate(file, line);
+	s = memoryPool.Allocate(file, line);
 	memoryPoolMutex.Unlock();
 	// Call new operator, memoryPool doesn't do this
-	s = new ((void*)s) structureType;
+	s = new((void*)s) structureType;
 	return s;
 }
 template <class structureType>
@@ -103,8 +102,7 @@ template <class structureType>
 void ThreadsafeAllocatingQueue<structureType>::Clear(const char *file, unsigned int line)
 {
 	memoryPoolMutex.Lock();
-	for (unsigned int i=0; i < queue.Size(); i++)
-	{
+	for (unsigned int i = 0; i < queue.Size(); i++) {
 		queue[i]->~structureType();
 		memoryPool.Release(queue[i], file, line);
 	}

@@ -32,137 +32,114 @@ using namespace RakNet;
 
 HTTPConnection::HTTPConnection() : connectionState(CS_NONE)
 {
-	tcp=0;
+	tcp = 0;
 }
 
 void HTTPConnection::Init(TCPInterface* _tcp, const char *_host, unsigned short _port)
 {
-	tcp=_tcp;
-	host=_host;
-	port=_port;
+	tcp = _tcp;
+	host = _host;
+	port = _port;
 }
 
 void HTTPConnection::Post(const char *remote_path, const char *data, const char *_contentType)
 {
 	OutgoingPost op;
-	op.contentType=_contentType;
-	op.data=data;
-	op.remotePath=remote_path;
-	outgoingPosts.Push(op, __FILE__, __LINE__ );
+	op.contentType = _contentType;
+	op.data = data;
+	op.remotePath = remote_path;
+	outgoingPosts.Push(op, __FILE__, __LINE__);
 }
 
 bool HTTPConnection::HasBadResponse(int *code, RakNet::RakString *data)
 {
-    if(badResponses.IsEmpty())
-        return false;
-
+	if (badResponses.IsEmpty())
+		return false;
 	if (code)
 		*code = badResponses.Peek().code;
 	if (data)
 		*data = badResponses.Pop().data;
-   return true;
+	return true;
 }
 void HTTPConnection::CloseConnection()
 {
-	if (incomingData.IsEmpty()==false)
-	{
-		results.Push(incomingData, __FILE__, __LINE__ );
-	}
+	if (incomingData.IsEmpty() == false)
+		results.Push(incomingData, __FILE__, __LINE__);
 	incomingData.Clear();
 	tcp->CloseConnection(server);
-	connectionState=CS_NONE;
+	connectionState = CS_NONE;
 }
 void HTTPConnection::Update(void)
 {
 	SystemAddress sa;
 	sa = tcp->HasCompletedConnectionAttempt();
-	while (sa!=UNASSIGNED_SYSTEM_ADDRESS)
-	{
-		connectionState=CS_CONNECTED;
-		server=sa;
+	while (sa != UNASSIGNED_SYSTEM_ADDRESS) {
+		connectionState = CS_CONNECTED;
+		server = sa;
 		sa = tcp->HasCompletedConnectionAttempt();
 	}
-
 	sa = tcp->HasFailedConnectionAttempt();
-	while (sa!=UNASSIGNED_SYSTEM_ADDRESS)
-	{
+	while (sa != UNASSIGNED_SYSTEM_ADDRESS) {
 		CloseConnection();
 		sa = tcp->HasFailedConnectionAttempt();
 	}
-
 	sa = tcp->HasLostConnection();
-	while (sa!=UNASSIGNED_SYSTEM_ADDRESS)
-	{
+	while (sa != UNASSIGNED_SYSTEM_ADDRESS) {
 		CloseConnection();
 		sa = tcp->HasLostConnection();
 	}
-
-
-	switch (connectionState)
-	{
-	case CS_NONE:
-		{
-			if (outgoingPosts.IsEmpty())
-				return;
-
-			server = tcp->Connect(host, port, false);
-			connectionState = CS_CONNECTING;
-		}
-		break;
-	case CS_CONNECTING:
-		{
-		}
-		break;
-	case CS_CONNECTED:
-		{
-			if (outgoingPosts.IsEmpty())
-			{
-				CloseConnection();
-				return;
+	switch (connectionState) {
+		case CS_NONE: {
+				if (outgoingPosts.IsEmpty())
+					return;
+				server = tcp->Connect(host, port, false);
+				connectionState = CS_CONNECTING;
 			}
-
+			break;
+		case CS_CONNECTING: {
+			}
+			break;
+		case CS_CONNECTED: {
+				if (outgoingPosts.IsEmpty()) {
+					CloseConnection();
+					return;
+				}
 #if defined(OPEN_SSL_CLIENT_SUPPORT)
-			tcp->StartSSLClient(server);
+				tcp->StartSSLClient(server);
 #endif
-
-			currentProcessingRequest = outgoingPosts.Pop();
-			RakString request("POST %s HTTP/1.0\r\n"
-				"Host: %s:%i\r\n"
-				"Content-Type: %s\r\n"
-				"Content-Length: %u\r\n"
-				"\r\n"
-				"%s",
-				currentProcessingRequest.remotePath.C_String(),
-				host.C_String(),
-				port,
-				currentProcessingRequest.contentType.C_String(),
-				(unsigned) currentProcessingRequest.data.GetLength(),
-				currentProcessingRequest.data.C_String());
-			tcp->Send(request.C_String(), (unsigned int) request.GetLength(), server,false);
-			connectionState=CS_PROCESSING;
-		}
-		break;
-	case CS_PROCESSING:
-		{
-		}
+				currentProcessingRequest = outgoingPosts.Pop();
+				RakString request("POST %s HTTP/1.0\r\n"
+				                  "Host: %s:%i\r\n"
+				                  "Content-Type: %s\r\n"
+				                  "Content-Length: %u\r\n"
+				                  "\r\n"
+				                  "%s",
+				                  currentProcessingRequest.remotePath.C_String(),
+				                  host.C_String(),
+				                  port,
+				                  currentProcessingRequest.contentType.C_String(),
+				                  (unsigned) currentProcessingRequest.data.GetLength(),
+				                  currentProcessingRequest.data.C_String());
+				tcp->Send(request.C_String(), (unsigned int) request.GetLength(), server, false);
+				connectionState = CS_PROCESSING;
+			}
+			break;
+		case CS_PROCESSING: {
+			}
 	}
 }
 bool HTTPConnection::HasRead(void) const
 {
-	return results.IsEmpty()==false;
+	return results.IsEmpty() == false;
 }
 RakString HTTPConnection::Read(void)
 {
 	if (results.IsEmpty())
 		return RakString();
-
 	RakNet::RakString resultStr = results.Pop();
 	const char *start_of_body = strpbrk(resultStr.C_String(), "\001\002\003%");
-
-    if(! start_of_body)
-    {
+	if (! start_of_body)
 		return RakString();
-    }
 	return RakNet::RakString::NonVariadic(start_of_body);
 }
 SystemAddress HTTPConnection::GetServerAddress(void) const
@@ -172,46 +149,30 @@ SystemAddress HTTPConnection::GetServerAddress(void) const
 void HTTPConnection::ProcessTCPPacket(Packet *packet)
 {
 	RakAssert(packet);
-
 	// read all the packets possible
-	if(packet->systemAddress == server)
-	{
-		if(incomingData.GetLength() == 0)
-		{
+	if (packet->systemAddress == server) {
+		if (incomingData.GetLength() == 0) {
 			int response_code = atoi((char *)packet->data + strlen("HTTP/1.0 "));
-
-			if(response_code > 299)
-			{
-				badResponses.Push(BadResponse(packet->data, response_code), __FILE__, __LINE__ );
+			if (response_code > 299) {
+				badResponses.Push(BadResponse(packet->data, response_code), __FILE__, __LINE__);
 				CloseConnection();
 				return;
 			}
 		}
-
 		RakNet::RakString incomingTemp = RakNet::RakString::NonVariadic((const char*) packet->data);
 		incomingTemp.URLDecode();
 		incomingData += incomingTemp;
-
-
 		RakAssert(strlen((char *)packet->data) == packet->length); // otherwise it contains Null bytes
-
 		const char *start_of_body = strstr(incomingData, "\r\n\r\n");
-
 		// besides having the server close the connection, they may
 		// provide a length header and supply that many bytes
-		if(start_of_body && connectionState == CS_PROCESSING)
-		{
+		if (start_of_body && connectionState == CS_PROCESSING) {
 			long length_of_headers = (long)(start_of_body + 4 - incomingData.C_String());
-
 			const char *length_header = strstr(incomingData, "\r\nLength: ");
-			if(length_header)
-			{
+			if (length_header) {
 				long length = atol(length_header + 10) + length_of_headers;
-
-				if((long) incomingData.GetLength() >= length)
-				{
+				if ((long) incomingData.GetLength() >= length)
 					CloseConnection();
-				}
 			}
 		}
 	}

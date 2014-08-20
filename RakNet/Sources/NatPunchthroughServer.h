@@ -29,26 +29,26 @@ class PacketLogger;
 /// \ingroup PLUGINS_GROUP
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct NatPunchthroughServerDebugInterface
-{
+struct NatPunchthroughServerDebugInterface {
 	NatPunchthroughServerDebugInterface() {}
 	virtual ~NatPunchthroughServerDebugInterface() {}
-	virtual void OnServerMessage(const char *msg)=0;
+	virtual void OnServerMessage(const char *msg) = 0;
 };
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct NatPunchthroughServerDebugInterface_Printf : public NatPunchthroughServerDebugInterface
-{
+struct NatPunchthroughServerDebugInterface_Printf : public NatPunchthroughServerDebugInterface {
 	virtual void OnServerMessage(const char *msg);
 };
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct NatPunchthroughServerDebugInterface_PacketLogger : public NatPunchthroughServerDebugInterface
-{
+struct NatPunchthroughServerDebugInterface_PacketLogger : public NatPunchthroughServerDebugInterface {
 	// Set to non-zero to write to the packetlogger!
 	PacketLogger *pl;
 
-	NatPunchthroughServerDebugInterface_PacketLogger() {pl=0;}
+	NatPunchthroughServerDebugInterface_PacketLogger()
+	{
+		pl = 0;
+	}
 	~NatPunchthroughServerDebugInterface_PacketLogger() {}
 	virtual void OnServerMessage(const char *msg);
 };
@@ -80,25 +80,28 @@ public:
 	virtual PluginReceiveResult OnReceive(Packet *packet);
 
 	/// \internal For plugin handling
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 
 	// Each connected user has a ready state. Ready means ready for nat punchthrough.
 	struct User;
-	struct ConnectionAttempt
-	{
-		ConnectionAttempt() {sender=0; recipient=0; startTime=0; attemptPhase=NAT_ATTEMPT_PHASE_NOT_STARTED;}
+	struct ConnectionAttempt {
+		ConnectionAttempt()
+		{
+			sender = 0;
+			recipient = 0;
+			startTime = 0;
+			attemptPhase = NAT_ATTEMPT_PHASE_NOT_STARTED;
+		}
 		User *sender, *recipient;
 		uint16_t sessionId;
 		RakNetTime startTime;
-		enum
-		{
+		enum {
 			NAT_ATTEMPT_PHASE_NOT_STARTED,
 			NAT_ATTEMPT_PHASE_GETTING_RECENT_PORTS,
 		} attemptPhase;
 	};
-	struct User
-	{
+	struct User {
 		RakNetGUID guid;
 		SystemAddress systemAddress;
 		unsigned short mostRecentPort;
@@ -111,7 +114,7 @@ public:
 		void LogConnectionAttempts(RakNet::RakString &rs);
 	};
 	RakNetTime lastUpdate;
-	static int NatPunchthroughUserComp( const RakNetGUID &key, User * const &data );
+	static int NatPunchthroughUserComp(const RakNetGUID &key, User * const &data);
 protected:
 	void OnNATPunchthroughRequest(Packet *packet);
 	DataStructures::OrderedList<RakNetGUID, User*, NatPunchthroughServer::NatPunchthroughUserComp> users;

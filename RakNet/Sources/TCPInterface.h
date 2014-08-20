@@ -43,13 +43,13 @@ public:
 
 	/// Starts the TCP server on the indicated port
 	/// \param[in] threadPriority Passed to thread creation routine. Use THREAD_PRIORITY_NORMAL for Windows. WARNING!!! On Linux, 0 means highest priority! You MUST set this to something valid based on the values used by your other threads
-	bool Start(unsigned short port, unsigned short maxIncomingConnections, unsigned short maxConnections=0, int _threadPriority=-99999);
+	bool Start(unsigned short port, unsigned short maxIncomingConnections, unsigned short maxConnections = 0, int _threadPriority = -99999);
 
 	/// Stops the TCP server
 	void Stop(void);
 
 	/// Connect to the specified host on the specified port
-	SystemAddress Connect(const char* host, unsigned short remotePort, bool block=true);
+	SystemAddress Connect(const char* host, unsigned short remotePort, bool block = true);
 
 #if defined(OPEN_SSL_CLIENT_SUPPORT)
 	/// Start SSL on an existing connection, notified with HasCompletedConnectionAttempt
@@ -60,27 +60,27 @@ public:
 #endif
 
 	/// Sends a byte stream
-	void Send( const char *data, unsigned int length, SystemAddress systemAddress, bool broadcast );
+	void Send(const char *data, unsigned int length, SystemAddress systemAddress, bool broadcast);
 
 	// Sends a concatenated list of byte streams
-	bool SendList( const char **data, const unsigned int  *lengths, const int numParameters, SystemAddress systemAddress, bool broadcast );
+	bool SendList(const char **data, const unsigned int  *lengths, const int numParameters, SystemAddress systemAddress, bool broadcast);
 
 	// Get how many bytes are waiting to be sent. If too many, you may want to skip sending
 	unsigned int GetOutgoingDataBufferSize(SystemAddress systemAddress) const;
 
 	/// Returns data received
-	Packet* Receive( void );
+	Packet* Receive(void);
 
 	/// Disconnects a player/address
-	void CloseConnection( SystemAddress systemAddress );
+	void CloseConnection(SystemAddress systemAddress);
 
 	/// Deallocates a packet returned by Receive
-	void DeallocatePacket( Packet *packet );
+	void DeallocatePacket(Packet *packet);
 
 	/// Fills the array remoteSystems with the SystemAddress of all the systems we are connected to
 	/// \param[out] remoteSystems An array of SystemAddress structures to be filled with the SystemAddresss of the systems we are connected to. Pass 0 to remoteSystems to only get the number of systems we are connected to
-	/// \param[in, out] numberOfSystems As input, the size of remoteSystems array.  As output, the number of elements put into the array 
-	void GetConnectionList( SystemAddress *remoteSystems, unsigned short *numberOfSystems ) const;
+	/// \param[in, out] numberOfSystems As input, the size of remoteSystems array.  As output, the number of elements put into the array
+	void GetConnectionList(SystemAddress *remoteSystems, unsigned short *numberOfSystems) const;
 
 	/// Returns just the number of connections we have
 	unsigned short GetConnectionCount(void) const;
@@ -103,7 +103,7 @@ public:
 	Packet* AllocatePacket(unsigned dataSize);
 
 	// Push a packet back to the queue
-	virtual void PushBackPacket( Packet *packet, bool pushAtHead );
+	virtual void PushBackPacket(Packet *packet, bool pushAtHead);
 protected:
 
 	bool isStarted, threadRunning;
@@ -128,11 +128,11 @@ protected:
 		unsigned int length;
 	};
 	*/
-//	DataStructures::SingleProducerConsumer<OutgoingMessage> outgoingMessages;
-//	DataStructures::SingleProducerConsumer<Packet> incomingMessages;
-//	DataStructures::SingleProducerConsumer<SystemAddress> newIncomingConnections, lostConnections, requestedCloseConnections;
-//	DataStructures::SingleProducerConsumer<RemoteClient*> newRemoteClients;
-//	DataStructures::ThreadsafeAllocatingQueue<OutgoingMessage> outgoingMessages;
+	//	DataStructures::SingleProducerConsumer<OutgoingMessage> outgoingMessages;
+	//	DataStructures::SingleProducerConsumer<Packet> incomingMessages;
+	//	DataStructures::SingleProducerConsumer<SystemAddress> newIncomingConnections, lostConnections, requestedCloseConnections;
+	//	DataStructures::SingleProducerConsumer<RemoteClient*> newRemoteClients;
+	//	DataStructures::ThreadsafeAllocatingQueue<OutgoingMessage> outgoingMessages;
 	DataStructures::ThreadsafeAllocatingQueue<Packet> incomingMessages;
 	DataStructures::ThreadsafeAllocatingQueue<SystemAddress> newIncomingConnections, lostConnections, requestedCloseConnections;
 	DataStructures::ThreadsafeAllocatingQueue<RemoteClient*> newRemoteClients;
@@ -147,12 +147,11 @@ protected:
 	friend RAK_THREAD_DECLARATION(UpdateTCPInterfaceLoop);
 	friend RAK_THREAD_DECLARATION(ConnectionAttemptLoop);
 
-//	void DeleteRemoteClient(RemoteClient *remoteClient, fd_set *exceptionFD);
-//	void InsertRemoteClient(RemoteClient* remoteClient);
+	//	void DeleteRemoteClient(RemoteClient *remoteClient, fd_set *exceptionFD);
+	//	void InsertRemoteClient(RemoteClient* remoteClient);
 	SOCKET SocketConnect(const char* host, unsigned short remotePort);
 
-	struct ThisPtrPlusSysAddr
-	{
+	struct ThisPtrPlusSysAddr {
 		TCPInterface *tcpInterface;
 		SystemAddress systemAddress;
 		bool useSSL;
@@ -167,14 +166,14 @@ protected:
 };
 
 /// Stores information about a remote client.
-struct RemoteClient
-{
-	RemoteClient() {
+struct RemoteClient {
+	RemoteClient()
+	{
 #if defined(OPEN_SSL_CLIENT_SUPPORT)
-		ssl=0;
+		ssl = 0;
 #endif
-		isActive=false;
-		socket=INVALID_SOCKET;
+		isActive = false;
+		socket = INVALID_SOCKET;
 	}
 	SOCKET socket;
 	SystemAddress systemAddress;
@@ -197,7 +196,7 @@ struct RemoteClient
 	void Reset(void)
 	{
 		outgoingDataMutex.Lock();
-		outgoingData.Clear(__FILE__,__LINE__);
+		outgoingData.Clear(__FILE__, __LINE__);
 		outgoingDataMutex.Unlock();
 	}
 	void SetActive(bool a);
