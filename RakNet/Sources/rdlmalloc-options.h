@@ -15,9 +15,9 @@
 // Make it threadsafe
 #define USE_LOCKS 1
 
-extern RAK_DLL_EXPORT void * (*dlMallocMMap) (size_t size);
-extern RAK_DLL_EXPORT void * (*dlMallocDirectMMap) (size_t size);
-extern RAK_DLL_EXPORT int (*dlMallocMUnmap) (void* ptr, size_t size);
+extern RAK_DLL_EXPORT void * (*dlMallocMMap)(size_t size);
+extern RAK_DLL_EXPORT void * (*dlMallocDirectMMap)(size_t size);
+extern RAK_DLL_EXPORT int (*dlMallocMUnmap)(void* ptr, size_t size);
 
 #define MMAP(s)         dlMallocMMap(s)
 #define MUNMAP(a, s)    dlMallocMUnmap((a), (s))

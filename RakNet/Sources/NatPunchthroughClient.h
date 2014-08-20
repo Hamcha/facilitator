@@ -33,22 +33,22 @@ struct Packet;
 class PacketLogger;
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct RAK_DLL_EXPORT PunchthroughConfiguration
-{
+struct RAK_DLL_EXPORT PunchthroughConfiguration {
 	/// internal: (15 ms * 2 tries + 30 wait) * 5 ports * 8 players = 2.4 seconds
 	/// external: (50 ms * 8 sends + 100 wait) * 2 port * 8 players = 8 seconds
 	/// Total: 8 seconds
-	PunchthroughConfiguration() {
-		TIME_BETWEEN_PUNCH_ATTEMPTS_INTERNAL=15;
-		TIME_BETWEEN_PUNCH_ATTEMPTS_EXTERNAL=50;
-		UDP_SENDS_PER_PORT_INTERNAL=2;
-		UDP_SENDS_PER_PORT_EXTERNAL=8;
-		INTERNAL_IP_WAIT_AFTER_ATTEMPTS=30;
-		MAXIMUM_NUMBER_OF_INTERNAL_IDS_TO_CHECK=5; /// set to 0 to not do lan connects
-		MAX_PREDICTIVE_PORT_RANGE=2;
-		EXTERNAL_IP_WAIT_BETWEEN_PORTS=100;
-		EXTERNAL_IP_WAIT_AFTER_ALL_ATTEMPTS=EXTERNAL_IP_WAIT_BETWEEN_PORTS;
-		retryOnFailure=false;
+	PunchthroughConfiguration()
+	{
+		TIME_BETWEEN_PUNCH_ATTEMPTS_INTERNAL = 15;
+		TIME_BETWEEN_PUNCH_ATTEMPTS_EXTERNAL = 50;
+		UDP_SENDS_PER_PORT_INTERNAL = 2;
+		UDP_SENDS_PER_PORT_EXTERNAL = 8;
+		INTERNAL_IP_WAIT_AFTER_ATTEMPTS = 30;
+		MAXIMUM_NUMBER_OF_INTERNAL_IDS_TO_CHECK = 5; /// set to 0 to not do lan connects
+		MAX_PREDICTIVE_PORT_RANGE = 2;
+		EXTERNAL_IP_WAIT_BETWEEN_PORTS = 100;
+		EXTERNAL_IP_WAIT_AFTER_ALL_ATTEMPTS = EXTERNAL_IP_WAIT_BETWEEN_PORTS;
+		retryOnFailure = false;
 	}
 
 	/// How much time between each UDP send
@@ -82,26 +82,26 @@ struct RAK_DLL_EXPORT PunchthroughConfiguration
 };
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct NatPunchthroughDebugInterface
-{
+struct NatPunchthroughDebugInterface {
 	NatPunchthroughDebugInterface() {}
 	virtual ~NatPunchthroughDebugInterface() {}
-	virtual void OnClientMessage(const char *msg)=0;
+	virtual void OnClientMessage(const char *msg) = 0;
 };
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct NatPunchthroughDebugInterface_Printf : public NatPunchthroughDebugInterface
-{
+struct NatPunchthroughDebugInterface_Printf : public NatPunchthroughDebugInterface {
 	virtual void OnClientMessage(const char *msg);
 };
 
 /// \ingroup NAT_PUNCHTHROUGH_GROUP
-struct NatPunchthroughDebugInterface_PacketLogger : public NatPunchthroughDebugInterface
-{
+struct NatPunchthroughDebugInterface_PacketLogger : public NatPunchthroughDebugInterface {
 	// Set to non-zero to write to the packetlogger!
 	PacketLogger *pl;
 
-	NatPunchthroughDebugInterface_PacketLogger() {pl=0;}
+	NatPunchthroughDebugInterface_PacketLogger()
+	{
+		pl = 0;
+	}
 	~NatPunchthroughDebugInterface_PacketLogger() {}
 	virtual void OnClientMessage(const char *msg);
 };
@@ -156,7 +156,7 @@ public:
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 
 	/// \internal For plugin handling
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 
 	virtual void OnAttach(void);
 	virtual void OnDetach(void);
@@ -187,8 +187,7 @@ protected:
 	DataStructures::List<PendingOpenNAT> pendingOpenNAT;
 	*/
 
-	struct SendPing
-	{
+	struct SendPing {
 		RakNetTime nextActionTime;
 		SystemAddress targetAddress;
 		SystemAddress facilitator;
@@ -200,8 +199,7 @@ protected:
 		int punchingFixedPortAttempts; // only used for TestMode::PUNCHING_FIXED_PORT
 		uint16_t sessionId;
 		// Give priority to internal IP addresses because if we are on a LAN, we don't want to try to connect through the internet
-		enum TestMode
-		{
+		enum TestMode {
 			TESTING_INTERNAL_IPS,
 			WAITING_FOR_INTERNAL_IPS_RESPONSE,
 			TESTING_EXTERNAL_IPS_FROM_FACILITATOR_PORT,
@@ -221,8 +219,7 @@ protected:
 
 	// The first time we fail a NAT attempt, we add it to failedAttemptList and try again, since sometimes trying again later fixes the problem
 	// The second time we fail, we return ID_NAT_PUNCHTHROUGH_FAILED
-	struct AddrAndGuid
-	{
+	struct AddrAndGuid {
 		SystemAddress addr;
 		RakNetGUID guid;
 	};

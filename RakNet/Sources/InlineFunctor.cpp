@@ -10,7 +10,6 @@ void InlineFunctor::HandleResult(bool wasCancelled, void *context)
 
 InlineFunctorProcessor::InlineFunctorProcessor()
 {
-
 }
 InlineFunctorProcessor::~InlineFunctorProcessor()
 {
@@ -27,16 +26,15 @@ void InlineFunctorProcessor::StopThreads(bool blockOnCurrentProcessing)
 }
 void InlineFunctorProcessor::YieldOnFunctor(InlineFunctor *inlineFunctor)
 {
-	inlineFunctor->callDepth=GetCallDepth();
-	inlineFunctor->ifp=this;
+	inlineFunctor->callDepth = GetCallDepth();
+	inlineFunctor->ifp = this;
 	functionThread.Push(inlineFunctor);
 	completedThreads.Push(false, __FILE__, __LINE__);
 }
 bool InlineFunctorProcessor::UpdateIFP(void)
 {
 	functionThread.CallResultHandlers();
-	if (completedThreads.Size() && completedThreads[completedThreads.Size()-1]==true)
-	{
+	if (completedThreads.Size() && completedThreads[completedThreads.Size() - 1] == true) {
 		completedThreads.Pop();
 		return true;
 	}
@@ -44,7 +42,7 @@ bool InlineFunctorProcessor::UpdateIFP(void)
 }
 void InlineFunctorProcessor::Pop(int threadCallDepth)
 {
-	completedThreads[threadCallDepth]=true;
+	completedThreads[threadCallDepth] = true;
 }
 unsigned InlineFunctorProcessor::GetCallDepth(void) const
 {

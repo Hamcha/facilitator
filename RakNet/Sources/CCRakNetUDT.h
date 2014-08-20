@@ -71,7 +71,7 @@ namespace RakNet
 /// </OL>
 class CCRakNetUDT
 {
-	public:
+public:
 
 	CCRakNetUDT();
 	~CCRakNetUDT();
@@ -119,7 +119,7 @@ class CCRakNetUDT
 	/// hasBAndAS are possibly written with the ack, see OnSendAck()
 	/// B and AS are used in the calculations in UpdateWindowSizeAndAckOnAckPerSyn
 	/// B and AS are updated at most once per SYN
-	void OnAck(CCTimeType curTime, CCTimeType rtt, bool hasBAndAS, BytesPerMicrosecond _B, BytesPerMicrosecond _AS, double totalUserDataBytesAcked, bool isContinuousSend, DatagramSequenceNumberType sequenceNumber );
+	void OnAck(CCTimeType curTime, CCTimeType rtt, bool hasBAndAS, BytesPerMicrosecond _B, BytesPerMicrosecond _AS, double totalUserDataBytesAcked, bool isContinuousSend, DatagramSequenceNumberType sequenceNumber);
 
 	/// Call when you send an ack, to see if the ack should have the B and AS parameters transmitted
 	/// Call before calling OnSendAck()
@@ -151,29 +151,47 @@ class CCRakNetUDT
 	uint32_t GetMTU(void) const;
 
 	/// Query for statistics
-	BytesPerMicrosecond GetLocalSendRate(void) const {return 1.0 / SND;}
+	BytesPerMicrosecond GetLocalSendRate(void) const
+	{
+		return 1.0 / SND;
+	}
 	BytesPerMicrosecond GetLocalReceiveRate(CCTimeType currentTime) const;
-	BytesPerMicrosecond GetRemoveReceiveRate(void) const {return AS;}
+	BytesPerMicrosecond GetRemoveReceiveRate(void) const
+	{
+		return AS;
+	}
 	//BytesPerMicrosecond GetEstimatedBandwidth(void) const {return B;}
-	BytesPerMicrosecond GetEstimatedBandwidth(void) const {return GetLinkCapacityBytesPerSecond()*1000000.0;}
-	double GetLinkCapacityBytesPerSecond(void) const {return estimatedLinkCapacityBytesPerSecond;};
+	BytesPerMicrosecond GetEstimatedBandwidth(void) const
+	{
+		return GetLinkCapacityBytesPerSecond() * 1000000.0;
+	}
+	double GetLinkCapacityBytesPerSecond(void) const
+	{
+		return estimatedLinkCapacityBytesPerSecond;
+	};
 
 	/// Query for statistics
 	double GetRTT(void) const;
 
-	bool GetIsInSlowStart(void) const {return isInSlowStart;}
-	uint32_t GetCWNDLimit(void) const {return (uint32_t) (CWND*MAXIMUM_MTU_INCLUDING_UDP_HEADER);}
+	bool GetIsInSlowStart(void) const
+	{
+		return isInSlowStart;
+	}
+	uint32_t GetCWNDLimit(void) const
+	{
+		return (uint32_t)(CWND * MAXIMUM_MTU_INCLUDING_UDP_HEADER);
+	}
 
 
 	/// Is a > b, accounting for variable overflow?
 	static bool GreaterThan(DatagramSequenceNumberType a, DatagramSequenceNumberType b);
 	/// Is a < b, accounting for variable overflow?
 	static bool LessThan(DatagramSequenceNumberType a, DatagramSequenceNumberType b);
-//	void SetTimeBetweenSendsLimit(unsigned int bitsPerSecond);
+	//	void SetTimeBetweenSendsLimit(unsigned int bitsPerSecond);
 	uint64_t GetBytesPerSecondLimitByCongestionControl(void) const;
 
 
-	protected:
+protected:
 	// --------------------------- PROTECTED VARIABLES ---------------------------
 	/// time interval between outgoing packets, in microseconds
 	/// Only used when slowStart==false
@@ -317,11 +335,11 @@ class CCRakNetUDT
 
 	bool hasWrittenToPacketPairReceiptHistory;
 
-//	uint32_t rttHistory[RTT_HISTORY_LENGTH];
-//	uint32_t rttHistoryIndex;
-//	uint32_t rttHistoryWriteCount;
-//	uint32_t rttSum, rttLow;
-//	CCTimeType lastSndUpdateTime;
+	//	uint32_t rttHistory[RTT_HISTORY_LENGTH];
+	//	uint32_t rttHistoryIndex;
+	//	uint32_t rttHistoryWriteCount;
+	//	uint32_t rttSum, rttLow;
+	//	CCTimeType lastSndUpdateTime;
 	double estimatedLinkCapacityBytesPerSecond;
 
 	// --------------------------- PROTECTED METHODS ---------------------------
@@ -335,7 +353,7 @@ class CCRakNetUDT
 
 	/// Calculates the median an array of BytesPerMicrosecond
 	static BytesPerMicrosecond CalculateListMedianRecursive(const BytesPerMicrosecond inputList[CC_RAKNET_UDT_PACKET_HISTORY_LENGTH], int inputListLength, int lessThanSum, int greaterThanSum);
-//	static uint32_t CalculateListMedianRecursive(const uint32_t inputList[RTT_HISTORY_LENGTH], int inputListLength, int lessThanSum, int greaterThanSum);
+	//	static uint32_t CalculateListMedianRecursive(const uint32_t inputList[RTT_HISTORY_LENGTH], int inputListLength, int lessThanSum, int greaterThanSum);
 
 	/// Same as GetRTOForRetransmission, but does not factor in ExpCount
 	/// This is because the receiver does not know ExpCount for the sender, and even if it did, acks shouldn't be delayed for this reason

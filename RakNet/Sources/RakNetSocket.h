@@ -6,8 +6,7 @@
 #include "Export.h"
 // #include "SocketIncludes.h"
 
-struct RAK_DLL_EXPORT RakNetSocket
-{
+struct RAK_DLL_EXPORT RakNetSocket {
 	RakNetSocket();
 	~RakNetSocket();
 	// SocketIncludes.h includes Windows.h, which messes up a lot of compiles

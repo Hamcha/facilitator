@@ -28,8 +28,7 @@ public:
 	FunctionThread();
 	~FunctionThread();
 
-	struct FunctorAndContext
-	{
+	struct FunctorAndContext {
 		Functor *functor;
 		void *context;
 	};
@@ -37,7 +36,7 @@ public:
 	/// \brief Starts the thread up.
 	void StartThreads(int numThreads);
 
-	/// \brief Stop processing. 
+	/// \brief Stop processing.
 	/// \details Will also call FunctorResultHandler callbacks with /a wasCancelled set to true.
 	/// \param[in] blockOnCurrentProcessing Wait for the current processing to finish?
 	void StopThreads(bool blockOnCurrentProcessing);
@@ -45,10 +44,10 @@ public:
 	/// \brief Add a functor to the incoming stream of functors.
 	/// \note functor MUST be a valid pointer until Functor::HandleResult() is called, at which point the pointer is returned to you.
 	/// \note For practical purposes this means the instance of functor you pass to this function has to be allocated using new and delete.
-	/// \note You should deallocate the pointer inside Functor::HandleResult() 
+	/// \note You should deallocate the pointer inside Functor::HandleResult()
 	/// \param[in] functor A pointer to an implemented Functor class
 	/// \param[in] If there is some context to this functor you want to look up to cancel it, you can set it here. Returned back to you in Functor::HandleResult
-	void Push(Functor *functor, void *context=0);
+	void Push(Functor *functor, void *context = 0);
 
 	/// \brief Call FunctorResultHandler callbacks.
 	/// \details Normally you would call this once per update cycle, although you do not have to.
@@ -61,7 +60,7 @@ public:
 
 	/// \brief If you want to automatically do some kind of processing on every functor after Functor::HandleResult is called, set it here.
 	/// \details Useful to cleanup FunctionThread::Push::context
-	/// \param[in] postResult pointer to a C function to do post-processing 
+	/// \param[in] postResult pointer to a C function to do post-processing
 	void SetPostResultFunction(void (*postResult)(FunctorAndContext func));
 
 
@@ -82,12 +81,12 @@ public:
 
 	/// \brief Do whatever processing you want.
 	/// \param[in] context pointer passed to FunctionThread::Push::context
-	virtual void Process(void *context)=0;
+	virtual void Process(void *context) = 0;
 	/// \brief Called from FunctionThread::CallResultHandlers with wasCancelled false OR
 	/// Called from FunctionThread::StopThread or FunctionThread::~FunctionThread with wasCancelled true
 	/// \param[in] wasCancelledTrue if CallResultHandlers was called, false if StopThreads or CancelInputWithContext was called before Functor::Process()
 	/// \param[in] context pointer passed to FunctionThread::Push::context
-	virtual void HandleResult(bool wasCancelled, void *context)=0;
+	virtual void HandleResult(bool wasCancelled, void *context) = 0;
 };
 
 class RAK_DLL_EXPORT FunctionThreadDependentClass
@@ -109,7 +108,7 @@ public:
 	/// \brief Allocates and starts the thread if needed, and pushes the functor.
 	/// \param[in] functor Functor to push
 	/// \param[in] context Sent to FunctionThread::Push::context
-	virtual void PushFunctor(Functor *functor, void *context=0);
+	virtual void PushFunctor(Functor *functor, void *context = 0);
 protected:
 	/// Allocates and starts the function thread, if necessary
 	void StartFunctionThread();

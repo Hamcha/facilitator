@@ -28,10 +28,10 @@ public:
 	virtual ~TelnetTransport();
 	bool Start(unsigned short port, bool serverMode);
 	void Stop(void);
-	void Send( SystemAddress systemAddress, const char *data, ... );
-	void CloseConnection( SystemAddress systemAddress );
-	Packet* Receive( void );
-	void DeallocatePacket( Packet *packet );
+	void Send(SystemAddress systemAddress, const char *data, ...);
+	void CloseConnection(SystemAddress systemAddress);
+	Packet* Receive(void);
+	void DeallocatePacket(Packet *packet);
 	SystemAddress HasNewIncomingConnection(void);
 	SystemAddress HasLostConnection(void);
 	CommandParserInterface* GetCommandParser(void);
@@ -39,8 +39,7 @@ public:
 	void SetSendPrefix(const char *prefix);
 protected:
 
-	struct TelnetClient
-	{
+	struct TelnetClient {
 		SystemAddress systemAddress;
 		char textInput[REMOTE_MAX_TEXT_INPUT];
 		char lastSentTextInput[REMOTE_MAX_TEXT_INPUT];

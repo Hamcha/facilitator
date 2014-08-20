@@ -10,11 +10,11 @@
 #include "Export.h"
 
 extern "C" {
-char * FormatString(const char *format, ...);
+	char * FormatString(const char *format, ...);
 }
 // Threadsafe
 extern "C" {
-char * FormatStringTS(char *output, const char *format, ...);
+	char * FormatStringTS(char *output, const char *format, ...);
 }
 
 

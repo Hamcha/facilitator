@@ -7,24 +7,23 @@
 
 
 #ifndef __PACKET_PRIORITY_H
-#define __PACKET_PRIORITY_H 
+#define __PACKET_PRIORITY_H
 
 /// These enumerations are used to describe when packets are delivered.
-enum PacketPriority
-{
+enum PacketPriority {
 	/// The highest possible priority. These message trigger sends immediately, and are generally not buffered or aggregated into a single datagram.
 	IMMEDIATE_PRIORITY,
 
 	/// For every 2 IMMEDIATE_PRIORITY messages, 1 HIGH_PRIORITY will be sent.
-	/// Messages at this priority and lower are buffered to be sent in groups at 10 millisecond intervals to reduce UDP overhead and better measure congestion control. 
+	/// Messages at this priority and lower are buffered to be sent in groups at 10 millisecond intervals to reduce UDP overhead and better measure congestion control.
 	HIGH_PRIORITY,
 
 	/// For every 2 HIGH_PRIORITY messages, 1 MEDIUM_PRIORITY will be sent.
-	/// Messages at this priority and lower are buffered to be sent in groups at 10 millisecond intervals to reduce UDP overhead and better measure congestion control. 
-	MEDIUM_PRIORITY,   
+	/// Messages at this priority and lower are buffered to be sent in groups at 10 millisecond intervals to reduce UDP overhead and better measure congestion control.
+	MEDIUM_PRIORITY,
 
 	/// For every 2 MEDIUM_PRIORITY messages, 1 LOW_PRIORITY will be sent.
-	/// Messages at this priority and lower are buffered to be sent in groups at 10 millisecond intervals to reduce UDP overhead and better measure congestion control. 
+	/// Messages at this priority and lower are buffered to be sent in groups at 10 millisecond intervals to reduce UDP overhead and better measure congestion control.
 	LOW_PRIORITY,
 
 	/// \internal
@@ -35,8 +34,7 @@ enum PacketPriority
 /// \note  Note to self: I write this with 3 bits in the stream.  If I add more remember to change that
 /// \note In ReliabilityLayer::WriteToBitStreamFromInternalPacket I assume there are 5 major types
 /// \note Do not reorder, I check on >= UNRELIABLE_WITH_ACK_RECEIPT
-enum PacketReliability
-{
+enum PacketReliability {
 	/// Same as regular UDP, except that it will also discard duplicate datagrams.  RakNet adds (6 to 17) + 21 bits of overhead, 16 of which is used to detect duplicate packets and 6 to 17 of which is used for message length.
 	UNRELIABLE,
 

@@ -20,13 +20,11 @@ class RakPeer;
 
 #ifdef __USE_IO_COMPLETION_PORTS
 
-struct ClientContextStruct
-{
+struct ClientContextStruct {
 	HANDLE handle; // The socket, also used as a file handle
 };
 
-struct ExtendedOverlappedStruct
-{
+struct ExtendedOverlappedStruct {
 	OVERLAPPED overlapped;
 	char data[ MAXIMUM_MTU_SIZE ]; // Used to hold data to send
 	int length; // Length of the actual data to send, always under MAXIMUM_MTU_SIZE

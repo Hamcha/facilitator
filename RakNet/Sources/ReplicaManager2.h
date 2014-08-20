@@ -33,11 +33,10 @@ class Connection_RM2Factory;
 /// \details
 /// \ingroup REPLICA_MANAGER_GROUP
 
-/// \brief These are the types of events that can cause network data to be transmitted. 
+/// \brief These are the types of events that can cause network data to be transmitted.
 /// \ingroup REPLICA_MANAGER_2_GROUP
 typedef int SerializationType;
-enum
-{
+enum {
 	/// Serialization command initiated by the user
 	SEND_SERIALIZATION_GENERIC_TO_SYSTEM,
 	/// Serialization command initiated by the user
@@ -200,9 +199,9 @@ public:
 	/// \param[in] orderingChannel ordering channel to send on. Use -1 to use the default defined by SetDefaultOrderingChannel()
 	/// \pre Call SetConnectionFactory() with a derived instance of Connection_RM2Factory.
 	void SendConstruction(Replica2 *replica, BitStream *replicaData, SystemAddress recipient, RakNetTime timestamp, bool sendMessage,
-		DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList,
-		unsigned char localClientId, SerializationType type=SEND_CONSTRUCTION_GENERIC_TO_SYSTEM, 
-		PacketPriority priority=NUMBER_OF_PRIORITIES, PacketReliability reliability=NUMBER_OF_RELIABILITIES, char orderingChannel=-1);
+	                      DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList,
+	                      unsigned char localClientId, SerializationType type = SEND_CONSTRUCTION_GENERIC_TO_SYSTEM,
+	                      PacketPriority priority = NUMBER_OF_PRIORITIES, PacketReliability reliability = NUMBER_OF_RELIABILITIES, char orderingChannel = -1);
 
 	/// Sends a destruction command to one or more systems, which will be relayed throughout the network.
 	/// Recipient(s) will allocate the connection via Connection_RM2Factory::AllocConnection() if it does not already exist.
@@ -221,9 +220,9 @@ public:
 	/// \pre Replica::QueryIsDestructionAuthority() must return true
 	/// \pre Call SetConnectionFactory() with a derived instance of Connection_RM2Factory.
 	void SendDestruction(Replica2 *replica, BitStream *replicaData, SystemAddress recipient, RakNetTime timestamp, bool sendMessage,
-		DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList,
-		SerializationType type=SEND_DESTRUCTION_GENERIC_TO_SYSTEM,
-		PacketPriority priority=NUMBER_OF_PRIORITIES, PacketReliability reliability=NUMBER_OF_RELIABILITIES, char orderingChannel=-1);
+	                     DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList,
+	                     SerializationType type = SEND_DESTRUCTION_GENERIC_TO_SYSTEM,
+	                     PacketPriority priority = NUMBER_OF_PRIORITIES, PacketReliability reliability = NUMBER_OF_RELIABILITIES, char orderingChannel = -1);
 
 	/// Sends a serialized object to one or more systems, which will be relayed throughout the network.
 	/// Recipient(s) will allocate the connection via Connection_RM2Factory::AllocConnection() if it does not already exist.
@@ -241,9 +240,9 @@ public:
 	/// \pre Replica::QueryIsSerializationAuthority() must return true
 	/// \pre Call SetConnectionFactory() with a derived instance of Connection_RM2Factory.
 	void SendSerialize(Replica2 *replica, BitStream *replicaData, SystemAddress recipient, RakNetTime timestamp,
-		DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList,
-		SerializationType type=SEND_SERIALIZATION_GENERIC_TO_SYSTEM, 
-		PacketPriority priority=NUMBER_OF_PRIORITIES, PacketReliability reliability=NUMBER_OF_RELIABILITIES, char orderingChannel=-1);
+	                   DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList,
+	                   SerializationType type = SEND_SERIALIZATION_GENERIC_TO_SYSTEM,
+	                   PacketPriority priority = NUMBER_OF_PRIORITIES, PacketReliability reliability = NUMBER_OF_RELIABILITIES, char orderingChannel = -1);
 
 	/// Sets the visibility status of an object. which will be relayed throughout the network.
 	/// Objects that are not visible should be hidden in the game world, and will not send AutoSerialize updates
@@ -262,9 +261,9 @@ public:
 	/// \pre Replica::QueryIsConstructionAuthority() must return true
 	/// \pre Call SetConnectionFactory() with a derived instance of Connection_RM2Factory.
 	void SendVisibility(Replica2 *replica, BitStream *replicaData, SystemAddress recipient, RakNetTime timestamp,
-		DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList,
-		SerializationType type=SEND_VISIBILITY_TRUE_TO_SYSTEM, 
-		PacketPriority priority=NUMBER_OF_PRIORITIES, PacketReliability reliability=NUMBER_OF_RELIABILITIES, char orderingChannel=-1);
+	                    DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList,
+	                    SerializationType type = SEND_VISIBILITY_TRUE_TO_SYSTEM,
+	                    PacketPriority priority = NUMBER_OF_PRIORITIES, PacketReliability reliability = NUMBER_OF_RELIABILITIES, char orderingChannel = -1);
 
 	/// Returns how many Replica2 instances are registered.
 	/// Replica2 instances are automatically registered when used, and unregistered when calling Deref (which is automatically done in the destructor).
@@ -305,11 +304,11 @@ public:
 	void RecalculateVisibility(Replica2 *replica);
 
 	/// \internal
-	static int Replica2ObjectComp( RakNet::Replica2 * const &key, RakNet::Replica2 * const &data );
+	static int Replica2ObjectComp(RakNet::Replica2 * const &key, RakNet::Replica2 * const &data);
 	/// \internal
-	static int Replica2CompByNetworkID( const NetworkID &key, RakNet::Replica2 * const &data );
+	static int Replica2CompByNetworkID(const NetworkID &key, RakNet::Replica2 * const &data);
 	/// \internal
-	static int Connection_RM2CompBySystemAddress( const SystemAddress &key, RakNet::Connection_RM2 * const &data );
+	static int Connection_RM2CompBySystemAddress(const SystemAddress &key, RakNet::Connection_RM2 * const &data);
 
 	/// Given a replica instance, return all connections that are believed to have this replica instantiated.
 	/// \param[in] replica Which replica is being refered to
@@ -337,7 +336,7 @@ protected:
 	// Plugin interface functions
 	void OnAttach(void);
 	PluginReceiveResult OnReceive(Packet *packet);
-	void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	void OnRakPeerShutdown(void);
 	void Update(void);
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
@@ -349,13 +348,13 @@ protected:
 	PluginReceiveResult OnVisibilityChange(unsigned char *packetData, int packetDataLength, SystemAddress sender, RakNetTime timestamp);
 	PluginReceiveResult OnSerialize(unsigned char *packetData, int packetDataLength, SystemAddress sender, RakNetTime timestamp);
 
-	bool AddToAndWriteExclusionList(SystemAddress recipient, RakNet::BitStream *bs, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList);
-	void WriteExclusionList(RakNet::BitStream *bs, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList);
+	bool AddToAndWriteExclusionList(SystemAddress recipient, RakNet::BitStream *bs, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
+	void WriteExclusionList(RakNet::BitStream *bs, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
 	void CullByAndAddToExclusionList(
-		DataStructures::OrderedList<SystemAddress, Connection_RM2*,ReplicaManager2::Connection_RM2CompBySystemAddress> &inputList,
-		DataStructures::OrderedList<SystemAddress, Connection_RM2*,ReplicaManager2::Connection_RM2CompBySystemAddress> &culledOutput,
-		DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList);
-	void ReadExclusionList(RakNet::BitStream *bs, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList);
+	        DataStructures::OrderedList<SystemAddress, Connection_RM2*, ReplicaManager2::Connection_RM2CompBySystemAddress> &inputList,
+	        DataStructures::OrderedList<SystemAddress, Connection_RM2*, ReplicaManager2::Connection_RM2CompBySystemAddress> &culledOutput,
+	        DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
+	void ReadExclusionList(RakNet::BitStream *bs, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
 
 	void Send(RakNet::BitStream *bs, SystemAddress recipient, PacketPriority priority, PacketReliability reliability, char orderingChannel);
 	void Clear(void);
@@ -394,8 +393,7 @@ protected:
 
 /// \brief The result of various scope and construction queries
 /// \ingroup REPLICA_MANAGER_2_GROUP
-enum RAK_DLL_EXPORT BooleanQueryResult
-{
+enum RAK_DLL_EXPORT BooleanQueryResult {
 	/// The query is always true, for all systems. Certain optimizations are performed here, but you should not later return any other value without first calling ReplicaManager2::RecalculateVisibility
 	BQR_ALWAYS,
 
@@ -411,11 +409,16 @@ enum RAK_DLL_EXPORT BooleanQueryResult
 
 /// \brief Contextual information about serialization, passed to some functions in Replica2
 /// \ingroup REPLICA_MANAGER_2_GROUP
-struct RAK_DLL_EXPORT SerializationContext
-{
+struct RAK_DLL_EXPORT SerializationContext {
 	SerializationContext() {}
 	~SerializationContext() {}
-	SerializationContext(SerializationType st, SystemAddress relay, SystemAddress recipient, RakNetTime _timestamp) {serializationType=st; relaySourceAddress=relay; recipientAddress=recipient; timestamp=_timestamp;}
+	SerializationContext(SerializationType st, SystemAddress relay, SystemAddress recipient, RakNetTime _timestamp)
+	{
+		serializationType = st;
+		relaySourceAddress = relay;
+		recipientAddress = recipient;
+		timestamp = _timestamp;
+	}
 
 	/// The system that sent the message to us.
 	SystemAddress relaySourceAddress;
@@ -472,52 +475,52 @@ public:
 	/// \note If using peer-to-peer, NETWORK_ID_SUPPORTS_PEER_TO_PEER should be defined in RakNetDefines.h
 	/// \param[in] recipientAddress Which system to send to
 	/// \param[in] serializationType What type of command this is. Use UNDEFINED_REASON to have a type chosen automatically
-	virtual void SendConstruction(SystemAddress recipientAddress, SerializationType serializationType=UNDEFINED_REASON);
+	virtual void SendConstruction(SystemAddress recipientAddress, SerializationType serializationType = UNDEFINED_REASON);
 
 	/// Destroy this object on other systems
 	/// Triggers a call to SerializeDestruction()
 	/// \param[in] recipientAddress Which system to send to
 	/// \param[in] serializationType What type of command this is. Use UNDEFINED_REASON to have a type chosen automatically
-	virtual void SendDestruction(SystemAddress recipientAddress, SerializationType serializationType=UNDEFINED_REASON);
+	virtual void SendDestruction(SystemAddress recipientAddress, SerializationType serializationType = UNDEFINED_REASON);
 
 	/// Serialize this object to another system
 	/// Triggers a call to Serialize()
 	/// \param[in] recipientAddress Which system to send to
 	/// \param[in] serializationType What type of command this is. Use UNDEFINED_REASON to have a type chosen automatically
-	virtual void SendSerialize(SystemAddress recipientAddress, SerializationType serializationType=UNDEFINED_REASON);
+	virtual void SendSerialize(SystemAddress recipientAddress, SerializationType serializationType = UNDEFINED_REASON);
 
 	/// Update the visibility of this object on another system
 	/// Triggers a call to SerializeVisibility()
 	/// \param[in] recipientAddress Which system to send to
 	/// \param[in] serializationType What type of command this is. Use UNDEFINED_REASON to have a type chosen automatically
-	virtual void SendVisibility(SystemAddress recipientAddress, SerializationType serializationType=UNDEFINED_REASON);
+	virtual void SendVisibility(SystemAddress recipientAddress, SerializationType serializationType = UNDEFINED_REASON);
 
 	/// Construct this object on other systems
 	/// \param[in] serializationContext Which system to send to, an input timestamp, and the SerializationType. 0 to use defaults, no timestamp.
-	virtual void BroadcastConstruction(SerializationContext *serializationContext=0);
+	virtual void BroadcastConstruction(SerializationContext *serializationContext = 0);
 
 	/// Serialize this object to all current connections
 	/// Triggers a call to SerializeConstruction() for each connection (you can serialize differently per connection).
 	/// \param[in] serializationContext Which system to send to, an input timestamp, and the SerializationType. 0 to use defaults, no timestamp.
-	virtual void BroadcastSerialize(SerializationContext *serializationContext=0);
+	virtual void BroadcastSerialize(SerializationContext *serializationContext = 0);
 
 	/// Destroy this object on all current connections
 	/// Triggers a call to SerializeDestruction() for each connection (you can serialize differently per connection).
 	/// \param[in] serializationContext Which system to send to, an input timestamp, and the SerializationType. 0 to use defaults, no timestamp.
-	virtual void BroadcastDestruction(SerializationContext *serializationContext=0);
+	virtual void BroadcastDestruction(SerializationContext *serializationContext = 0);
 
 	/// Update the visibility state of this object on all other systems
 	/// Use SEND_VISIBILITY_TRUE_TO_SYSTEM or SEND_VISIBILITY_FALSE_TO_SYSTEM in \a serializationContext::serializationType
 	/// Triggers a call to SerializeVisibility() for each connection (you can serialize differently per connection).
 	/// \param[in] serializationContext Which system to send to, an input timestamp, and the SerializationType. 0 to use defaults, no timestamp, true visibility
-	virtual void BroadcastVisibility(bool isVisible, SerializationContext *serializationContext=0);
+	virtual void BroadcastVisibility(bool isVisible, SerializationContext *serializationContext = 0);
 
 	/// CALLBACK:
 	/// Override in order to write to \a bitStream data identifying this class for the class factory. Will be received by Connection_RM2::Construct() to create an instance of this class.
 	/// \param[out] bitStream Data used to identify this class, along with any data you also want to send when constructing the class
 	/// \param[in] serializationContext serializationType passed to Replica2::SendConstruction(), along with destination system, and a timestamp you can write to.
 	/// \return Return false to cancel the construction, true to process
-	virtual bool SerializeConstruction(RakNet::BitStream *bitStream, SerializationContext *serializationContext)=0;
+	virtual bool SerializeConstruction(RakNet::BitStream *bitStream, SerializationContext *serializationContext) = 0;
 
 	/// CALLBACK:
 	/// Override in order to write to \a bitStream data to send along with destruction requests. Will be received by DeserializeDestruction()
@@ -630,7 +633,7 @@ public:
 	/// \param[in] interval Time in milliseconds between autoserialize ticks. Use 0 to process immediately, and every tick
 	/// \param[in] serializationType User-defined identifier for what type of serialization operation to perform. Returned in Deserialize() as the \a serializationType parameter.
 	/// \param[in] countdown Amount of time before doing the next autoserialize. Defaults to interval
-	virtual void AddAutoSerializeTimer(RakNetTime interval, SerializationType serializationType=AUTOSERIALIZE_DEFAULT, RakNetTime countdown=(RakNetTime)-1 );
+	virtual void AddAutoSerializeTimer(RakNetTime interval, SerializationType serializationType = AUTOSERIALIZE_DEFAULT, RakNetTime countdown = (RakNetTime) - 1);
 
 	/// Elapse time for all timers added with AddAutoSerializeTimer()
 	/// Only necessary to call this if you call Replica2::SetDoReplicaAutoSerializeUpdate(false) (which defaults to true)
@@ -641,7 +644,7 @@ public:
 	/// Returns how many milliseconds are remaining until the next autoserialize update
 	/// \param[in] serializationType User-defined identifier for what type of serialization operation to perform. Returned in Deserialize() as the \a serializationType parameter.
 	/// \return How many milliseconds are remaining until the next autoserialize update. Returns -1 if no such autoserialization timer is in place.
-	RakNetTime GetTimeToNextAutoSerialize(SerializationType serializationType=AUTOSERIALIZE_DEFAULT);
+	RakNetTime GetTimeToNextAutoSerialize(SerializationType serializationType = AUTOSERIALIZE_DEFAULT);
 
 	/// Do the actual send call when needed to support autoSerialize
 	/// If you want to do different types of send calls (UNRELIABLE for example) override this function.
@@ -651,7 +654,7 @@ public:
 
 	/// Stop calling an autoSerialize timer previously setup with AddAutoSerializeTimer()
 	/// \param[in] serializationType Corresponding value passed to serializationType
-	virtual void CancelAutoSerializeTimer(SerializationType serializationType=AUTOSERIALIZE_DEFAULT);
+	virtual void CancelAutoSerializeTimer(SerializationType serializationType = AUTOSERIALIZE_DEFAULT);
 
 	/// Remove and deallocate all previously added autoSerialize timers
 	virtual void ClearAutoSerializeTimers(void);
@@ -677,10 +680,10 @@ public:
 
 protected:
 
-	virtual void ReceiveSerialize(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList );
-	virtual void ReceiveDestruction(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList );
-	virtual void DeleteOnReceiveDestruction(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList );
-	virtual void ReceiveVisibility(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList);
+	virtual void ReceiveSerialize(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
+	virtual void ReceiveDestruction(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
+	virtual void DeleteOnReceiveDestruction(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
+	virtual void ReceiveVisibility(SystemAddress sender, RakNet::BitStream *serializedObject, SerializationType serializationType, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
 	virtual Replica2 * ReceiveConstructionReply(SystemAddress sender, BitStream *replicaData, bool constructionAllowed);
 	void DereferenceFromDestruction(void);
 
@@ -694,8 +697,7 @@ protected:
 	unsigned char clientID;
 	ReplicaManager2 *rm2;
 
-	struct AutoSerializeEvent
-	{
+	struct AutoSerializeEvent {
 		SerializationType serializationType;
 		RakNetTime initialCountdown;
 		RakNetTime remainingCountdown;
@@ -715,8 +717,8 @@ class RAK_DLL_EXPORT Connection_RM2Factory
 public:
 	Connection_RM2Factory() {}
 	virtual ~Connection_RM2Factory() {}
-	virtual Connection_RM2* AllocConnection(void) const=0;
-	virtual void DeallocConnection(Connection_RM2* s) const=0;
+	virtual Connection_RM2* AllocConnection(void) const = 0;
+	virtual void DeallocConnection(Connection_RM2* s) const = 0;
 };
 
 /// \brief This class represents a connection between two instances of ReplicaManager2
@@ -744,7 +746,7 @@ public:
 	/// \param[in] networkId NetworkID that will be assigned automatically to the new object after this function returns
 	/// \param[in] networkIDCollision True if the network ID that should be assigned to this object is already in use. Usuallly this is because the object already exists, and you should just read your data and return 0.
 	/// \return Return 0 to signal that construction failed or was refused for this object. Otherwise return the object that was created. A reference will be held to this object, and SetNetworkID() and SetReplicaManager() will be called automatically.
-	virtual Replica2* Construct(RakNet::BitStream *replicaData, SystemAddress sender, SerializationType type, ReplicaManager2 *replicaManager, RakNetTime timestamp, NetworkID networkId, bool networkIDCollision)=0;
+	virtual Replica2* Construct(RakNet::BitStream *replicaData, SystemAddress sender, SerializationType type, ReplicaManager2 *replicaManager, RakNetTime timestamp, NetworkID networkId, bool networkIDCollision) = 0;
 
 	/// CALLBACK:
 	/// Called before a download is sent to a new connection, called after ID_REPLICA_MANAGER_DOWNLOAD_STARTED is sent.
@@ -752,7 +754,7 @@ public:
 	/// Defaults to send everything in the default order
 	/// \param[in] fullReplicaUnorderedList The list of all known objects in the order they were originally known about by the system (the first time used by any function)
 	/// \param[out] orderedDownloadList An empty list. Copy fullReplicaUnorderedList to this list to send everything. Leave elements out to not send them. Add them to the list in a different order to send them in that order.
-	virtual void SortInitialDownload( const DataStructures::List<Replica2*> &orderedDownloadList, DataStructures::List<Replica2*> &initialDownloadList );
+	virtual void SortInitialDownload(const DataStructures::List<Replica2*> &orderedDownloadList, DataStructures::List<Replica2*> &initialDownloadList);
 
 
 	/// CALLBACK:
@@ -830,19 +832,19 @@ public:
 
 	/// Get the guid associated with this class instance.
 	RakNetGUID GetGuid(void) const;
-	
+
 protected:
 	void Deref(Replica2* replica);
 
 	void CalculateListExclusivity(
-		const DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &listOne,
-		const DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &listTwo,
-		DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &exclusiveToListOne, 
-		DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &exclusiveToListTwo
-		) const;
+	        const DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &listOne,
+	        const DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &listTwo,
+	        DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &exclusiveToListOne,
+	        DataStructures::OrderedList<Replica2*, Replica2*, ReplicaManager2::Replica2ObjectComp> &exclusiveToListTwo
+	) const;
 
 	virtual Replica2 * ReceiveConstruct(RakNet::BitStream *replicaData, NetworkID networkId, SystemAddress sender, unsigned char localClientId, SerializationType type,
-		ReplicaManager2 *replicaManager, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress,SystemAddress> &exclusionList);
+	                                    ReplicaManager2 *replicaManager, RakNetTime timestamp, DataStructures::OrderedList<SystemAddress, SystemAddress> &exclusionList);
 
 	friend class ReplicaManager2;
 

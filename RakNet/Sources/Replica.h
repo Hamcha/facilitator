@@ -35,7 +35,7 @@ public:
 	/// \param[out] outBitStream The data you want to write in the message. If you do not write to outBitStream and return true, then no send call will occur and the system will consider this object as not created on that remote system.
 	/// \param[out] includeTimestamp Set to true to include a timestamp with the message.  This will be reflected in the timestamp parameter of the callback.  Defaults to false.
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult SendConstruction( RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream *outBitStream, bool *includeTimestamp )=0;
+	virtual ReplicaReturnResult SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream *outBitStream, bool *includeTimestamp) = 0;
 
 	/// The purpose of the function is to send a packet containing the data in \a outBitStream to \a systemAddress telling that system that Dereplicate was called.
 	/// In the code, this is called in the update cycle after you call ReplicaManager::Destruct().  Then, if you write to outBitStream, a message is sent to that participant.
@@ -44,14 +44,14 @@ public:
 	/// \param[in] systemAddress The participant to send to.
 	/// \param[out] includeTimestamp Set to true to include a timestamp with the message.  This will be reflected in the timestamp parameter of the callback.  Defaults to false.
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult SendDestruction(RakNet::BitStream *outBitStream, SystemAddress systemAddress, bool *includeTimestamp )=0;
+	virtual ReplicaReturnResult SendDestruction(RakNet::BitStream *outBitStream, SystemAddress systemAddress, bool *includeTimestamp) = 0;
 
 	/// This function is called when SendDestruction is sent from another system.  Delete your object if you want.
 	/// \param[in] inBitStream What was sent in SendDestruction::outBitStream
 	/// \param[in] systemAddress The participant that sent this message to us.
 	/// \param[in] timestamp if Serialize::SendDestruction was set to true, the time the packet was sent.
 	/// \return See ReplicaReturnResult.  Only REPLICA_PROCESSING_DONE is valid, and will send the destruction message.  Anything else will not send any messages.
-	virtual ReplicaReturnResult ReceiveDestruction(RakNet::BitStream *inBitStream, SystemAddress systemAddress, RakNetTime timestamp)=0;
+	virtual ReplicaReturnResult ReceiveDestruction(RakNet::BitStream *inBitStream, SystemAddress systemAddress, RakNetTime timestamp) = 0;
 
 	/// Called when ReplicaManager::SetScope is called with a different value than what it currently has.
 	/// It is up to you to write \a inScope to \a outBitStream.  Not doing so, and returning true, means you want to cancel the scope change call.
@@ -63,14 +63,14 @@ public:
 	/// \param[in] systemAddress The participant to send to.
 	/// \param[out] includeTimestamp Set to true to include a timestamp with the message.  This will be reflected in the timestamp parameter of the callback.  Defaults to false.
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult SendScopeChange(bool inScope, RakNet::BitStream *outBitStream, RakNetTime currentTime, SystemAddress systemAddress, bool *includeTimestamp )=0;
+	virtual ReplicaReturnResult SendScopeChange(bool inScope, RakNet::BitStream *outBitStream, RakNetTime currentTime, SystemAddress systemAddress, bool *includeTimestamp) = 0;
 
 	/// Called when when we get the SendScopeChange message.  The new scope should have been encoded (by you) into \a inBitStream
 	/// \param[in] inBitStream What was sent in SendScopeChange::outBitStream
 	/// \param[in] systemAddress The participant that sent this message to us.
 	/// \param[in] timestamp if Serialize::SendScopeChange was set to true, the time the packet was sent.
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult ReceiveScopeChange(RakNet::BitStream *inBitStream,SystemAddress systemAddress, RakNetTime timestamp)=0;
+	virtual ReplicaReturnResult ReceiveScopeChange(RakNet::BitStream *inBitStream, SystemAddress systemAddress, RakNetTime timestamp) = 0;
 
 	/// Called when ReplicaManager::SignalSerializeNeeded is called with this object as the parameter.
 	/// The system will ensure that Serialize only occurs for participants that have this object constructed and in scope
@@ -84,14 +84,14 @@ public:
 	/// \param[in] systemAddress The participant we are sending to.
 	/// \param[in,out] flags Per-object per-system serialization flags modified by this function, ReplicaManager::SignalSerializationFlags, and ReplicaManager::AccessSerializationFlags.  Useful for simple customization of what you serialize based on application events.  This value is not automatically reset.
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult Serialize(bool *sendTimestamp, RakNet::BitStream *outBitStream, RakNetTime lastSendTime, PacketPriority *priority, PacketReliability *reliability, RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags)=0;
+	virtual ReplicaReturnResult Serialize(bool *sendTimestamp, RakNet::BitStream *outBitStream, RakNetTime lastSendTime, PacketPriority *priority, PacketReliability *reliability, RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags) = 0;
 
 	/// Called when another participant called Serialize with our system as the target
 	/// \param[in] inBitStream What was written to Serialize::outBitStream
 	/// \param[in] timestamp if Serialize::SendTimestamp was set to true, the time the packet was sent.
 	/// \param[in] lastDeserializeTime Last time you returned true from this function for this object, or 0 if never, regardless of \a systemAddress.
 	/// \param[in] systemAddress The participant that sent this message to us.
-	virtual ReplicaReturnResult Deserialize(RakNet::BitStream *inBitStream, RakNetTime timestamp, RakNetTime lastDeserializeTime, SystemAddress systemAddress )=0;
+	virtual ReplicaReturnResult Deserialize(RakNet::BitStream *inBitStream, RakNetTime timestamp, RakNetTime lastDeserializeTime, SystemAddress systemAddress) = 0;
 
 	/// Used to sort the order that commands (construct, serialize) take place in.
 	/// Lower sort priority commands happen before higher sort priority commands.
@@ -99,7 +99,7 @@ public:
 	/// For example, if both players and player lists are replicas, you would want to create the players before the player lists if the player lists refer to the players.
 	/// So you could specify the players as priority 0, and the lists as priority 1, and the players would be created and serialized first
 	/// \return A higher value to process later, a lower value to process sooner, the same value to process in random order.
-	virtual int GetSortPriority(void) const=0;
+	virtual int GetSortPriority(void) const = 0;
 };
 
 #endif

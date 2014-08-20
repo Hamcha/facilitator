@@ -21,11 +21,11 @@
 #pragma warning( push )
 #endif
 
-const unsigned char CommandParserInterface::VARIABLE_NUMBER_OF_PARAMETERS=255;
+const unsigned char CommandParserInterface::VARIABLE_NUMBER_OF_PARAMETERS = 255;
 
-int RegisteredCommandComp( const char* const & key, const RegisteredCommand &data )
+int RegisteredCommandComp(const char* const &key, const RegisteredCommand &data)
 {
-	return _stricmp(key,data.command);
+	return _stricmp(key, data.command);
 }
 
 CommandParserInterface::CommandParserInterface() {}
@@ -35,79 +35,64 @@ void CommandParserInterface::ParseConsoleString(char *str, const char delineator
 {
 	unsigned strIndex, parameterListIndex;
 	unsigned strLen;
-	bool replaceDelineator=true;
-
+	bool replaceDelineator = true;
 	strLen = (unsigned) strlen(str);
-
 	// Replace every instance of delineator, \n, \r with 0
-	for (strIndex=0; strIndex < strLen; strIndex++)
-	{
-		if (str[strIndex]==delineator && replaceDelineator)
-			str[strIndex]=0;
-
-		if (str[strIndex]=='\n' || str[strIndex]=='\r')
-			str[strIndex]=0;
-
-		if (str[strIndex]==delineatorToggle)
-		{
-			str[strIndex]=0;
-			replaceDelineator=!replaceDelineator;
+	for (strIndex = 0; strIndex < strLen; strIndex++) {
+		if (str[strIndex] == delineator && replaceDelineator)
+			str[strIndex] = 0;
+		if (str[strIndex] == '\n' || str[strIndex] == '\r')
+			str[strIndex] = 0;
+		if (str[strIndex] == delineatorToggle) {
+			str[strIndex] = 0;
+			replaceDelineator = !replaceDelineator;
 		}
 	}
-
 	// Fill up parameterList starting at each non-0
-	for (strIndex=0, parameterListIndex=0; strIndex < strLen; )
-	{
-		if (str[strIndex]!=0)
-		{
-			parameterList[parameterListIndex]=str+strIndex;
+	for (strIndex = 0, parameterListIndex = 0; strIndex < strLen;) {
+		if (str[strIndex] != 0) {
+			parameterList[parameterListIndex] = str + strIndex;
 			parameterListIndex++;
 			RakAssert(parameterListIndex < parameterListLength);
 			if (parameterListIndex >= parameterListLength)
 				break;
-
 			strIndex++;
-			while (str[strIndex]!=0 && strIndex < strLen)
+			while (str[strIndex] != 0 && strIndex < strLen)
 				strIndex++;
-		}
-		else
+		} else
 			strIndex++;
 	}
-
-	parameterList[parameterListIndex]=0;
-	*numParameters=parameterListIndex;
+	parameterList[parameterListIndex] = 0;
+	*numParameters = parameterListIndex;
 }
 void CommandParserInterface::SendCommandList(TransportInterface *transport, SystemAddress systemAddress)
 {
 	unsigned i;
-	if (commandList.Size())
-	{
-		for (i=0; i < commandList.Size(); i++)
-		{
+	if (commandList.Size()) {
+		for (i = 0; i < commandList.Size(); i++) {
 			transport->Send(systemAddress, "%s", commandList[i].command);
-			if (i < commandList.Size()-1)
+			if (i < commandList.Size() - 1)
 				transport->Send(systemAddress, ", ");
 		}
 		transport->Send(systemAddress, "\r\n");
-	}
-	else
+	} else
 		transport->Send(systemAddress, "No registered commands\r\n");
 }
 void CommandParserInterface::RegisterCommand(unsigned char parameterCount, const char *command, const char *commandHelp)
 {
 	RegisteredCommand rc;
-	rc.command=command;
-	rc.commandHelp=commandHelp;
-	rc.parameterCount=parameterCount;
-	commandList.Insert( command, rc, true, __FILE__, __LINE__);
+	rc.command = command;
+	rc.commandHelp = commandHelp;
+	rc.parameterCount = parameterCount;
+	commandList.Insert(command, rc, true, __FILE__, __LINE__);
 }
 bool CommandParserInterface::GetRegisteredCommand(const char *command, RegisteredCommand *rc)
 {
 	bool objectExists;
 	unsigned index;
-	index=commandList.GetIndexFromKey(command, &objectExists);
+	index = commandList.GetIndexFromKey(command, &objectExists);
 	if (objectExists)
-		*rc=commandList[index];
+		*rc = commandList[index];
 	return objectExists;
 }
 void CommandParserInterface::OnTransportChange(TransportInterface *transport)
@@ -124,14 +109,14 @@ void CommandParserInterface::OnConnectionLost(SystemAddress systemAddress, Trans
 	(void) systemAddress;
 	(void) transport;
 }
-void CommandParserInterface::ReturnResult(bool res, const char *command,TransportInterface *transport, SystemAddress systemAddress)
+void CommandParserInterface::ReturnResult(bool res, const char *command, TransportInterface *transport, SystemAddress systemAddress)
 {
 	if (res)
 		transport->Send(systemAddress, "%s returned true.\r\n", command);
 	else
 		transport->Send(systemAddress, "%s returned false.\r\n", command);
 }
-void CommandParserInterface::ReturnResult(int res, const char *command,TransportInterface *transport, SystemAddress systemAddress)
+void CommandParserInterface::ReturnResult(int res, const char *command, TransportInterface *transport, SystemAddress systemAddress)
 {
 	transport->Send(systemAddress, "%s returned %i.\r\n", command, res);
 }
@@ -148,17 +133,17 @@ void CommandParserInterface::ReturnResult(SystemAddress res, const char *command
 #if !defined(_XBOX) && !defined(_X360)
 	in_addr in;
 	in.s_addr = systemAddress.binaryAddress;
-	inet_ntoa( in );
-	transport->Send(systemAddress, "%s returned %s %i:%i\r\n", command,inet_ntoa( in ),res.binaryAddress, res.port);
+	inet_ntoa(in);
+	transport->Send(systemAddress, "%s returned %s %i:%i\r\n", command, inet_ntoa(in), res.binaryAddress, res.port);
 #else
-	transport->Send(systemAddress, "%s returned %i:%i\r\n", command,res.binaryAddress, res.port);
+	transport->Send(systemAddress, "%s returned %i:%i\r\n", command, res.binaryAddress, res.port);
 #endif
 }
 SystemAddress CommandParserInterface::IntegersToSystemAddress(int binaryAddress, int port)
 {
 	SystemAddress systemAddress;
-	systemAddress.binaryAddress=binaryAddress;
-	systemAddress.port=(unsigned short)port;
+	systemAddress.binaryAddress = binaryAddress;
+	systemAddress.port = (unsigned short)port;
 	return systemAddress;
 }
 

@@ -14,8 +14,7 @@
 #include "Export.h"
 #include "RakNetTypes.h"
 
-enum RNSPerSecondMetrics
-{
+enum RNSPerSecondMetrics {
 	USER_MESSAGE_BYTES_PUSHED,
 	USER_MESSAGE_BYTES_SENT,
 	USER_MESSAGE_BYTES_RESENT,
@@ -29,8 +28,7 @@ enum RNSPerSecondMetrics
 /// \brief Network Statisics Usage
 ///
 /// Store Statistics information related to network usage
-struct RAK_DLL_EXPORT RakNetStatistics
-{
+struct RAK_DLL_EXPORT RakNetStatistics {
 	uint64_t valueOverLastSecond[RNS_PER_SECOND_METRICS_COUNT];
 	uint64_t runningTotal[RNS_PER_SECOND_METRICS_COUNT];
 
@@ -50,21 +48,17 @@ struct RAK_DLL_EXPORT RakNetStatistics
 
 	float packetlossLastSecond, packetlossTotal;
 
-	RakNetStatistics& operator +=(const RakNetStatistics& other)
+	RakNetStatistics &operator +=(const RakNetStatistics &other)
 	{
 		unsigned i;
-		for (i=0; i < NUMBER_OF_PRIORITIES; i++)
-		{
-			messageInSendBuffer[i]+=other.messageInSendBuffer[i];
-			bytesInSendBuffer[i]+=other.bytesInSendBuffer[i];
+		for (i = 0; i < NUMBER_OF_PRIORITIES; i++) {
+			messageInSendBuffer[i] += other.messageInSendBuffer[i];
+			bytesInSendBuffer[i] += other.bytesInSendBuffer[i];
 		}
-
-		for (i=0; i < RNS_PER_SECOND_METRICS_COUNT; i++)
-		{
-			valueOverLastSecond[i]+=other.valueOverLastSecond[i];
-			runningTotal[i]+=other.runningTotal[i];
+		for (i = 0; i < RNS_PER_SECOND_METRICS_COUNT; i++) {
+			valueOverLastSecond[i] += other.valueOverLastSecond[i];
+			runningTotal[i] += other.runningTotal[i];
 		}
-
 		return *this;
 	}
 };
@@ -77,6 +71,6 @@ struct RAK_DLL_EXPORT RakNetStatistics
 /// 1 medium
 /// 2 high
 /// 3 debugging congestion control
-void RAK_DLL_EXPORT StatisticsToString( RakNetStatistics *s, char *buffer, int verbosityLevel );
+void RAK_DLL_EXPORT StatisticsToString(RakNetStatistics *s, char *buffer, int verbosityLevel);
 
 #endif
