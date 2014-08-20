@@ -11,7 +11,7 @@ public:
 	RouterInterface() {}
 	virtual ~RouterInterface() {}
 
-	virtual bool Send( const char *data, BitSize_t bitLength, PacketPriority priority, PacketReliability reliability, char orderingChannel, SystemAddress systemAddress )=0;
+	virtual bool Send(const char *data, BitSize_t bitLength, PacketPriority priority, PacketReliability reliability, char orderingChannel, SystemAddress systemAddress) = 0;
 };
 
 #endif

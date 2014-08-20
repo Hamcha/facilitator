@@ -5,7 +5,7 @@
 
 namespace RakNet
 {
-	class BitStream;
+class BitStream;
 };
 
 #define _SIMPLE_DATABASE_PASSWORD_LENGTH 32
@@ -16,8 +16,7 @@ namespace RakNet
 #define LAST_PING_RESPONSE_COLUMN_NAME "__lastPingResponseTime"
 #define NEXT_PING_SEND_COLUMN_NAME "__nextPingSendTime"
 
-struct DatabaseFilter
-{
+struct DatabaseFilter {
 	void Serialize(RakNet::BitStream *out);
 	bool Deserialize(RakNet::BitStream *in);
 
@@ -28,8 +27,7 @@ struct DatabaseFilter
 };
 
 /// The value to write to a cell in a remote database.
-struct DatabaseCellUpdate
-{
+struct DatabaseCellUpdate {
 	void Serialize(RakNet::BitStream *out);
 	bool Deserialize(RakNet::BitStream *in);
 
@@ -38,8 +36,7 @@ struct DatabaseCellUpdate
 	char columnName[_TABLE_MAX_COLUMN_NAME_LENGTH];
 };
 
-enum RowUpdateMode
-{
+enum RowUpdateMode {
 	// Only update an existing row.  rowId is required.
 	RUM_UPDATE_EXISTING_ROW,
 

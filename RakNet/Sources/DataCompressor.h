@@ -18,8 +18,8 @@
 class RAK_DLL_EXPORT DataCompressor
 {
 public:
-	static void Compress( unsigned char *userData, unsigned sizeInBytes, RakNet::BitStream * output );
-	static unsigned DecompressAndAllocate( RakNet::BitStream * input, unsigned char **output );
+	static void Compress(unsigned char *userData, unsigned sizeInBytes, RakNet::BitStream * output);
+	static unsigned DecompressAndAllocate(RakNet::BitStream * input, unsigned char **output);
 };
 
 #endif

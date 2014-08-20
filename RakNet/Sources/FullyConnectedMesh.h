@@ -17,7 +17,7 @@ class RakPeerInterface;
 
 /// \defgroup FULLY_CONNECTED_MESH_GROUP FullyConnectedMesh
 /// \brief Deprecated. Connect RakNet to other systems automatically.
-/// \details 
+/// \details
 /// \ingroup PLUGINS_GROUP
 
 /// Fully connected mesh plugin.  This will connect RakPeer to all connecting peers, and all peers the connecting peer knows about.
@@ -34,13 +34,13 @@ public:
 	// User functions
 	// --------------------------------------------------------------------------------------------
 	/// Set the password to use to connect to the other systems
- 	void Startup(const char *password, int _passwordLength);
+	void Startup(const char *password, int _passwordLength);
 
 	// --------------------------------------------------------------------------------------------
 	// Packet handling functions
 	// --------------------------------------------------------------------------------------------
 	virtual PluginReceiveResult OnReceive(Packet *packet);
-	
+
 
 protected:
 	char *pw;
