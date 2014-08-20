@@ -25,7 +25,7 @@ public:
 	bool Load(const char *filename);
 	void RemoveSystem(SystemAddress system);
 	unsigned Size(void) const;
-	SystemAddress& operator[] ( const unsigned int position ) const;
+	SystemAddress &operator[](const unsigned int position) const;
 	void Clear(void);
 
 	DataStructures::List<SystemAddress> * GetList(void);

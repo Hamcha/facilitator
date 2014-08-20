@@ -38,8 +38,7 @@ typedef MessageNumberType OrderingIndexType;
 
 typedef RakNetTimeUS RemoteSystemTimeType;
 
-struct InternalPacketFixedSizeTransmissionHeader
-{
+struct InternalPacketFixedSizeTransmissionHeader {
 	/// A unique numerical identifier given to this user message. Used to identify reliable messages on the network
 	MessageNumberType reliableMessageNumber;
 	///The ID used as identification for ordering channels
@@ -62,16 +61,14 @@ struct InternalPacketFixedSizeTransmissionHeader
 };
 
 /// Used in InternalPacket when pointing to sharedDataBlock, rather than allocating itself
-struct InternalPacketRefCountedData
-{
+struct InternalPacketRefCountedData {
 	unsigned char *sharedDataBlock;
 	unsigned int refCount;
 };
 
 /// Holds a user message, and related information
 /// Don't use a constructor or destructor, due to the memory pool I am using
-struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader
-{
+struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader {
 	/// Identifies the order in which this number was sent. Used locally
 	MessageNumberType messageInternalOrder;
 	/// Has this message number been assigned yet?  We don't assign until the message is actually sent.
@@ -79,7 +76,7 @@ struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader
 	/// This causes performance problems and causes those messages to timeout.
 	bool messageNumberAssigned;
 	/// Was this packet number used this update to track windowing drops or increases?  Each packet number is only used once per update.
-//	bool allowWindowUpdate;
+	//	bool allowWindowUpdate;
 	///When this packet was created
 	RakNetTimeUS creationTime;
 	///The resendNext time to take action on this packet
@@ -89,8 +86,7 @@ struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader
 	/// Buffer is a pointer to the actual data, assuming this packet has data at all
 	unsigned char *data;
 	/// How to alloc and delete the data member
-	enum AllocationScheme
-	{
+	enum AllocationScheme {
 		/// Data is allocated using rakMalloc. Just free it
 		NORMAL,
 
@@ -107,7 +103,7 @@ struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader
 
 	// Used for the resend queue
 	// Linked list implementation so I can remove from the list via a pointer, without finding it in the list
-	InternalPacket *resendPrev, *resendNext,*unreliablePrev,*unreliableNext;
+	InternalPacket *resendPrev, *resendNext, *unreliablePrev, *unreliableNext;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /// \file FullyConnectedMesh2.h
-/// \brief Fully connected mesh plugin, revision 2.  
+/// \brief Fully connected mesh plugin, revision 2.
 /// \details This will connect RakPeer to all connecting peers, and all peers the connecting peer knows about.
 ///
 /// This file is part of RakNet Copyright 2003 Jenkins Software LLC
@@ -42,7 +42,7 @@ public:
 	/// \details Will return UNASSIGNED_RAKNET_GUID if we are not connected to anyone, or if we are connected and are calculating the host
 	/// If includeCalculating is true, will return the estimated calculated host as long as the calculation is nearly complete
 	/// includeCalculating should be true if you are taking action based on another system becoming host, because not all host calculations may compelte at the exact same time
-	/// \return System address of whichever system is host. 
+	/// \return System address of whichever system is host.
 	RakNetGUID GetConnectedHost(void) const;
 	SystemAddress GetConnectedHostAddr(void) const;
 
@@ -64,7 +64,7 @@ public:
 	/// Clear our own host order, and recalculate as if we had just reconnected
 	void ResetHostCalculation(void);
 
-	/// \brief if SetAutoparticipateConnections() is called with false, then you need to use AddParticipant before these systems will be added to the mesh 
+	/// \brief if SetAutoparticipateConnections() is called with false, then you need to use AddParticipant before these systems will be added to the mesh
 	/// \param[in] participant The new participant
 	void AddParticipant(RakNetGUID rakNetGuid);
 
@@ -82,13 +82,12 @@ public:
 	/// \internal
 	virtual void OnRakPeerShutdown(void);
 	/// \internal
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	/// \internal
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 
 	/// \internal
-	struct FCM2Participant
-	{
+	struct FCM2Participant {
 		FCM2Participant() {}
 		FCM2Participant(const FCM2Guid &_fcm2Guid, const RakNetGUID &_rakNetGuid) : fcm2Guid(_fcm2Guid), rakNetGuid(_rakNetGuid) {}
 
@@ -109,7 +108,7 @@ protected:
 	void OnInformFCMGuid(Packet *packet);
 	void AssignOurFCMGuid(void);
 	void CalculateHost(RakNetGUID *rakNetGuid, FCM2Guid *fcm2Guid);
-	bool AddParticipantInternal( RakNetGUID rakNetGuid, FCM2Guid theirFCMGuid );
+	bool AddParticipantInternal(RakNetGUID rakNetGuid, FCM2Guid theirFCMGuid);
 	void CalculateAndPushHost(void);
 	bool ParticipantListComplete(void);
 	void IncrementTotalConnectionCount(unsigned int i);

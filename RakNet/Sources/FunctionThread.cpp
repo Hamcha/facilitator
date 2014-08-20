@@ -10,17 +10,16 @@ using namespace RakNet;
 FunctionThread::FunctorAndContext WorkerThreadFunc(FunctionThread::FunctorAndContext input, bool *returnOutput, void* perThreadData)
 {
 	(void) perThreadData;
-
 	FunctionThread::FunctorAndContext output;
 	input.functor->Process(input.context);
-	output.functor=input.functor;
-	output.context=input.context;
-	*returnOutput=true;
+	output.functor = input.functor;
+	output.context = input.context;
+	*returnOutput = true;
 	return output;
 }
 FunctionThread::FunctionThread()
 {
-	pr=0;
+	pr = 0;
 }
 FunctionThread::~FunctionThread()
 {
@@ -34,8 +33,7 @@ void FunctionThread::StopThreads(bool blockOnCurrentProcessing)
 {
 	// This ensures all waiting data is ultimately passed to a callback, so there are no leaks
 	CancelInput();
-	while (blockOnCurrentProcessing && threadPool.IsWorking())
-	{
+	while (blockOnCurrentProcessing && threadPool.IsWorking()) {
 		CallResultHandlers();
 		RakSleep(30);
 	}
@@ -44,15 +42,14 @@ void FunctionThread::StopThreads(bool blockOnCurrentProcessing)
 void FunctionThread::Push(Functor *functor, void *context)
 {
 	FunctorAndContext input;
-	input.functor=functor;
-	input.context=context;
+	input.functor = functor;
+	input.context = context;
 	threadPool.AddInput(WorkerThreadFunc, input);
 }
 void FunctionThread::CallResultHandlers(void)
 {
 	FunctorAndContext functorAndResult;
-	while (threadPool.HasOutputFast() && threadPool.HasOutput())
-	{
+	while (threadPool.HasOutputFast() && threadPool.HasOutput()) {
 		functorAndResult = threadPool.GetOutput();
 		functorAndResult.functor->HandleResult(false, functorAndResult.context);
 		if (pr) pr(functorAndResult);
@@ -63,11 +60,9 @@ void FunctionThread::CancelFunctorsWithContext(bool (*cancelThisFunctor)(Functio
 	FunctorAndContext functorAndResult;
 	unsigned i;
 	threadPool.LockInput();
-	for (i=0; i < threadPool.InputSize(); i++)
-	{
+	for (i = 0; i < threadPool.InputSize(); i++) {
 		functorAndResult = threadPool.GetInputAtIndex(i);
-		if (cancelThisFunctor(functorAndResult, userData))
-		{
+		if (cancelThisFunctor(functorAndResult, userData)) {
 			functorAndResult.functor->HandleResult(true, functorAndResult.context);
 			if (pr) pr(functorAndResult);
 		}
@@ -77,7 +72,7 @@ void FunctionThread::CancelFunctorsWithContext(bool (*cancelThisFunctor)(Functio
 }
 void FunctionThread::SetPostResultFunction(void (*postResult)(FunctionThread::FunctorAndContext func))
 {
-	pr=postResult;
+	pr = postResult;
 }
 void FunctionThread::CancelInput(void)
 {
@@ -85,8 +80,7 @@ void FunctionThread::CancelInput(void)
 	FunctorAndContext functorAndResult;
 	unsigned i;
 	threadPool.LockInput();
-	for (i=0; i < threadPool.InputSize(); i++)
-	{
+	for (i = 0; i < threadPool.InputSize(); i++) {
 		functorAndResult = threadPool.GetInputAtIndex(i);
 		functorAndResult.functor->HandleResult(true, functorAndResult.context);
 		if (pr) pr(functorAndResult);
@@ -97,8 +91,8 @@ void FunctionThread::CancelInput(void)
 
 FunctionThreadDependentClass::FunctionThreadDependentClass()
 {
-	functionThreadWasAllocated=false;
-	functionThread=0;
+	functionThreadWasAllocated = false;
+	functionThread = 0;
 }
 FunctionThreadDependentClass::~FunctionThreadDependentClass()
 {
@@ -108,24 +102,20 @@ FunctionThreadDependentClass::~FunctionThreadDependentClass()
 
 void FunctionThreadDependentClass::AssignFunctionThread(FunctionThread *ft)
 {
-	if (functionThread && functionThreadWasAllocated)
-	{
+	if (functionThread && functionThreadWasAllocated) {
 		functionThread->StopThreads(true);
 		RakNet::OP_DELETE(functionThread, __FILE__, __LINE__);
 	}
-
-	functionThread=ft;
-	functionThreadWasAllocated=false;
+	functionThread = ft;
+	functionThreadWasAllocated = false;
 }
 
 void FunctionThreadDependentClass::StartFunctionThread(void)
 {
-	if (functionThread==0)
-	{
-		functionThread = RakNet::OP_NEW<FunctionThread>( __FILE__, __LINE__ );
-		functionThreadWasAllocated=true;
+	if (functionThread == 0) {
+		functionThread = RakNet::OP_NEW<FunctionThread>(__FILE__, __LINE__);
+		functionThreadWasAllocated = true;
 	}
-
 	functionThread->StartThreads(1);
 }
 FunctionThread *FunctionThreadDependentClass::GetFunctionThread(void) const

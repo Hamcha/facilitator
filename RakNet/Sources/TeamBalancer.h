@@ -65,9 +65,8 @@ public:
 	/// \param[in] values The maximum number of people per team, by index. For example, a list of size 3 with values 1,2,3 would allow 1 person on team 0, 2 people on team 1, adn 3 people on team 2.
 	/// \param[in] valuesLength Length of the values array
 	void SetTeamSizeLimits(unsigned short *values, int valuesLength);
-	
-	enum DefaultAssigmentAlgorithm
-	{
+
+	enum DefaultAssigmentAlgorithm {
 		/// Among all the teams, join the team with the smallest number of players
 		SMALLEST_TEAM,
 		/// Join the team with the lowest index that has open slots.
@@ -130,8 +129,7 @@ public:
 	/// param[in] allow True to allow host migration, false to not allow
 	void SetAllowHostMigration(bool allow);
 
-	struct TeamMember
-	{
+	struct TeamMember {
 		RakNetGUID memberGuid;
 		TeamId currentTeam;
 		TeamId requestedTeam;
@@ -142,7 +140,7 @@ protected:
 	/// \internal
 	virtual PluginReceiveResult OnReceive(Packet *packet);
 	/// \internal
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 
 	void OnStatusUpdateToNewHost(Packet *packet);
 	void OnCancelTeamRequest(Packet *packet);
