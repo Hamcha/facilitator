@@ -3,6 +3,6 @@
 
 #include "Export.h"
 
-RAK_DLL_EXPORT char* Itoa( int value, char* result, int base );
+RAK_DLL_EXPORT char* Itoa(int value, char* result, int base);
 
 #endif

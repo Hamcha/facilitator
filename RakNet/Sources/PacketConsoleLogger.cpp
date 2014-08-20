@@ -7,12 +7,12 @@
 
 PacketConsoleLogger::PacketConsoleLogger()
 {
-	logCommandParser=0;
+	logCommandParser = 0;
 }
 
 void PacketConsoleLogger::SetLogCommandParser(LogCommandParser *lcp)
 {
-	logCommandParser=lcp;
+	logCommandParser = lcp;
 	if (logCommandParser)
 		logCommandParser->AddChannel("PacketConsoleLogger");
 }

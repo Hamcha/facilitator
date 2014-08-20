@@ -40,8 +40,7 @@ public:
 	virtual ~ConnectionGraph();
 
 	/// A node in the connection graph
-	struct RAK_DLL_EXPORT SystemAddressAndGroupId
-	{
+	struct RAK_DLL_EXPORT SystemAddressAndGroupId {
 		SystemAddressAndGroupId();
 		~SystemAddressAndGroupId();
 		SystemAddressAndGroupId(SystemAddress _systemAddress, ConnectionGraphGroupID _groupID, RakNetGUID _guid);
@@ -50,10 +49,10 @@ public:
 		ConnectionGraphGroupID groupId;
 		RakNetGUID guid;
 
-		bool operator==( const SystemAddressAndGroupId& right ) const;
-		bool operator!=( const SystemAddressAndGroupId& right ) const;
-		bool operator > ( const SystemAddressAndGroupId& right ) const;
-		bool operator < ( const SystemAddressAndGroupId& right ) const;
+		bool operator==(const SystemAddressAndGroupId &right) const;
+		bool operator!=(const SystemAddressAndGroupId &right) const;
+		bool operator > (const SystemAddressAndGroupId &right) const;
+		bool operator < (const SystemAddressAndGroupId &right) const;
 	};
 
 	// --------------------------------------------------------------------------------------------
@@ -119,7 +118,7 @@ public:
 	/// \internal
 	virtual PluginReceiveResult OnReceive(Packet *packet);
 	/// \internal
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	/// \internal
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 
@@ -138,15 +137,15 @@ protected:
 	void SendConnectionGraph(SystemAddress target, unsigned char packetId, RakPeerInterface *peer);
 	void SerializeWeightedGraph(RakNet::BitStream *out, const DataStructures::WeightedGraph<ConnectionGraph::SystemAddressAndGroupId, unsigned short, false> &g) const;
 	bool DeserializeWeightedGraph(RakNet::BitStream *inBitstream, RakPeerInterface *peer);
-	void AddAndRelayConnection(DataStructures::OrderedList<SystemAddress,SystemAddress> &ignoreList, const SystemAddressAndGroupId &conn1, const SystemAddressAndGroupId &conn2, unsigned short ping, RakPeerInterface *peer);
-	bool RemoveAndRelayConnection(DataStructures::OrderedList<SystemAddress,SystemAddress> &ignoreList, unsigned char packetId, const SystemAddress node1, const SystemAddress node2, RakPeerInterface *peer);
+	void AddAndRelayConnection(DataStructures::OrderedList<SystemAddress, SystemAddress> &ignoreList, const SystemAddressAndGroupId &conn1, const SystemAddressAndGroupId &conn2, unsigned short ping, RakPeerInterface *peer);
+	bool RemoveAndRelayConnection(DataStructures::OrderedList<SystemAddress, SystemAddress> &ignoreList, unsigned char packetId, const SystemAddress node1, const SystemAddress node2, RakPeerInterface *peer);
 	void RemoveParticipant(SystemAddress systemAddress);
 	void AddParticipant(SystemAddress systemAddress);
-	void BroadcastGraphUpdate(DataStructures::OrderedList<SystemAddress,SystemAddress> &ignoreList, RakPeerInterface *peer);
-	void NotifyUserOfRemoteConnection(const SystemAddressAndGroupId &conn1, const SystemAddressAndGroupId &conn2,unsigned short ping, RakPeerInterface *peer);
-	bool IsNewRemoteConnection(const SystemAddressAndGroupId &conn1, const SystemAddressAndGroupId &conn2,RakPeerInterface *peer);
-	bool DeserializeIgnoreList(DataStructures::OrderedList<SystemAddress,SystemAddress> &ignoreList, RakNet::BitStream *inBitstream );
-	void SerializeIgnoreListAndBroadcast(RakNet::BitStream *outBitstream, DataStructures::OrderedList<SystemAddress,SystemAddress> &ignoreList, RakPeerInterface *peer);
+	void BroadcastGraphUpdate(DataStructures::OrderedList<SystemAddress, SystemAddress> &ignoreList, RakPeerInterface *peer);
+	void NotifyUserOfRemoteConnection(const SystemAddressAndGroupId &conn1, const SystemAddressAndGroupId &conn2, unsigned short ping, RakPeerInterface *peer);
+	bool IsNewRemoteConnection(const SystemAddressAndGroupId &conn1, const SystemAddressAndGroupId &conn2, RakPeerInterface *peer);
+	bool DeserializeIgnoreList(DataStructures::OrderedList<SystemAddress, SystemAddress> &ignoreList, RakNet::BitStream *inBitstream);
+	void SerializeIgnoreListAndBroadcast(RakNet::BitStream *outBitstream, DataStructures::OrderedList<SystemAddress, SystemAddress> &ignoreList, RakPeerInterface *peer);
 
 	RakNetTime nextWeightUpdate;
 	char *pw;

@@ -3,7 +3,7 @@
 #include "FileOperations.h"
 #include <stdio.h>
 #include <string.h>
-#ifdef _WIN32 
+#ifdef _WIN32
 // For mkdir
 #include <direct.h>
 #include <io.h>
@@ -21,101 +21,75 @@
 #ifdef _MSC_VER
 #pragma warning( disable : 4966 ) // mkdir declared deprecated by Microsoft in order to make it harder to be cross platform.  I don't agree it's deprecated.
 #endif
-bool WriteFileWithDirectories( const char *path, char *data, unsigned dataLength )
+bool WriteFileWithDirectories(const char *path, char *data, unsigned dataLength)
 {
 	int index;
 	FILE *fp;
 	char *pathCopy;
 	int res;
-
-	if ( path == 0 || path[ 0 ] == 0 )
+	if (path == 0 || path[ 0 ] == 0)
 		return false;
-
-	pathCopy = (char*) rakMalloc_Ex( strlen( path ) + 1, __FILE__, __LINE__ );
-
-	strcpy( pathCopy, path );
-
+	pathCopy = (char*) rakMalloc_Ex(strlen(path) + 1, __FILE__, __LINE__);
+	strcpy(pathCopy, path);
 	// Ignore first / if there is one
-	if (pathCopy[0])
-	{
+	if (pathCopy[0]) {
 		index = 1;
-		while ( pathCopy[ index ] )
-		{
-			if ( pathCopy[ index ] == '/' || pathCopy[ index ] == '\\')
-			{
+		while (pathCopy[ index ]) {
+			if (pathCopy[ index ] == '/' || pathCopy[ index ] == '\\') {
 				pathCopy[ index ] = 0;
-	
-	#ifdef _WIN32
-	#pragma warning( disable : 4966 ) // mkdir declared deprecated by Microsoft in order to make it harder to be cross platform.  I don't agree it's deprecated.
-				res = mkdir( pathCopy );
-	#else
-	
-				res = mkdir( pathCopy, 0744 );
-	#endif
-				if (res<0 && errno!=EEXIST && errno!=EACCES)
-				{
-					rakFree_Ex(pathCopy, __FILE__, __LINE__ );
+#ifdef _WIN32
+#pragma warning( disable : 4966 ) // mkdir declared deprecated by Microsoft in order to make it harder to be cross platform.  I don't agree it's deprecated.
+				res = mkdir(pathCopy);
+#else
+				res = mkdir(pathCopy, 0744);
+#endif
+				if (res < 0 && errno != EEXIST && errno != EACCES) {
+					rakFree_Ex(pathCopy, __FILE__, __LINE__);
 					return false;
 				}
-	
 				pathCopy[ index ] = '/';
 			}
-	
 			index++;
 		}
 	}
-
-	if (data)
-	{
-		fp = fopen( path, "wb" );
-
-		if ( fp == 0 )
-		{
-			rakFree_Ex(pathCopy, __FILE__, __LINE__ );
+	if (data) {
+		fp = fopen(path, "wb");
+		if (fp == 0) {
+			rakFree_Ex(pathCopy, __FILE__, __LINE__);
 			return false;
 		}
-
-		fwrite( data, 1, dataLength, fp );
-
-		fclose( fp );
-	}
-	else
-	{
+		fwrite(data, 1, dataLength, fp);
+		fclose(fp);
+	} else {
 #ifdef _WIN32
 #pragma warning( disable : 4966 ) // mkdir declared deprecated by Microsoft in order to make it harder to be cross platform.  I don't agree it's deprecated.
-		res = mkdir( pathCopy );
+		res = mkdir(pathCopy);
 #else
-		res = mkdir( pathCopy, 0744 );
+		res = mkdir(pathCopy, 0744);
 #endif
-
-		if (res<0 && errno!=EEXIST)
-		{
-			rakFree_Ex(pathCopy, __FILE__, __LINE__ );
+		if (res < 0 && errno != EEXIST) {
+			rakFree_Ex(pathCopy, __FILE__, __LINE__);
 			return false;
 		}
 	}
-
-	rakFree_Ex(pathCopy, __FILE__, __LINE__ );
-
+	rakFree_Ex(pathCopy, __FILE__, __LINE__);
 	return true;
 }
 bool IsSlash(unsigned char c)
 {
-	return c=='/' || c=='\\';
+	return c == '/' || c == '\\';
 }
 
-void AddSlash( char *input )
+void AddSlash(char *input)
 {
-	if (input==0 || input[0]==0)
+	if (input == 0 || input[0] == 0)
 		return;
-
-	int lastCharIndex=(int) strlen(input)-1;
-	if (input[lastCharIndex]=='\\')
-		input[lastCharIndex]='/';
-	else if (input[lastCharIndex]!='/')
-	{
-		input[lastCharIndex+1]='/';
-		input[lastCharIndex+2]=0;
+	int lastCharIndex = (int) strlen(input) - 1;
+	if (input[lastCharIndex] == '\\')
+		input[lastCharIndex] = '/';
+	else if (input[lastCharIndex] != '/') {
+		input[lastCharIndex + 1] = '/';
+		input[lastCharIndex + 2] = 0;
 	}
 }
 bool DirectoryExists(const char *directory)
@@ -126,8 +100,8 @@ bool DirectoryExists(const char *directory)
 	strcpy(baseDirWithStars, directory);
 	AddSlash(baseDirWithStars);
 	strcat(baseDirWithStars, "*.*");
-	dir=_findfirst(baseDirWithStars, &fileInfo );
-	if (dir==-1)
+	dir = _findfirst(baseDirWithStars, &fileInfo);
+	if (dir == -1)
 		return false;
 	_findclose(dir);
 	return true;
@@ -135,33 +109,29 @@ bool DirectoryExists(const char *directory)
 void QuoteIfSpaces(char *str)
 {
 	unsigned i;
-	bool hasSpace=false;
-	for (i=0; str[i]; i++)
-	{
-		if (str[i]==' ')
-		{
-			hasSpace=true;
+	bool hasSpace = false;
+	for (i = 0; str[i]; i++) {
+		if (str[i] == ' ') {
+			hasSpace = true;
 			break;
 		}
 	}
-	if (hasSpace)
-	{
-		int len=(int)strlen(str);
-		memmove(str+1, str, len);
-		str[0]='\"';
-		str[len]='\"';
-		str[len+1]=0;
+	if (hasSpace) {
+		int len = (int)strlen(str);
+		memmove(str + 1, str, len);
+		str[0] = '\"';
+		str[len] = '\"';
+		str[len + 1] = 0;
 	}
 }
 unsigned int GetFileLength(const char *path)
 {
 	FILE *fp = fopen(path, "rb");
-	if (fp==0) return 0;
+	if (fp == 0) return 0;
 	fseek(fp, 0, SEEK_END);
 	unsigned int fileLength = ftell(fp);
 	fclose(fp);
 	return fileLength;
-
 }
 
 #ifdef _MSC_VER

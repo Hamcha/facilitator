@@ -20,7 +20,7 @@ class RakPeerInterface;
 class RakNetTransport;
 namespace RakNet
 {
-	class BitStream;
+class BitStream;
 }
 
 /// \brief RakNetTransport has its own command parser to enable remote users to change the command console's password.
@@ -59,7 +59,7 @@ class RAK_DLL_EXPORT RakNetTransport : public TransportInterface
 {
 public:
 	RakNetTransport();
-    virtual ~RakNetTransport();
+	virtual ~RakNetTransport();
 
 	/// Start the transport provider on the indicated port.
 	/// \param[in] port The port to start the transport provider on
@@ -76,22 +76,22 @@ public:
 	/// \param[in] systemAddress The player to send the string to
 	/// \param[in] data format specifier - same as RAKNET_DEBUG_PRINTF
 	/// \param[in] ... format specification arguments - same as RAKNET_DEBUG_PRINTF
-	void Send( SystemAddress systemAddress, const char *data, ... );
+	void Send(SystemAddress systemAddress, const char *data, ...);
 
 	/// Return a string. The string should be allocated and written to Packet::data .
 	/// The byte length should be written to Packet::length .  The player/address should be written to Packet::systemAddress
 	/// If your transport protocol adds special formatting to the data stream you should parse it out before returning it in the packet
 	/// and thus only return a string in Packet::data
 	/// \return The packet structure containing the result of Receive, or 0 if no data is available
-	Packet* Receive( void );
+	Packet* Receive(void);
 
 	/// Deallocate the Packet structure returned by Receive
 	/// \param[in] The packet to deallocate
-	void DeallocatePacket( Packet *packet );
+	void DeallocatePacket(Packet *packet);
 
 	/// Disconnect \a systemAddress .  The binary address and port defines the SystemAddress structure.
 	/// \param[in] systemAddress The player/address to disconnect
-	void CloseConnection( SystemAddress systemAddress );
+	void CloseConnection(SystemAddress systemAddress);
 
 	/// If a new system connects to you, you should queue that event and return the systemAddress/address of that player in this function.
 	/// \return The SystemAddress/address of the system

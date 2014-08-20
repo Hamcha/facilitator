@@ -32,56 +32,56 @@ public:
 	// You can't instantiate exported classes directly in your program.  The instantiation
 	// has to take place inside the DLL.  So these functions will do the news and deletes for you.
 	// if you're using the source or static library you don't need these functions, but can use them if you want.
-	static RakPeerInterface* GetRakPeerInterface( void );
-	static void DestroyRakPeerInterface( RakPeerInterface* i );
+	static RakPeerInterface* GetRakPeerInterface(void);
+	static void DestroyRakPeerInterface(RakPeerInterface* i);
 
 #if _RAKNET_SUPPORT_ConsoleServer==1
-	static ConsoleServer* GetConsoleServer( void );
-	static void DestroyConsoleServer( ConsoleServer* i);
+	static ConsoleServer* GetConsoleServer(void);
+	static void DestroyConsoleServer(ConsoleServer* i);
 #endif
 
 #if _RAKNET_SUPPORT_ReplicaManager==1
-	static ReplicaManager* GetReplicaManager( void );
-	static void DestroyReplicaManager( ReplicaManager* i);
+	static ReplicaManager* GetReplicaManager(void);
+	static void DestroyReplicaManager(ReplicaManager* i);
 #endif
 
 #if _RAKNET_SUPPORT_LogCommandParser==1
-	static LogCommandParser* GetLogCommandParser( void );
-	static void DestroyLogCommandParser( LogCommandParser* i);
+	static LogCommandParser* GetLogCommandParser(void);
+	static void DestroyLogCommandParser(LogCommandParser* i);
 #endif
 
 #if _RAKNET_SUPPORT_PacketLogger==1
-	static PacketLogger* GetPacketLogger( void );
-	static void DestroyPacketLogger( PacketLogger* i);
-	static PacketConsoleLogger* GetPacketConsoleLogger( void );
-	static void DestroyPacketConsoleLogger(  PacketConsoleLogger* i );
-	static PacketFileLogger* GetPacketFileLogger( void );
-	static void DestroyPacketFileLogger(  PacketFileLogger* i );
+	static PacketLogger* GetPacketLogger(void);
+	static void DestroyPacketLogger(PacketLogger* i);
+	static PacketConsoleLogger* GetPacketConsoleLogger(void);
+	static void DestroyPacketConsoleLogger(PacketConsoleLogger* i);
+	static PacketFileLogger* GetPacketFileLogger(void);
+	static void DestroyPacketFileLogger(PacketFileLogger* i);
 #endif
 
 #if _RAKNET_SUPPORT_RakNetCommandParser==1
-	static RakNetCommandParser* GetRakNetCommandParser( void );
-	static void DestroyRakNetCommandParser(  RakNetCommandParser* i );
+	static RakNetCommandParser* GetRakNetCommandParser(void);
+	static void DestroyRakNetCommandParser(RakNetCommandParser* i);
 #endif
 
 #if _RAKNET_SUPPORT_RakNetTransport==1
-	static RakNetTransport* GetRakNetTransport( void );
-	static void DestroyRakNetTransport(  RakNetTransport* i );
+	static RakNetTransport* GetRakNetTransport(void);
+	static void DestroyRakNetTransport(RakNetTransport* i);
 #endif
 
 #if _RAKNET_SUPPORT_TelnetTransport==1
-	static TelnetTransport* GetTelnetTransport( void );
-	static void DestroyTelnetTransport(  TelnetTransport* i );
+	static TelnetTransport* GetTelnetTransport(void);
+	static void DestroyTelnetTransport(TelnetTransport* i);
 #endif
 
 #if _RAKNET_SUPPORT_Router==1
-	static Router* GetRouter( void );
-	static void DestroyRouter(  Router* i );
+	static Router* GetRouter(void);
+	static void DestroyRouter(Router* i);
 #endif
 
 #if _RAKNET_SUPPORT_ConnectionGraph==1
-	static ConnectionGraph* GetConnectionGraph( void );
-	static void DestroyConnectionGraph(  ConnectionGraph* i );
+	static ConnectionGraph* GetConnectionGraph(void);
+	static void DestroyConnectionGraph(ConnectionGraph* i);
 #endif
 };
 

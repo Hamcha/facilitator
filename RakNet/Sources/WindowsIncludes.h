@@ -11,6 +11,6 @@
 // winsock2.h(143) : error C2011: 'timeval' : 'struct' type redefinition
 // winsock2.h(199) : error C2011: 'hostent' : 'struct' type redefinition
 // winsock2.h(212) : error C2011: 'netent' : 'struct' type redefinition
-// winsock2.h(219) : error C2011: 'servent' : 'struct' type redefinition 
+// winsock2.h(219) : error C2011: 'servent' : 'struct' type redefinition
 
 #endif

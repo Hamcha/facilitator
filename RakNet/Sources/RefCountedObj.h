@@ -14,12 +14,21 @@
 /// World's simplest class :)
 class RefCountedObj
 {
-	public:
-		RefCountedObj() {refCount=1;}
-		virtual ~RefCountedObj() {}
-		void AddRef(void) {refCount++;}
-		void Deref(void) {if (--refCount==0) RakNet::OP_DELETE(this, __FILE__, __LINE__);}
-		int refCount;
+public:
+	RefCountedObj()
+	{
+		refCount = 1;
+	}
+	virtual ~RefCountedObj() {}
+	void AddRef(void)
+	{
+		refCount++;
+	}
+	void Deref(void)
+	{
+		if (--refCount == 0) RakNet::OP_DELETE(this, __FILE__, __LINE__);
+	}
+	int refCount;
 };
 
 #endif

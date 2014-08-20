@@ -23,25 +23,25 @@ public:
 
 	/// \brief Reset the frequency table.
 	/// \details You don't need to call this unless you want to reuse the class for a new tree
-	void Reset( void );
+	void Reset(void);
 
 	/// \brief Pass an array of bytes to this to add those elements to the frequency table.
 	/// \param[in] array the data to insert into the frequency table
 	/// \param[in] size the size of the data to insert
-	void AddToFrequencyTable( unsigned char *array, int size );
+	void AddToFrequencyTable(unsigned char *array, int size);
 
 	/// \brief Copies the frequency table to the array passed. Retrieve the frequency table.
 	/// \param[in] _frequency The frequency table used currently
-	void GetFrequencyTable( unsigned int _frequency[ 256 ] );
+	void GetFrequencyTable(unsigned int _frequency[ 256 ]);
 
 	/// \brief Returns the frequency table as a pointer.
 	/// \return the address of the frenquency table
-	unsigned int * GetFrequencyTable( void );
+	unsigned int * GetFrequencyTable(void);
 
 	/// \brief Generate a HuffmanEncodingTree.
 	/// \details You can also use GetFrequencyTable and GenerateFromFrequencyTable in the tree itself
 	/// \return The generated instance of HuffmanEncodingTree
-	HuffmanEncodingTree * GenerateTree( void );
+	HuffmanEncodingTree * GenerateTree(void);
 
 private:
 

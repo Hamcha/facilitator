@@ -21,8 +21,7 @@ class FileListTransferCBInterface
 {
 public:
 	// Note: If this structure is changed the struct in the swig files need to be changed as well
-	struct OnFileStruct
-	{
+	struct OnFileStruct {
 		/// \brief The index into the set of files, from 0 to numberOfFilesInThisSet
 		unsigned fileIndex;
 
@@ -57,8 +56,7 @@ public:
 	};
 
 	// Note: If this structure is changed the struct in the swig files need to be changed as well
-	struct FileProgressStruct
-	{
+	struct FileProgressStruct {
 		/// \param[out] onFileStruct General information about this file, such as the filename and the first \a partLength bytes. You do NOT need to save this data yourself. The complete file will arrive normally.
 		OnFileStruct *onFileStruct;
 		/// \param[out] partCount The zero based index into partTotal. The percentage complete done of this file is 100 * (partCount+1)/partTotal
@@ -83,7 +81,7 @@ public:
 	/// \brief Got a file.
 	/// \details This structure is only valid for the duration of this function call.
 	/// \return Return true to have RakNet delete the memory allocated to hold this file for this function call.
-	virtual bool OnFile(OnFileStruct *onFileStruct)=0;
+	virtual bool OnFile(OnFileStruct *onFileStruct) = 0;
 
 	/// \brief Got part of a big file internally in RakNet
 	/// \details This is called in one of two circumstances: Either the transport layer is returning ID_PROGRESS_NOTIFICATION, or you got a block via IncrementalReadInterface
@@ -92,18 +90,24 @@ public:
 	/// If not using IncrementalReadInterface, then you only care about partCount and partTotal to tell how far the download has progressed. YOu can use firstDataChunk to read the first part of the file if desired. The file is usable when you get the OnFile callback.
 	/// If using IncrementalReadInterface and you let RakNet buffer the files in memory (default), then it is the same as above. The file is usable when you get the OnFile callback.
 	/// If using IncrementalReadInterface and you do not let RakNet buffer the files in memory, then set allocateIrIDataChunkAutomatically to false. Write the file to disk whenever you get OnFileProgress and iriDataChunk is not 0, and ignore OnFile.
-	virtual void OnFileProgress(FileProgressStruct *fps)=0;
+	virtual void OnFileProgress(FileProgressStruct *fps) = 0;
 
 	/// \brief Called while the handler is active by FileListTransfer
 	/// \details Return false when you are done with the class.
 	/// At that point OnDereference will be called and the class will no longer be maintained by the FileListTransfer plugin.
-	virtual bool Update(void) {return true;}
+	virtual bool Update(void)
+	{
+		return true;
+	}
 
 	/// \brief Called when the download is completed.
 	/// \details If you are finished with this class, return false.
 	/// At that point OnDereference will be called and the class will no longer be maintained by the FileListTransfer plugin.
 	/// Otherwise return true, and Update will continue to be called.
-	virtual bool OnDownloadComplete(void) {return false;}
+	virtual bool OnDownloadComplete(void)
+	{
+		return false;
+	}
 
 	/// \brief This function is called when this instance is about to be dereferenced by the FileListTransfer plugin.
 	/// \details Update will no longer be called.
