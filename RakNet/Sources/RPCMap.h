@@ -17,16 +17,15 @@
 #include "RakNetTypes.h"
 #include "Export.h"
 
-/// \ingroup RAKNET_RPC 
+/// \ingroup RAKNET_RPC
 /// \internal
 /// \brief A container class for a list of RPCNodes
-struct RAK_DLL_EXPORT RPCMap
-{
+struct RAK_DLL_EXPORT RPCMap {
 public:
 	RPCMap();
 	~RPCMap();
 	void Clear(void);
-    RPCNode *GetNodeFromIndex(RPCIndex index);
+	RPCNode *GetNodeFromIndex(RPCIndex index);
 	RPCNode *GetNodeFromFunctionName(const char *uniqueIdentifier);
 	RPCIndex GetIndexFromFunctionName(const char *uniqueIdentifier);
 	void AddIdentifierWithFunction(const char *uniqueIdentifier, void *functionPointer, bool isPointerToMember);

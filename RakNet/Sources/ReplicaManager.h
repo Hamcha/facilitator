@@ -22,7 +22,7 @@
 /// Forward declarations
 namespace RakNet
 {
-	class BitStream;
+class BitStream;
 };
 class Replica;
 class ReplicaManager;
@@ -54,7 +54,7 @@ public:
 	/// \param[in] senderId Which SystemAddress sent this packet.
 	/// \param[in] caller Which instance of ReplicaManager is calling this interface
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult ReceiveConstruction(RakNet::BitStream *inBitStream, RakNetTime timestamp, NetworkID networkID, NetworkIDObject *existingObject, SystemAddress senderId, ReplicaManager *caller)=0;
+	virtual ReplicaReturnResult ReceiveConstruction(RakNet::BitStream *inBitStream, RakNetTime timestamp, NetworkID networkID, NetworkIDObject *existingObject, SystemAddress senderId, ReplicaManager *caller) = 0;
 };
 
 /// An interface for a class that handles the call to send the download complete notification
@@ -71,7 +71,7 @@ public:
 	/// \param[in] senderId Who we are sending to
 	/// \param[in] caller Which instance of ReplicaManager is calling this interface
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult SendDownloadComplete(RakNet::BitStream *outBitStream, RakNetTime currentTime, SystemAddress senderId, ReplicaManager *caller)=0;
+	virtual ReplicaReturnResult SendDownloadComplete(RakNet::BitStream *outBitStream, RakNetTime currentTime, SystemAddress senderId, ReplicaManager *caller) = 0;
 };
 
 /// An interface for a class that handles the call to receive the download complete notification
@@ -87,7 +87,7 @@ public:
 	/// \param[in] senderId The SystemAddress of the system that send the datagram
 	/// \param[in] caller Which instance of ReplicaManager is calling this interface
 	/// \return See ReplicaReturnResult
-	virtual ReplicaReturnResult ReceiveDownloadComplete(RakNet::BitStream *inBitStream, SystemAddress senderId, ReplicaManager *caller)=0;
+	virtual ReplicaReturnResult ReceiveDownloadComplete(RakNet::BitStream *inBitStream, SystemAddress senderId, ReplicaManager *caller) = 0;
 };
 
 /// \deprecated See RakNet::ReplicaManager3
@@ -232,7 +232,7 @@ public:
 	/// \param[in] sendDownloadComplete A class that implements the SendDownloadCompleteInterface interface.
 	/// \param[in] receiveDownloadComplete A class that implements the ReceiveDownloadCompleteInterface interface.
 	/// \sa SendDownloadCompleteInterface , ReceiveDownloadCompleteInterface
-	void SetDownloadCompleteCB( SendDownloadCompleteInterface *sendDownloadComplete, ReceiveDownloadCompleteInterface *receiveDownloadComplete );
+	void SetDownloadCompleteCB(SendDownloadCompleteInterface *sendDownloadComplete, ReceiveDownloadCompleteInterface *receiveDownloadComplete);
 
 	/// This channel will be used for all RakPeer::Send calls
 	/// \param[in] channel The channel to use for internal RakPeer::Send calls from this system.  Defaults to 0.
@@ -305,7 +305,7 @@ public:
 	/// the array will be shifted over and the current index will now reference the next object in the array, if there was one.
 	/// \param[in] index An index, from 0 to GetReplicaCount()-1.
 	/// \return A Replica * previously passed to Construct()
-    Replica *GetReplicaAtIndex(unsigned index);
+	Replica *GetReplicaAtIndex(unsigned index);
 
 	/// Returns the number of unique participants added with AddParticipant
 	/// As these systems disconnect, they are no longer participants, so this accurately returns how many participants are using the system
@@ -341,44 +341,39 @@ public:
 
 	// ---------------------------- ALL INTERNAL AFTER HERE ----------------------------
 
-	enum
-	{
+	enum {
 		// Treat the object as on the remote system, and send a packet
-		REPLICA_EXPLICIT_CONSTRUCTION=1<<0,
+		REPLICA_EXPLICIT_CONSTRUCTION = 1 << 0,
 		// Treat the object as on the remote system, but do not send a packet. Overridden by REPLICA_EXPLICIT_CONSTRUCTION.
-		REPLICA_IMPLICIT_CONSTRUCTION=1<<1,
-		REPLICA_SCOPE_TRUE=1<<2, // Mutually exclusive REPLICA_SCOPE_FALSE
-		REPLICA_SCOPE_FALSE=1<<3, // Mutually exclusive REPLICA_SCOPE_TRUE
-		REPLICA_SERIALIZE=1<<4,
+		REPLICA_IMPLICIT_CONSTRUCTION = 1 << 1,
+		REPLICA_SCOPE_TRUE = 1 << 2, // Mutually exclusive REPLICA_SCOPE_FALSE
+		REPLICA_SCOPE_FALSE = 1 << 3, // Mutually exclusive REPLICA_SCOPE_TRUE
+		REPLICA_SERIALIZE = 1 << 4,
 	};
 
 	/// \internal
 	/// One pointer and a command to act on that pointer
-	struct CommandStruct
-	{
+	struct CommandStruct {
 		Replica *replica; // Pointer to an external object - not allocated here.
 		unsigned char command; // This is one of the enums immediately above.
 		unsigned int userFlags;
 	};
 
-	struct RegisteredReplica
-	{
+	struct RegisteredReplica {
 		Replica *replica; // Pointer to an external object - not allocated here.
 		RakNetTime lastDeserializeTrue; //   For replicatedObjects it's the last time deserialize returned true.
 		unsigned char allowedInterfaces; // Replica interface flags
 		unsigned int referenceOrder; // The order in which we started tracking this object.  Used so autoconstruction can send objects in-order
 	};
 
-	struct RemoteObject
-	{
+	struct RemoteObject {
 		Replica *replica; // Pointer to an external object - not allocated here.
-        bool inScope; // Is replica in scope or not?
+		bool inScope; // Is replica in scope or not?
 		RakNetTime lastSendTime;
 		unsigned int userFlags;
 	};
 
-	struct ReceivedCommand
-	{
+	struct ReceivedCommand {
 		SystemAddress systemAddress;
 		NetworkID networkID;
 		unsigned command; // A packetID
@@ -387,15 +382,14 @@ public:
 	};
 
 
-	static int RegisteredReplicaComp( Replica* const &key, const ReplicaManager::RegisteredReplica &data );
-	static int RegisteredReplicaRefOrderComp( const unsigned int &key, const ReplicaManager::RegisteredReplica &data );
-	static int RemoteObjectComp( Replica* const &key, const ReplicaManager::RemoteObject &data );
-	static int CommandStructComp( Replica* const &key, const ReplicaManager::CommandStruct &data );
+	static int RegisteredReplicaComp(Replica* const &key, const ReplicaManager::RegisteredReplica &data);
+	static int RegisteredReplicaRefOrderComp(const unsigned int &key, const ReplicaManager::RegisteredReplica &data);
+	static int RemoteObjectComp(Replica* const &key, const ReplicaManager::RemoteObject &data);
+	static int CommandStructComp(Replica* const &key, const ReplicaManager::CommandStruct &data);
 
 	/// \internal
 	/// One remote system
-	struct ParticipantStruct
-	{
+	struct ParticipantStruct {
 		~ParticipantStruct();
 
 		// The player this participant struct represents.
@@ -420,7 +414,7 @@ public:
 		DataStructures::Queue<ReceivedCommand*> pendingCommands;
 	};
 
-	static int ParticipantStructComp( const SystemAddress &key, ReplicaManager::ParticipantStruct * const &data );
+	static int ParticipantStructComp(const SystemAddress &key, ReplicaManager::ParticipantStruct * const &data);
 
 protected:
 	/// Frees all memory
@@ -431,7 +425,7 @@ protected:
 
 	// Plugin interface functions
 	PluginReceiveResult OnReceive(Packet *packet);
-	void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	void OnRakPeerShutdown(void);
 	void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 
@@ -450,7 +444,7 @@ protected:
 	ParticipantStruct* GetParticipantBySystemAddress(const SystemAddress systemAddress) const;
 
 	// Callback pointers.
-	
+
 	// Required callback to handle construction calls
 	ReceiveConstructionInterface *_constructionCB;
 

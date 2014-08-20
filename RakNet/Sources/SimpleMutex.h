@@ -11,7 +11,7 @@
 
 #include "RakMemoryOverride.h"
 #if defined(_XBOX) || defined(X360)
-                            
+
 #elif defined(_WIN32)
 #include "WindowsIncludes.h"
 #else
@@ -20,7 +20,7 @@
 #endif
 #include "Export.h"
 /// \brief An easy to use mutex.
-/// 
+///
 /// I wrote this because the version that comes with Windows is too complicated and requires too much code to use.
 /// @remark Previously I used this everywhere, and in fact for a year or two RakNet was totally threadsafe.  While doing profiling, I saw that this function was incredibly slow compared to the blazing performance of everything else, so switched to single producer / consumer everywhere.  Now the user thread of RakNet is not threadsafe, but it's 100X faster than before.
 class RAK_DLL_EXPORT SimpleMutex
@@ -29,22 +29,22 @@ public:
 
 	// Constructor
 	SimpleMutex();
-	
+
 	// Destructor
 	~SimpleMutex();
-	
+
 	// Locks the mutex.  Slow!
 	void Lock(void);
-	
+
 	// Unlocks the mutex.
 	void Unlock(void);
 private:
 	void Init(void);
-	#ifdef _WIN32
+#ifdef _WIN32
 	CRITICAL_SECTION criticalSection; /// Docs say this is faster than a mutex for single process access
-	#else
+#else
 	pthread_mutex_t hMutex;
-	#endif
+#endif
 	bool isInitialized;
 };
 

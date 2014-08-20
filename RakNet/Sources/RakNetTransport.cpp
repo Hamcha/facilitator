@@ -17,9 +17,9 @@
 
 RakNetTransportCommandParser::RakNetTransportCommandParser()
 {
-	RegisterCommand(1, "SetPassword","Changes the console password to whatever.");
-	RegisterCommand(0, "ClearPassword","Removes the console passwords.");
-	RegisterCommand(0, "GetPassword","Gets the console password.");
+	RegisterCommand(1, "SetPassword", "Changes the console password to whatever.");
+	RegisterCommand(0, "ClearPassword", "Removes the console passwords.");
+	RegisterCommand(0, "GetPassword", "Gets the console password.");
 }
 RakNetTransportCommandParser::~RakNetTransportCommandParser()
 {
@@ -28,24 +28,18 @@ bool RakNetTransportCommandParser::OnCommand(const char *command, unsigned numPa
 {
 	(void) originalString;
 	(void) numParameters;
-
 	RakNetTransport *rnt = (RakNetTransport*) transport;
-	if (strcmp(command, "SetPassword")==0)
-	{
+	if (strcmp(command, "SetPassword") == 0) {
 		rnt->SetIncomingPassword(parameterList[0]);
 		rnt->Send(systemAddress, "Password changed to %s\r\n", parameterList[0]);
-	}
-	else if (strcmp(command, "ClearPassword")==0)
-	{
+	} else if (strcmp(command, "ClearPassword") == 0) {
 		rnt->SetIncomingPassword(0);
 		rnt->Send(systemAddress, "Password cleared\r\n");
-	}
-	else if (strcmp(command, "GetPassword")==0)
-	{
+	} else if (strcmp(command, "GetPassword") == 0) {
 		char *password;
-		password=rnt->GetIncomingPassword();
+		password = rnt->GetIncomingPassword();
 		if (password[0])
-			rnt->Send(systemAddress, "Password is %s\r\n",password);
+			rnt->Send(systemAddress, "Password is %s\r\n", password);
 		else
 			rnt->Send(systemAddress, "No password is set.\r\n");
 	}
@@ -62,7 +56,7 @@ void RakNetTransportCommandParser::SendHelp(TransportInterface *transport, Syste
 }
 RakNetTransport::RakNetTransport()
 {
-	rakPeer=0;
+	rakPeer = 0;
 }
 RakNetTransport::~RakNetTransport()
 {
@@ -72,68 +66,57 @@ RakNetTransport::~RakNetTransport()
 bool RakNetTransport::Start(unsigned short port, bool serverMode)
 {
 	AutoAllocate();
-	rakPeer->InitializeSecurity(0,0,0,0);
-
-	if (serverMode)
-	{
+	rakPeer->InitializeSecurity(0, 0, 0, 0);
+	if (serverMode) {
 		// Allow up to 8 remote systems to login
 		rakPeer->SetMaximumIncomingConnections(8);
 	}
-
-	SocketDescriptor socketDescriptor(port,0);
+	SocketDescriptor socketDescriptor(port, 0);
 	return rakPeer->Startup(8, 250, &socketDescriptor, 1);
 }
 void RakNetTransport::Stop(void)
 {
-	if (rakPeer==0) return;
+	if (rakPeer == 0) return;
 	rakPeer->Shutdown(1000, 0);
 	newConnections.Clear(__FILE__, __LINE__);
 	lostConnections.Clear(__FILE__, __LINE__);
 }
-void RakNetTransport::Send( SystemAddress systemAddress, const char *data, ... )
+void RakNetTransport::Send(SystemAddress systemAddress, const char *data, ...)
 {
-	if (rakPeer==0) return;
-	if (data==0 || data[0]==0) return;
-
+	if (rakPeer == 0) return;
+	if (data == 0 || data[0] == 0) return;
 	char text[REMOTE_MAX_TEXT_INPUT];
 	va_list ap;
 	va_start(ap, data);
 	_vsnprintf(text, REMOTE_MAX_TEXT_INPUT, data, ap);
 	va_end(ap);
-	text[REMOTE_MAX_TEXT_INPUT-1]=0;
-
+	text[REMOTE_MAX_TEXT_INPUT - 1] = 0;
 	RakNet::BitStream str;
 	str.Write((MessageID)ID_TRANSPORT_STRING);
 	str.Write(text, (int) strlen(text));
 	str.Write((unsigned char) 0); // Null terminate the string
-	rakPeer->Send(&str, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, systemAddress, (systemAddress==UNASSIGNED_SYSTEM_ADDRESS)!=0);
+	rakPeer->Send(&str, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, systemAddress, (systemAddress == UNASSIGNED_SYSTEM_ADDRESS) != 0);
 }
-void RakNetTransport::CloseConnection( SystemAddress systemAddress )
+void RakNetTransport::CloseConnection(SystemAddress systemAddress)
 {
 	rakPeer->CloseConnection(systemAddress, true, 0);
 }
-Packet* RakNetTransport::Receive( void )
+Packet* RakNetTransport::Receive(void)
 {
-	if (rakPeer==0) return 0;
+	if (rakPeer == 0) return 0;
 	Packet *p;
-	p=rakPeer->Receive();
-	if (p==0)
+	p = rakPeer->Receive();
+	if (p == 0)
 		return 0;
-	if (p->data[0]==ID_TRANSPORT_STRING)
-	{
+	if (p->data[0] == ID_TRANSPORT_STRING) {
 		p->data++; // Go past ID_TRANSPORT_STRING, since the transport protocol is only supposed to send strings.
 		return p;
 	}
-	if (p->data[0]==ID_NEW_INCOMING_CONNECTION)
-	{
-		newConnections.Push(p->systemAddress, __FILE__, __LINE__ );
-	}
-	else if (p->data[0]==ID_DISCONNECTION_NOTIFICATION || p->data[0]==ID_CONNECTION_LOST)
-	{
-		lostConnections.Push(p->systemAddress, __FILE__, __LINE__ );
-	}
+	if (p->data[0] == ID_NEW_INCOMING_CONNECTION)
+		newConnections.Push(p->systemAddress, __FILE__, __LINE__);
+	else if (p->data[0] == ID_DISCONNECTION_NOTIFICATION || p->data[0] == ID_CONNECTION_LOST)
+		lostConnections.Push(p->systemAddress, __FILE__, __LINE__);
 	rakPeer->DeallocatePacket(p);
-
 	return 0;
 }
 SystemAddress RakNetTransport::HasNewIncomingConnection(void)
@@ -151,32 +134,32 @@ SystemAddress RakNetTransport::HasLostConnection(void)
 void RakNetTransport::SetIncomingPassword(const char *password)
 {
 	if (password)
-		rakPeer->SetIncomingPassword(password, (int) strlen(password)+1);
+		rakPeer->SetIncomingPassword(password, (int) strlen(password) + 1);
 	else
 		rakPeer->SetIncomingPassword(0, 0);
 }
 char * RakNetTransport::GetIncomingPassword(void)
 {
 	static char password[256];
-	int passwordLength=255;
+	int passwordLength = 255;
 	rakPeer->GetIncomingPassword((char*)password, &passwordLength);
-	password[passwordLength]=0;
+	password[passwordLength] = 0;
 	return (char*) password;
 }
-void RakNetTransport::DeallocatePacket( Packet *packet )
+void RakNetTransport::DeallocatePacket(Packet *packet)
 {
-	if (rakPeer==0) return;
+	if (rakPeer == 0) return;
 	packet->data--; // Go back to ID_TRANSPORT_STRING, which we passed up in Receive()
 	rakPeer->DeallocatePacket(packet);
 }
 void RakNetTransport::AutoAllocate(void)
 {
-	if (rakPeer==0)
-		rakPeer=RakNetworkFactory::GetRakPeerInterface();
+	if (rakPeer == 0)
+		rakPeer = RakNetworkFactory::GetRakPeerInterface();
 }
 CommandParserInterface* RakNetTransport::GetCommandParser(void)
 {
-    return &rakNetTransportCommandParser;
+	return &rakNetTransportCommandParser;
 }
 
 #ifdef _MSC_VER

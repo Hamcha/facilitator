@@ -3,12 +3,12 @@
 
 class Log
 {
-	private:
+private:
 	static char* logfile;
 	static FILE* outputStream;
 	static const int MAX_LOG_NAME_SIZE = 50;
 
-	public:
+public:
 	static int sDebugLevel;
 	static bool printStats;
 
@@ -28,7 +28,7 @@ class Log
 	static void RotateLogFile(int sig);
 	static long GetLogSize();
 
-	private:
+private:
 	static void print_timestamp(const char* msg);
 };
 

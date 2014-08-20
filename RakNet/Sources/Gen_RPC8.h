@@ -12,7 +12,7 @@
 #include <string.h> // memcpy
 #include <typeinfo>
 #if defined(_XBOX) || defined(X360)
-                            
+
 #elif defined (_WIN32)
 #include "WindowsIncludes.h"
 #endif
@@ -182,36 +182,36 @@ typedef unsigned long long NaturalWord;
 typedef double         HardwareReal;  // could be changed to __float128 on AMD64/nonwin
 
 #elif defined(_PS3) || defined(__PS3__) || defined(SN_TARGET_PS3)
-                                                                                                                                                                                                                                                                                                                                                                                                   
+
 #elif defined(_M_PPC) || defined( __POWERPC__ )
 
 #include <limits.h>
 
 /// PPC Mac doesn't support sizeof( long ) in an #if statement
 #if defined (LONG_BIT)
-	#if LONG_BIT == 64
-		#define AUTORPC_WORD 64
-		typedef double HardwareReal;
-		typedef unsigned long long NaturalWord;
-	#else
-		#define AUTORPC_WORD 32
-		typedef double HardwareReal;
-		typedef unsigned int NaturalWord;
-	#endif
+#if LONG_BIT == 64
+#define AUTORPC_WORD 64
+typedef double HardwareReal;
+typedef unsigned long long NaturalWord;
 #else
-	#if defined(_XBOX) || defined(X360)
-                                                                                              
-	#else
-		#if sizeof( long ) == 8
-			#define AUTORPC_WORD 64
-			typedef double HardwareReal;
-			typedef unsigned long long NaturalWord;
-		#else
-			#define AUTORPC_WORD 32
-			typedef double HardwareReal;
-			typedef unsigned int NaturalWord;
-		#endif
-	#endif
+#define AUTORPC_WORD 32
+typedef double HardwareReal;
+typedef unsigned int NaturalWord;
+#endif
+#else
+#if defined(_XBOX) || defined(X360)
+
+#else
+#if sizeof( long ) == 8
+#define AUTORPC_WORD 64
+typedef double HardwareReal;
+typedef unsigned long long NaturalWord;
+#else
+#define AUTORPC_WORD 32
+typedef double HardwareReal;
+typedef unsigned int NaturalWord;
+#endif
+#endif
 #endif
 
 #define AUTO_RPC_INT_REG_PARAMS 8
@@ -438,9 +438,9 @@ typedef double         HardwareReal;  // could be changed to __float128 on AMD64
 
 #endif // AUTO_RPC_ALLOC_SEPARATE_FLOATS
 
-/// \internal 
+/// \internal
 /// Writes number of parameters to push on the stack
-void SerializeHeader(char *&out, unsigned int numParams);
+void SerializeHeader(char * &out, unsigned int numParams);
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
@@ -450,52 +450,52 @@ unsigned int BuildStack(char *stack);
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1>
 unsigned int BuildStack(char *stack, P1 p1,
-	bool es1=true)
+                        bool es1 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 1);
 	PushHeader(stackPtr, p1, es1);
-	Push( stackPtr, p1, es1 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2,
-	bool es1=true, bool es2=true)
+                        bool es1 = true, bool es2 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 2);
 	PushHeader(stackPtr, p1, es1);
 	PushHeader(stackPtr, p2, es2);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2, class P3>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3,
-	bool es1=true, bool es2=true, bool es3=true )
+                        bool es1 = true, bool es2 = true, bool es3 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 3);
 	PushHeader(stackPtr, p1, es1);
 	PushHeader(stackPtr, p2, es2);
 	PushHeader(stackPtr, p3, es3);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	Push( stackPtr, p3, es3 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	Push(stackPtr, p3, es3);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2, class P3, class P4>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4,
-	bool es1=true, bool es2=true, bool es3=true, bool es4=true )
+                        bool es1 = true, bool es2 = true, bool es3 = true, bool es4 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 4);
@@ -503,18 +503,18 @@ unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4,
 	PushHeader(stackPtr, p2, es2);
 	PushHeader(stackPtr, p3, es3);
 	PushHeader(stackPtr, p4, es4);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	Push( stackPtr, p3, es3 );
-	Push( stackPtr, p4, es4 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	Push(stackPtr, p3, es3);
+	Push(stackPtr, p4, es4);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2, class P3, class P4, class P5>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5,
-	bool es1=true, bool es2=true, bool es3=true, bool es4=true, bool es5=true )
+                        bool es1 = true, bool es2 = true, bool es3 = true, bool es4 = true, bool es5 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 5);
@@ -523,19 +523,19 @@ unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5,
 	PushHeader(stackPtr, p3, es3);
 	PushHeader(stackPtr, p4, es4);
 	PushHeader(stackPtr, p5, es5);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	Push( stackPtr, p3, es3 );
-	Push( stackPtr, p4, es4 );
-	Push( stackPtr, p5, es5 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	Push(stackPtr, p3, es3);
+	Push(stackPtr, p4, es4);
+	Push(stackPtr, p5, es5);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6,
-	bool es1=true, bool es2=true, bool es3=true, bool es4=true, bool es5=true, bool es6=true )
+                        bool es1 = true, bool es2 = true, bool es3 = true, bool es4 = true, bool es5 = true, bool es6 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 6);
@@ -545,20 +545,20 @@ unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6,
 	PushHeader(stackPtr, p4, es4);
 	PushHeader(stackPtr, p5, es5);
 	PushHeader(stackPtr, p6, es6);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	Push( stackPtr, p3, es3 );
-	Push( stackPtr, p4, es4 );
-	Push( stackPtr, p5, es5 );
-	Push( stackPtr, p6, es6 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	Push(stackPtr, p3, es3);
+	Push(stackPtr, p4, es4);
+	Push(stackPtr, p5, es5);
+	Push(stackPtr, p6, es6);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2, class P3, class P4, class P5, class P6, class P7>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7,
-	bool es1=true, bool es2=true, bool es3=true, bool es4=true, bool es5=true, bool es6=true, bool es7=true )
+                        bool es1 = true, bool es2 = true, bool es3 = true, bool es4 = true, bool es5 = true, bool es6 = true, bool es7 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 7);
@@ -569,21 +569,21 @@ unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P
 	PushHeader(stackPtr, p5, es5);
 	PushHeader(stackPtr, p6, es6);
 	PushHeader(stackPtr, p7, es7);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	Push( stackPtr, p3, es3 );
-	Push( stackPtr, p4, es4 );
-	Push( stackPtr, p5, es5 );
-	Push( stackPtr, p6, es6 );
-	Push( stackPtr, p7, es7 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	Push(stackPtr, p3, es3);
+	Push(stackPtr, p4, es4);
+	Push(stackPtr, p5, es5);
+	Push(stackPtr, p6, es6);
+	Push(stackPtr, p7, es7);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// Builds up a function call and all parameters onto a stack
 /// \param[out] Destination stack, which must be big enough to hold all parameters
 template <class P1, class P2, class P3, class P4, class P5, class P6, class P7, class P8>
 unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8,
-	bool es1=true, bool es2=true, bool es3=true, bool es4=true, bool es5=true, bool es6=true, bool es7=true, bool es8=true )
+                        bool es1 = true, bool es2 = true, bool es3 = true, bool es4 = true, bool es5 = true, bool es6 = true, bool es7 = true, bool es8 = true)
 {
 	char *stackPtr = (char*) stack;
 	SerializeHeader(stackPtr, 8);
@@ -595,49 +595,52 @@ unsigned int BuildStack(char *stack, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P
 	PushHeader(stackPtr, p6, es6);
 	PushHeader(stackPtr, p7, es7);
 	PushHeader(stackPtr, p8, es8);
-	Push( stackPtr, p1, es1 );
-	Push( stackPtr, p2, es2 );
-	Push( stackPtr, p3, es3 );
-	Push( stackPtr, p4, es4 );
-	Push( stackPtr, p5, es5 );
-	Push( stackPtr, p6, es6 );
-	Push( stackPtr, p7, es7 );
-	Push( stackPtr, p8, es8 );
-	return (unsigned int)(stackPtr-stack);
+	Push(stackPtr, p1, es1);
+	Push(stackPtr, p2, es2);
+	Push(stackPtr, p3, es3);
+	Push(stackPtr, p4, es4);
+	Push(stackPtr, p5, es5);
+	Push(stackPtr, p6, es6);
+	Push(stackPtr, p7, es7);
+	Push(stackPtr, p8, es8);
+	return (unsigned int)(stackPtr - stack);
 }
 
 /// \internal
 template <class item>
-void Push( char*& p, item const i, bool doEndianSwap ) {
-	memcpy( (void*)p, (void*)&i, sizeof( i ) );
+void Push(char* &p, item const i, bool doEndianSwap)
+{
+	memcpy((void*)p, (void*)&i, sizeof(i));
 	if (doEndianSwap && RakNet::BitStream::DoEndianSwap())
-		RakNet::BitStream::ReverseBytesInPlace((unsigned char*) p,sizeof( i ));
-	p += sizeof( i );
+		RakNet::BitStream::ReverseBytesInPlace((unsigned char*) p, sizeof(i));
+	p += sizeof(i);
 }
 
 /// \internal
 template <class item>
-void Push( char*& p, item*const i, bool doEndianSwap) {
-	memcpy( (void*)p, (void*)i, sizeof( *i ) );
+void Push(char* &p, item*const i, bool doEndianSwap)
+{
+	memcpy((void*)p, (void*)i, sizeof(*i));
 	if (doEndianSwap && RakNet::BitStream::DoEndianSwap())
-		RakNet::BitStream::ReverseBytesInPlace((unsigned char*) p,sizeof( i ));
-	p += sizeof( *i );
+		RakNet::BitStream::ReverseBytesInPlace((unsigned char*) p, sizeof(i));
+	p += sizeof(*i);
 }
 
 /// \internal
 template <class item>
-void Push( char*& p, item const*const i, bool doEndianSwap) {
-	memcpy( (void*)p, (void*)i, sizeof( *i ) );
+void Push(char* &p, item const*const i, bool doEndianSwap)
+{
+	memcpy((void*)p, (void*)i, sizeof(*i));
 	if (doEndianSwap && RakNet::BitStream::DoEndianSwap())
-		RakNet::BitStream::ReverseBytesInPlace((unsigned char*) p,sizeof( i ));
-	p += sizeof( *i );
+		RakNet::BitStream::ReverseBytesInPlace((unsigned char*) p, sizeof(i));
+	p += sizeof(*i);
 }
 
 /// \internal
-void Push( char*& p, char*const i, bool doEndianSwap);
+void Push(char* &p, char*const i, bool doEndianSwap);
 
 /// \internal
-void Push( char*& p, const char*const i, bool doEndianSwap );
+void Push(char* &p, const char*const i, bool doEndianSwap);
 
 // THIS STRUCTURE LAYOUT IS HARDCODED INTO THE ASSEMBLY.  Unfortunately, that appears to be the
 // only way to do it.
@@ -666,7 +669,7 @@ struct CallParams {
 	union {
 		HardwareReal realParams[ AUTO_RPC_FLOAT_REG_PARAMS ];
 #endif
-		NaturalWord  intParams[ ( AUTO_RPC_MAX_PARAMS > AUTO_RPC_INT_REG_PARAMS ? AUTO_RPC_MAX_PARAMS : AUTO_RPC_INT_REG_PARAMS ) + AUTO_RPC_STACK_PADDING ];
+		NaturalWord  intParams[(AUTO_RPC_MAX_PARAMS > AUTO_RPC_INT_REG_PARAMS ? AUTO_RPC_MAX_PARAMS : AUTO_RPC_INT_REG_PARAMS) + AUTO_RPC_STACK_PADDING ];
 
 #if !AUTO_RPC_ALLOC_SEPARATE_FLOATS && AUTO_RPC_FLOAT_REG_PARAMS && AUTO_RPC_CREATE_FLOAT_MAP
 	};
@@ -678,32 +681,41 @@ struct CallParams {
 
 /// Given a stack, the length of the stack, a possible last parameter, and a possible this pointer, build a call to a C or C++ function
 bool DeserializeParametersAndBuildCall(
-	CallParams &call,
-	char *in, unsigned int inLength,
-	void *lastParam, void *thisPtr);
+        CallParams &call,
+        char *in, unsigned int inLength,
+        void *lastParam, void *thisPtr);
 
 // Given the output of DeserializeParametersAndBuildCall, actually call a function
-bool CallWithStack( CallParams& call, void *functionPtr );
+bool CallWithStack(CallParams &call, void *functionPtr);
 
 /// \internal
 /// functions to return the size of the item.
 template <class item>
-size_t D_size( item const ) { return sizeof( item ); }
+size_t D_size(item const)
+{
+	return sizeof(item);
+}
 
 /// \internal
 /// functions to return the size of the item.
 template <class item>
-size_t D_size( item const*const ) { return sizeof( item ); }
+size_t D_size(item const*const)
+{
+	return sizeof(item);
+}
 
 /// \internal
 /// functions to return the size of the item.
 template <class item>
-size_t D_size( item*const ) { return sizeof( item ); }
+size_t D_size(item*const)
+{
+	return sizeof(item);
+}
 
 /// \internal
-size_t D_size( char*const str );
+size_t D_size(char*const str);
 /// \internal
-size_t D_size( char const*const str );
+size_t D_size(char const*const str);
 
 /// \internal
 enum {
@@ -725,35 +737,45 @@ enum {
 
 /// \internal
 template <class item>
-unsigned D_type( item const )         { return INT_PARAM; }
+unsigned D_type(item const)
+{
+	return INT_PARAM;
+}
 
 /// \internal
 template <class item>
-unsigned D_type( item const*const )   { return REF_PARAM; }
+unsigned D_type(item const*const)
+{
+	return REF_PARAM;
+}
 
 /// \internal
 template <class item>
-unsigned D_type( item*const )         { return REF_PARAM; }
+unsigned D_type(item*const)
+{
+	return REF_PARAM;
+}
 
 /// \internal
-unsigned D_type( const char*const );
+unsigned D_type(const char*const);
 /// \internal
-unsigned D_type( char*const );
+unsigned D_type(char*const);
 
 /// \internal
-unsigned D_type( float );
+unsigned D_type(float);
 /// \internal
-unsigned D_type( double );
+unsigned D_type(double);
 /// \internal
-unsigned D_type( long double );
+unsigned D_type(long double);
 
 /// \internal
 template <class item>
-void PushHeader( char*& p, item const i, bool endianSwap ) {
-	unsigned int   s = (unsigned int) D_size( i );
-	unsigned char  f = D_type( i ) | ( ((int) endianSwap) << ENDIAN_SWAP_SC );
-	Push( p, s, endianSwap );
-	Push( p, f, false );
+void PushHeader(char* &p, item const i, bool endianSwap)
+{
+	unsigned int   s = (unsigned int) D_size(i);
+	unsigned char  f = D_type(i) | (((int) endianSwap) << ENDIAN_SWAP_SC);
+	Push(p, s, endianSwap);
+	Push(p, f, false);
 }
 
 }

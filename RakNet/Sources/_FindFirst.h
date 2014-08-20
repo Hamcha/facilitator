@@ -30,8 +30,7 @@
 
 const unsigned STRING_BUFFER_SIZE = 512;
 
-typedef struct _finddata_t
-{
+typedef struct _finddata_t {
 	char            name[STRING_BUFFER_SIZE];
 	int            attrib;
 	unsigned long   size;
@@ -40,8 +39,7 @@ typedef struct _finddata_t
 /**
  *  Hold information about the current search
  */
-typedef struct _findinfo_t
-{
+typedef struct _findinfo_t {
 	DIR*	openedDir;
 	RakNet::RakString filter;
 	RakNet::RakString dirName;
