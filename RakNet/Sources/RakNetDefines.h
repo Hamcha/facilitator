@@ -34,7 +34,7 @@
 #endif
 
 /// Uncomment to use RakMemoryOverride for custom memory tracking
-/// See RakMemoryOverride.h. 
+/// See RakMemoryOverride.h.
 #ifndef _USE_RAK_MEMORY_OVERRIDE
 #define _USE_RAK_MEMORY_OVERRIDE 1
 #endif
@@ -77,12 +77,12 @@
 
 #ifndef RakAssert
 #if defined(_XBOX) || defined(X360)
-                    
+
 #else
 #if defined(_DEBUG)
 #define RakAssert(x) assert(x);
 #else
-#define RakAssert(x) 
+#define RakAssert(x)
 #endif
 #endif
 #endif

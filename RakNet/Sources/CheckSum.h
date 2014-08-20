@@ -14,7 +14,7 @@ class CheckSum
 
 public:
 
- /// Default constructor
+	/// Default constructor
 
 	CheckSum()
 	{
@@ -29,16 +29,16 @@ public:
 		c2 = 22719;
 	}
 
-	void Add ( unsigned int w );
+	void Add(unsigned int w);
 
 
-	void Add ( unsigned short w );
+	void Add(unsigned short w);
 
-	void Add ( unsigned char* b, unsigned int length );
+	void Add(unsigned char* b, unsigned int length);
 
-	void Add ( unsigned char b );
+	void Add(unsigned char b);
 
-	unsigned int Get ()
+	unsigned int Get()
 	{
 		return sum;
 	}
