@@ -65,27 +65,24 @@ public:
 	// --------------------------------------------------------------------------------------------
 	virtual PluginReceiveResult OnReceive(Packet *packet);
 	virtual void Update(void);
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	virtual void OnFailedConnectionAttempt(SystemAddress systemAddress, PI2_FailedConnectionAttemptReason failedConnectionAttemptReason);
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 	virtual void OnRakPeerShutdown(void);
 
 
-	enum Router2RequestStates
-	{
+	enum Router2RequestStates {
 		R2RS_REQUEST_STATE_QUERY_FORWARDING,
 		REQUEST_STATE_REQUEST_FORWARDING,
 	};
 
-	struct ConnectionRequestSystem
-	{
+	struct ConnectionRequestSystem {
 		RakNetGUID guid;
 		int pingToEndpoint;
 		unsigned short usedForwardingEntries;
 	};
 
-	struct ConnnectRequest
-	{
+	struct ConnnectRequest {
 		ConnnectRequest();
 		~ConnnectRequest();
 
@@ -100,8 +97,7 @@ public:
 
 	unsigned int GetConnectionRequestIndex(RakNetGUID endpointGuid);
 
-	struct MiniPunchRequest
-	{
+	struct MiniPunchRequest {
 		RakNetGUID endpointGuid;
 		SystemAddress endpointAddress;
 		bool gotReplyFromEndpoint;
@@ -116,8 +112,7 @@ public:
 		SOCKET destToSourceSocket;
 	};
 
-	struct ForwardedConnection
-	{
+	struct ForwardedConnection {
 		RakNetGUID endpointGuid;
 		RakNetGUID intermediaryGuid;
 		SystemAddress intermediaryAddress;

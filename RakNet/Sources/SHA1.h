@@ -1,4 +1,4 @@
-/// \brief \b [Internal] SHA-1 computation class 
+/// \brief \b [Internal] SHA-1 computation class
 ///
 /// 100% free public domain implementation of the SHA-1
 /// algorithm by Dominik Reichl <Dominik.Reichl@tiscali.de>
@@ -26,7 +26,7 @@
 #include <string.h> // Needed for strcat and strcpy
 #include "Export.h"
 
-#define MAX_FILE_READ_BUFFER 8000 
+#define MAX_FILE_READ_BUFFER 8000
 
 #define SHA1_LENGTH 20
 
@@ -35,17 +35,17 @@ class RAK_DLL_EXPORT CSHA1
 
 public:
 	// Rotate x bits to the left
-	#define ROL32(value, bits) (((value)<<(bits))|((value)>>(32-(bits))))
+#define ROL32(value, bits) (((value)<<(bits))|((value)>>(32-(bits))))
 
 #ifdef LITTLE_ENDIAN
 #define SHABLK0(i) (block->l[i] = (ROL32(block->l[i],24) & 0xFF00FF00) \
-	| (ROL32(block->l[i],8) & 0x00FF00FF))
+                                  | (ROL32(block->l[i],8) & 0x00FF00FF))
 #else
 #define SHABLK0(i) (block->l[i])
 #endif
 
 #define SHABLK(i) (block->l[i&15] = ROL32(block->l[(i+13)&15] ^ block->l[(i+8)&15] \
-	^ block->l[(i+2)&15] ^ block->l[i&15],1))
+                                    ^ block->l[(i+2)&15] ^ block->l[i&15],1))
 
 	// SHA-1 rounds
 #define R0(v,w,x,y,z,i) { z+=((w&(x^y))^y)+SHABLK0(i)+0x5A827999+ROL32(v,5); w=ROL32(w,30); }
@@ -58,10 +58,11 @@ public:
 		unsigned char c[ 64 ];
 		unsigned int l[ 16 ];
 	} SHA1_WORKSPACE_BLOCK;
-	/* Two different formats for ReportHash(...) 
+	/* Two different formats for ReportHash(...)
 	*/
 	enum { REPORT_HEX = 0,
-		REPORT_DIGIT = 1};
+	       REPORT_DIGIT = 1
+	     };
 
 	CSHA1();
 	virtual ~CSHA1();
@@ -71,15 +72,15 @@ public:
 	unsigned char m_buffer[ 64 ];
 	unsigned char m_digest[ 20 ];
 	void Reset();
-	void Update( unsigned char* data, unsigned int len );
-	bool HashFile( char *szFileName );
+	void Update(unsigned char* data, unsigned int len);
+	bool HashFile(char *szFileName);
 	void Final();
-	void ReportHash( char *szReport, unsigned char uReportType = REPORT_HEX );
-	void GetHash( unsigned char *uDest );
-	unsigned char * GetHash( void ) const;
+	void ReportHash(char *szReport, unsigned char uReportType = REPORT_HEX);
+	void GetHash(unsigned char *uDest);
+	unsigned char * GetHash(void) const;
 
 private:
-	void Transform( unsigned int state[ 5 ], unsigned char buffer[ 64 ] );
+	void Transform(unsigned int state[ 5 ], unsigned char buffer[ 64 ]);
 	unsigned char workspace[ 64 ];
 };
 

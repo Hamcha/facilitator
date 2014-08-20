@@ -48,27 +48,27 @@ namespace RakNet
 /// \param[in] _FUNCTION_ Name of the function
 /// \param[in] _PARAMS_ Parameter list, include parenthesis
 #define ARPC_REGISTER_CPP_FUNCTION(autoRPCInstance, _IDENTIFIER_, _RETURN_, _CLASS_, _FUNCTION_, _PARAMS_) \
-{ \
-union \
-{ \
-	_RETURN_ (AUTO_RPC_CALLSPEC _CLASS_::*__memberFunctionPtr)_PARAMS_; \
-	void* __voidFunc; \
-}; \
-	__memberFunctionPtr=&_CLASS_::_FUNCTION_; \
-	(autoRPCInstance)->RegisterFunction(_IDENTIFIER_, __voidFunc, true, -1); \
-}
+	{ \
+		union \
+		{ \
+			_RETURN_ (AUTO_RPC_CALLSPEC _CLASS_::*__memberFunctionPtr)_PARAMS_; \
+			void* __voidFunc; \
+		}; \
+		__memberFunctionPtr=&_CLASS_::_FUNCTION_; \
+		(autoRPCInstance)->RegisterFunction(_IDENTIFIER_, __voidFunc, true, -1); \
+	}
 
 /// \internal Used by ARPC_REGISTER_CPP_FUNCTION0 to ARPC_REGISTER_CPP_FUNCTION9
 #define ARPC_REGISTER_CPP_FUNCTIONX(autoRPCInstance, _IDENTIFIER_, _RETURN_, _CLASS_, _FUNCTION_, _PARAMS_, _PARAM_COUNT_) \
 	{ \
-	union \
-	{ \
-	_RETURN_ (AUTO_RPC_CALLSPEC _CLASS_::*__memberFunctionPtr)_PARAMS_; \
-	void* __voidFunc; \
-}; \
-	__memberFunctionPtr=&_CLASS_::_FUNCTION_; \
-	(autoRPCInstance)->RegisterFunction(_IDENTIFIER_, __voidFunc, true, _PARAM_COUNT_); \
-}
+		union \
+		{ \
+			_RETURN_ (AUTO_RPC_CALLSPEC _CLASS_::*__memberFunctionPtr)_PARAMS_; \
+			void* __voidFunc; \
+		}; \
+		__memberFunctionPtr=&_CLASS_::_FUNCTION_; \
+		(autoRPCInstance)->RegisterFunction(_IDENTIFIER_, __voidFunc, true, _PARAM_COUNT_); \
+	}
 
 /// Same as ARPC_REGISTER_CPP_FUNCTION, but specifies how many parameters the function has
 #define ARPC_REGISTER_CPP_FUNCTION0(autoRPCInstance, _IDENTIFIER_, _RETURN_, _CLASS_, _FUNCTION_) (autoRPCInstance)->RegisterFunction(_IDENTIFIER_, __voidFunc, true, 0);
@@ -122,8 +122,7 @@ union \
 /// char outputBuff[256];
 /// stringCompressor->DecodeString(outputBuff,256,&RakNet::BitStream(p->data+sizeof(MessageID)+1,p->length-sizeof(MessageID)-1,false),0);
 /// printf("Function: %s\n", outputBuff);
-enum RPCErrorCodes
-{
+enum RPCErrorCodes {
 	/// AutoRPC::SetNetworkIDManager() was not called, and it must be called to call a C++ object member
 	RPC_ERROR_NETWORK_ID_MANAGER_UNAVAILABLE,
 
@@ -186,7 +185,7 @@ public:
 	/// \param[in] isObjectMember false if a C function. True if a member function of an object (C++)
 	/// \param[in] parameterCount Optional parameter to tell the system how many parameters this function has. If specified, and the wrong number of parameters are called by the remote system, the call is rejected. -1 indicates undefined
 	/// \return True on success, false on uniqueIdentifier already used.
-	bool RegisterFunction(const char *uniqueIdentifier, void *functionPtr, bool isObjectMember, char parameterCount=-1);
+	bool RegisterFunction(const char *uniqueIdentifier, void *functionPtr, bool isObjectMember, char parameterCount = -1);
 
 	/// Unregisters a function pointer to be callable given an identifier for the pointer
 	/// \note This is not safe to call while connected
@@ -255,7 +254,8 @@ public:
 	/// \note The this pointer, for this instance of AutoRPC, is pushed as the last parameter on the stack. See AutoRPCSample.ccp for an example of this
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
-	bool Call(const char *uniqueIdentifier){
+	bool Call(const char *uniqueIdentifier)
+	{
 		char stack[ARPC_MAX_STACK_SIZE];
 		unsigned int bytesOnStack = GenRPC::BuildStack(stack);
 		return SendCall(uniqueIdentifier, stack, bytesOnStack, 0);
@@ -268,7 +268,8 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1>
-	bool Call(const char *uniqueIdentifier, P1 p1)	{
+	bool Call(const char *uniqueIdentifier, P1 p1)
+	{
 		char stack[ARPC_MAX_STACK_SIZE];
 		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, true);
 		return SendCall(uniqueIdentifier, stack, bytesOnStack, 1);
@@ -281,10 +282,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2)	{
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 2);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 2);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -294,10 +296,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3 )	{
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, true, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 3);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, true, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 3);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -307,10 +310,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4 )	{
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, true, true, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 4);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, true, true, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 4);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -320,10 +324,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5 )	{
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, true, true, true, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 5);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, true, true, true, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 5);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -333,10 +338,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5, class P6>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6 )	{
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, p6, true, true, true, true, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 6);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, p6, true, true, true, true, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 6);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -346,10 +352,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5, class P6, class P7>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7 )	{
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, p6, p7, true, true, true, true, true, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 7);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, p6, p7, true, true, true, true, true, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 7);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -359,10 +366,11 @@ public:
 	/// \param[in] uniqueIdentifier parameter of the same name passed to RegisterFunction() on the remote system
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5, class P6, class P7, class P8>
-	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8 ) {
-			char stack[ARPC_MAX_STACK_SIZE];
-			unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, p6, p7, p8, true, true, true, true, true, true, true, true);
-			return SendCall(uniqueIdentifier, stack, bytesOnStack, 8);
+	bool Call(const char *uniqueIdentifier, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8)
+	{
+		char stack[ARPC_MAX_STACK_SIZE];
+		unsigned int bytesOnStack = GenRPC::BuildStack(stack, p1, p2, p3, p4, p5, p6, p7, p8, true, true, true, true, true, true, true, true);
+		return SendCall(uniqueIdentifier, stack, bytesOnStack, 8);
 	}
 
 	/// Calls a remote function, using whatever was last passed to SetTimestamp(), SetSendParams(), SetRecipientAddress(), and SetRecipientObject()
@@ -378,7 +386,8 @@ public:
 	/// \param[in] broadcast See SetRecipientAddress()
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID){
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -402,7 +411,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1)	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -426,7 +436,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2)	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -450,7 +461,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3 )	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -474,7 +486,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4 )	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -498,7 +511,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5 )	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -522,7 +536,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5, class P6>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6 )	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -546,7 +561,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5, class P6, class P7>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7 )	{
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -570,7 +586,8 @@ public:
 	/// \param[in] networkID See SetRecipientObject()
 	/// \return True on success, false on uniqueIdentifier already used.
 	template <class P1, class P2, class P3, class P4, class P5, class P6, class P7, class P8>
-	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8 ) {
+	bool CallExplicit(const char *uniqueIdentifier, RakNetTime timeStamp, PacketPriority priority, PacketReliability reliability, char orderingChannel, const AddressOrGUID systemIdentifier, bool broadcast, NetworkID networkID, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8)
+	{
 		SetTimestamp(timeStamp);
 		SetSendParams(priority, reliability, orderingChannel);
 		SetRecipientAddress(systemIdentifier, broadcast);
@@ -587,16 +604,14 @@ public:
 
 	/// \internal
 	/// Identifies an RPC function, by string identifier and if it is a C or C++ function
-	struct RPCIdentifier
-	{
+	struct RPCIdentifier {
 		char *uniqueIdentifier;
 		bool isObjectMember;
 	};
 
 	/// \internal
 	/// The RPC identifier, and a pointer to the function
-	struct LocalRPCFunction
-	{
+	struct LocalRPCFunction {
 		RPCIdentifier identifier;
 		void *functionPtr;
 		char parameterCount;
@@ -604,14 +619,13 @@ public:
 
 	/// \internal
 	/// The RPC identifier, and the index of the function on a remote system
-	struct RemoteRPCFunction
-	{
+	struct RemoteRPCFunction {
 		RPCIdentifier identifier;
 		unsigned int functionIndex;
 	};
 
 	/// \internal
-	static int RemoteRPCFunctionComp( const RPCIdentifier &key, const RemoteRPCFunction &data );
+	static int RemoteRPCFunctionComp(const RPCIdentifier &key, const RemoteRPCFunction &data);
 
 	/// \internal
 	/// Sends the RPC call, with a given serialized stack
@@ -627,7 +641,7 @@ protected:
 	virtual void OnAutoRPCCall(SystemAddress systemAddress, unsigned char *data, unsigned int lengthInBytes);
 	virtual void OnRPCRemoteIndex(SystemAddress systemAddress, unsigned char *data, unsigned int lengthInBytes);
 	virtual void OnRPCUnknownRemoteIndex(SystemAddress systemAddress, unsigned char *data, unsigned int lengthInBytes, RakNetTime timestamp);
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	virtual void OnRakPeerShutdown(void);
 
 	void Clear(void);

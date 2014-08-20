@@ -74,22 +74,27 @@
 
 //// Elementary types ////
 
-struct u128 { uint32_t u[4]; };
+struct u128 {
+	uint32_t u[4];
+};
 
 union catFloat32 {
 	float f;
 	uint32_t i;
 
-	catFloat32(float n) { f = n; }
-	catFloat32(uint32_t n) { i = n; }
+	catFloat32(float n) {
+		f = n;
+	}
+	catFloat32(uint32_t n) {
+		i = n;
+	}
 };
 
 
 //// Coordinate system ////
 
 // Order of vertices in any quad
-enum QuadCoords
-{
+enum QuadCoords {
 	QUAD_UL, // upper left  (0,0)
 	QUAD_LL, // lower left  (0,1)
 	QUAD_LR, // lower right (1,1)
@@ -198,8 +203,8 @@ enum QuadCoords
 #endif
 
 
-// getLE() converts from little-endian word to native byte-order word 
-// getBE() converts from big-endian word to native byte-order word 
+// getLE() converts from little-endian word to native byte-order word
+// getBE() converts from big-endian word to native byte-order word
 
 #if defined(LITTLE_ENDIAN)
 
@@ -209,27 +214,73 @@ enum QuadCoords
 # define getLE32(n) (n)
 # define getLE64(n) (n)
 
-	inline void swapBE(uint16_t &n) { n = BOSWAP16(n); }
-	inline void swapBE(uint32_t &n) { n = BOSWAP32(n); }
-	inline void swapBE(uint64_t &n) { n = BOSWAP64(n); }
-	inline uint16_t getBE(uint16_t n) { return BOSWAP16(n); }
-	inline uint32_t getBE(uint32_t n) { return BOSWAP32(n); }
-	inline uint64_t getBE(uint64_t n) { return BOSWAP64(n); }
-	inline uint16_t getBE16(uint16_t n) { return BOSWAP16(n); }
-	inline uint32_t getBE32(uint32_t n) { return BOSWAP32(n); }
-	inline uint64_t getBE64(uint64_t n) { return BOSWAP64(n); }
-	inline void swapBE(int16_t &n) { n = BOSWAP16((uint16_t)n); }
-	inline void swapBE(int32_t &n) { n = BOSWAP32((uint32_t)n); }
-	inline void swapBE(int64_t &n) { n = BOSWAP64((uint64_t)n); }
-	inline int16_t getBE(int16_t n) { return BOSWAP16((uint16_t)n); }
-	inline int32_t getBE(int32_t n) { return BOSWAP32((uint32_t)n); }
-	inline int64_t getBE(int64_t n) { return BOSWAP64((uint64_t)n); }
+inline void swapBE(uint16_t &n)
+{
+	n = BOSWAP16(n);
+}
+inline void swapBE(uint32_t &n)
+{
+	n = BOSWAP32(n);
+}
+inline void swapBE(uint64_t &n)
+{
+	n = BOSWAP64(n);
+}
+inline uint16_t getBE(uint16_t n)
+{
+	return BOSWAP16(n);
+}
+inline uint32_t getBE(uint32_t n)
+{
+	return BOSWAP32(n);
+}
+inline uint64_t getBE(uint64_t n)
+{
+	return BOSWAP64(n);
+}
+inline uint16_t getBE16(uint16_t n)
+{
+	return BOSWAP16(n);
+}
+inline uint32_t getBE32(uint32_t n)
+{
+	return BOSWAP32(n);
+}
+inline uint64_t getBE64(uint64_t n)
+{
+	return BOSWAP64(n);
+}
+inline void swapBE(int16_t &n)
+{
+	n = BOSWAP16((uint16_t)n);
+}
+inline void swapBE(int32_t &n)
+{
+	n = BOSWAP32((uint32_t)n);
+}
+inline void swapBE(int64_t &n)
+{
+	n = BOSWAP64((uint64_t)n);
+}
+inline int16_t getBE(int16_t n)
+{
+	return BOSWAP16((uint16_t)n);
+}
+inline int32_t getBE(int32_t n)
+{
+	return BOSWAP32((uint32_t)n);
+}
+inline int64_t getBE(int64_t n)
+{
+	return BOSWAP64((uint64_t)n);
+}
 
-	inline float getBE(float n) {
-		catFloat32 c = n;
-		c.i = BOSWAP32(c.i);
-		return c.f;
-	}
+inline float getBE(float n)
+{
+	catFloat32 c = n;
+	c.i = BOSWAP32(c.i);
+	return c.f;
+}
 
 #else
 
@@ -239,27 +290,73 @@ enum QuadCoords
 # define getBE32(n) (n)
 # define getBE64(n) (n)
 
-	inline void swapLE(uint16_t &n) { n = BOSWAP16(n); }
-	inline void swapLE(uint32_t &n) { n = BOSWAP32(n); }
-	inline void swapLE(uint64_t &n) { n = BOSWAP64(n); }
-	inline uint16_t getLE(uint16_t n) { return BOSWAP16(n); }
-	inline uint32_t getLE(uint32_t n) { return BOSWAP32(n); }
-	inline uint64_t getLE(uint64_t n) { return BOSWAP64(n); }
-	inline uint16_t getLE16(uint16_t n) { return BOSWAP16(n); }
-	inline uint32_t getLE32(uint32_t n) { return BOSWAP32(n); }
-	inline uint64_t getLE32(uint64_t n) { return BOSWAP64(n); }
-	inline void swapLE(int16_t &n) { n = BOSWAP16((uint16_t)n); }
-	inline void swapLE(int32_t &n) { n = BOSWAP32((uint32_t)n); }
-	inline void swapLE(int64_t &n) { n = BOSWAP64((uint64_t)n); }
-	inline int16_t getLE(int16_t n) { return BOSWAP16((uint16_t)n); }
-	inline int32_t getLE(int32_t n) { return BOSWAP32((uint32_t)n); }
-	inline int64_t getLE(int64_t n) { return BOSWAP64((uint64_t)n); }
+inline void swapLE(uint16_t &n)
+{
+	n = BOSWAP16(n);
+}
+inline void swapLE(uint32_t &n)
+{
+	n = BOSWAP32(n);
+}
+inline void swapLE(uint64_t &n)
+{
+	n = BOSWAP64(n);
+}
+inline uint16_t getLE(uint16_t n)
+{
+	return BOSWAP16(n);
+}
+inline uint32_t getLE(uint32_t n)
+{
+	return BOSWAP32(n);
+}
+inline uint64_t getLE(uint64_t n)
+{
+	return BOSWAP64(n);
+}
+inline uint16_t getLE16(uint16_t n)
+{
+	return BOSWAP16(n);
+}
+inline uint32_t getLE32(uint32_t n)
+{
+	return BOSWAP32(n);
+}
+inline uint64_t getLE32(uint64_t n)
+{
+	return BOSWAP64(n);
+}
+inline void swapLE(int16_t &n)
+{
+	n = BOSWAP16((uint16_t)n);
+}
+inline void swapLE(int32_t &n)
+{
+	n = BOSWAP32((uint32_t)n);
+}
+inline void swapLE(int64_t &n)
+{
+	n = BOSWAP64((uint64_t)n);
+}
+inline int16_t getLE(int16_t n)
+{
+	return BOSWAP16((uint16_t)n);
+}
+inline int32_t getLE(int32_t n)
+{
+	return BOSWAP32((uint32_t)n);
+}
+inline int64_t getLE(int64_t n)
+{
+	return BOSWAP64((uint64_t)n);
+}
 
-	inline float getLE(float n) {
-		catFloat32 c = n;
-		c.i = BOSWAP32(c.i);
-		return c.f;
-	}
+inline float getLE(float n)
+{
+	catFloat32 c = n;
+	c.i = BOSWAP32(c.i);
+	return c.f;
+}
 
 #endif
 

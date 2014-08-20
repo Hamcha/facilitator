@@ -72,8 +72,8 @@ public:
 	/// \param[in] orderingChannel When using ordered or sequenced packets, what channel to order these on.- Packets are only ordered relative to other packets on the same stream
 	/// \param[in] recipients A list of recipients to send to.  To send to one recipient, just pass a SystemAddress
 	/// \return True on success, false mostly if the connection graph cannot find the destination.
-	bool Send( char *data, BitSize_t bitLength, PacketPriority priority, PacketReliability reliability, char orderingChannel, SystemAddressList *recipients );
-    bool Send( const char *data, BitSize_t bitLength, PacketPriority priority, PacketReliability reliability, char orderingChannel, SystemAddress systemAddress );
+	bool Send(char *data, BitSize_t bitLength, PacketPriority priority, PacketReliability reliability, char orderingChannel, SystemAddressList *recipients);
+	bool Send(const char *data, BitSize_t bitLength, PacketPriority priority, PacketReliability reliability, char orderingChannel, SystemAddress systemAddress);
 
 	// --------------------------------------------------------------------------------------------
 	// Packet handling functions
@@ -86,7 +86,7 @@ protected:
 	void SerializePreorder(DataStructures::Tree<ConnectionGraph::SystemAddressAndGroupId> *tree, RakNet::BitStream *out, SystemAddressList *recipients) const;
 	DataStructures::WeightedGraph<ConnectionGraph::SystemAddressAndGroupId, unsigned short, false> *graph;
 	bool restrictByType;
-	DataStructures::OrderedList<unsigned char,unsigned char> allowedTypes;
+	DataStructures::OrderedList<unsigned char, unsigned char> allowedTypes;
 };
 
 #endif
