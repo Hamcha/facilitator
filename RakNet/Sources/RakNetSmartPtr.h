@@ -16,14 +16,26 @@ private:
 	int refCount;
 
 public:
-	ReferenceCounter() {refCount=0;}
+	ReferenceCounter()
+	{
+		refCount = 0;
+	}
 	~ReferenceCounter() {}
-	void AddRef() {refCount++;}
-	int Release() {return --refCount;}
-	int GetRefCount(void) const {return refCount;}
+	void AddRef()
+	{
+		refCount++;
+	}
+	int Release()
+	{
+		return --refCount;
+	}
+	int GetRefCount(void) const
+	{
+		return refCount;
+	}
 };
 
-template < typename T > class RAK_DLL_EXPORT RakNetSmartPtr
+template <typename T> class RAK_DLL_EXPORT RakNetSmartPtr
 {
 private:
 	T*    ptr;       // pointer
@@ -37,14 +49,13 @@ public:
 
 	RakNetSmartPtr(T* pValue) : ptr(pValue)
 	{
-		reference = RakNet::OP_NEW<ReferenceCounter>(__FILE__,__LINE__);
+		reference = RakNet::OP_NEW<ReferenceCounter>(__FILE__, __LINE__);
 		reference->AddRef();
-
-//		allocCount+=2;
-//		printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
+		//		allocCount+=2;
+		//		printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
 	}
 
-	RakNetSmartPtr(const RakNetSmartPtr<T>& sp) : ptr(sp.ptr), reference(sp.reference)
+	RakNetSmartPtr(const RakNetSmartPtr<T> &sp) : ptr(sp.ptr), reference(sp.reference)
 	{
 		if (reference)
 			reference->AddRef();
@@ -52,53 +63,47 @@ public:
 
 	~RakNetSmartPtr()
 	{
-		if(reference && reference->Release() == 0)
-		{
+		if (reference && reference->Release() == 0) {
 			RakNet::OP_DELETE(ptr, __FILE__, __LINE__);
 			RakNet::OP_DELETE(reference, __FILE__, __LINE__);
-
-//			deallocCount+=2;
-//			printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
+			//			deallocCount+=2;
+			//			printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
 		}
 	}
 
 	bool IsNull(void) const
 	{
-		return ptr==0;
+		return ptr == 0;
 	}
 
 	void SetNull(void)
 	{
-		if(reference && reference->Release() == 0)
-		{
+		if (reference && reference->Release() == 0) {
 			RakNet::OP_DELETE(ptr, __FILE__, __LINE__);
 			RakNet::OP_DELETE(reference, __FILE__, __LINE__);
-
-//			deallocCount+=2;
-//			printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
+			//			deallocCount+=2;
+			//			printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
 		}
-		ptr=0;
-		reference=0;
+		ptr = 0;
+		reference = 0;
 	}
 
 	bool IsUnique(void) const
 	{
-		return reference->GetRefCount()==1;
+		return reference->GetRefCount() == 1;
 	}
 
 	// Allow you to change the values of the internal contents of the pointer, without changing what is pointed to by other instances of the smart pointer
 	void Clone(bool copyContents)
 	{
-		if (IsUnique()==false)
-		{
+		if (IsUnique() == false) {
 			reference->Release();
-
-			reference = RakNet::OP_NEW<ReferenceCounter>(__FILE__,__LINE__);
+			reference = RakNet::OP_NEW<ReferenceCounter>(__FILE__, __LINE__);
 			reference->AddRef();
-			T* oldPtr=ptr;
-			ptr=RakNet::OP_NEW<T>(__FILE__,__LINE__);
+			T* oldPtr = ptr;
+			ptr = RakNet::OP_NEW<T>(__FILE__, __LINE__);
 			if (copyContents)
-				*ptr=*oldPtr;
+				*ptr = *oldPtr;
 		}
 	}
 
@@ -107,12 +112,12 @@ public:
 		return reference->GetRefCount();
 	}
 
-	T& operator* ()
+	T &operator* ()
 	{
 		return *ptr;
 	}
 
-	const T& operator* () const
+	const T &operator* () const
 	{
 		return *ptr;
 	}
@@ -127,33 +132,34 @@ public:
 		return ptr;
 	}
 
-	bool operator == (const RakNetSmartPtr<T>& sp)
+	bool operator == (const RakNetSmartPtr<T> &sp)
 	{
 		return ptr == sp.ptr;
 	}
-	bool operator<( const RakNetSmartPtr<T> &right ) {return ptr < right.ptr;}
-	bool operator>( const RakNetSmartPtr<T> &right ) {return ptr > right.ptr;}
+	bool operator<(const RakNetSmartPtr<T> &right)
+	{
+		return ptr < right.ptr;
+	}
+	bool operator>(const RakNetSmartPtr<T> &right)
+	{
+		return ptr > right.ptr;
+	}
 
-	bool operator != (const RakNetSmartPtr<T>& sp)
+	bool operator != (const RakNetSmartPtr<T> &sp)
 	{
 		return ptr != sp.ptr;
 	}
 
-	RakNetSmartPtr<T>& operator = (const RakNetSmartPtr<T>& sp)
+	RakNetSmartPtr<T> &operator = (const RakNetSmartPtr<T> &sp)
 	{
 		// Assignment operator
-
-		if (this != &sp) // Avoid self assignment
-		{
-			if(reference && reference->Release() == 0)
-			{
+		if (this != &sp) { // Avoid self assignment
+			if (reference && reference->Release() == 0) {
 				RakNet::OP_DELETE(ptr, __FILE__, __LINE__);
 				RakNet::OP_DELETE(reference, __FILE__, __LINE__);
-
-//				deallocCount+=2;
-//				printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
+				//				deallocCount+=2;
+				//				printf("allocCount=%i deallocCount=%i Line=%i\n",allocCount, deallocCount, __LINE__);
 			}
-
 			ptr = sp.ptr;
 			reference = sp.reference;
 			if (reference)

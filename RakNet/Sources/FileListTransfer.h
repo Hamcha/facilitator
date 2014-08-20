@@ -47,13 +47,13 @@ class RAK_DLL_EXPORT FileListTransfer : public PluginInterface2
 public:
 	FileListTransfer();
 	virtual ~FileListTransfer();
-	
+
 	/// \brief Allows one corresponding Send() call from another system to arrive.
 	/// \param[in] handler The class to call on each file
 	/// \param[in] deleteHandler True to delete the handler when it is no longer needed.  False to not do so.
 	/// \param[in] allowedSender Which system to allow files from.
 	/// \return A set ID value, which should be passed as the \a setID value to the Send() call on the other system.  This value will be returned in the callback and is unique per file set.  Returns 65535 on failure (not connected to sender)
-    unsigned short SetupReceive(FileListTransferCBInterface *handler, bool deleteHandler, SystemAddress allowedSender);
+	unsigned short SetupReceive(FileListTransferCBInterface *handler, bool deleteHandler, SystemAddress allowedSender);
 
 	/// \brief Send the FileList structure to another system, which must have previously called SetupReceive().
 	/// \param[in] fileList A list of files.  The data contained in FileList::data will be sent incrementally and compressed among all files in the set
@@ -65,7 +65,7 @@ public:
 	/// \param[in] compressData deprecated, unsupported
 	/// \param[in] _incrementalReadInterface If a file in \a fileList has no data, filePullInterface will be used to read the file in chunks of size \a chunkSize
 	/// \param[in] _chunkSize How large of a block of a file to send at once
-	void Send(FileList *fileList, RakPeerInterface *rakPeer, SystemAddress recipient, unsigned short setID, PacketPriority priority, char orderingChannel, bool compressData, IncrementalReadInterface *_incrementalReadInterface=0, unsigned int _chunkSize=262144*4*16);
+	void Send(FileList *fileList, RakPeerInterface *rakPeer, SystemAddress recipient, unsigned short setID, PacketPriority priority, char orderingChannel, bool compressData, IncrementalReadInterface *_incrementalReadInterface = 0, unsigned int _chunkSize = 262144 * 4 * 16);
 
 	/// Return number of files waiting to go out to a particular address
 	unsigned int GetPendingFilesToAddress(SystemAddress recipient);
@@ -92,7 +92,7 @@ public:
 	/// \internal For plugin handling
 	virtual void OnRakPeerShutdown(void);
 	/// \internal For plugin handling
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	/// \internal For plugin handling
 	virtual void Update(void);
 
@@ -110,8 +110,7 @@ protected:
 	unsigned short setId;
 	FileListProgress *callback;
 
-	struct FileToPush
-	{
+	struct FileToPush {
 		FileListNode fileListNode;
 		PacketPriority packetPriority;
 		char orderingChannel;
@@ -121,12 +120,11 @@ protected:
 		IncrementalReadInterface *incrementalReadInterface;
 		unsigned int chunkSize;
 	};
-	struct FileToPushRecipient
-	{
+	struct FileToPushRecipient {
 		SystemAddress systemAddress;
 		DataStructures::Queue<FileToPush*> filesToPush;
 	};
-	DataStructures::List< FileToPushRecipient* > filesToPushAllSameAddress;
+	DataStructures::List<FileToPushRecipient*> filesToPushAllSameAddress;
 	// TODO - overagressive, only one read can happen at a time. See SendIRIToAddress
 	SimpleMutex filesToPushAllSameAddressMutex;
 };

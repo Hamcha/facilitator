@@ -16,8 +16,7 @@ public:
 	SendToThread();
 	~SendToThread();
 
-	struct SendToThreadBlock
-	{
+	struct SendToThreadBlock {
 		SOCKET s;
 		unsigned int binaryAddress;
 		unsigned short port;
@@ -34,7 +33,7 @@ public:
 	static DataStructures::ThreadsafeAllocatingQueue<SendToThreadBlock> objectQueue;
 protected:
 	static int refCount;
-	static ThreadPool<SendToThreadBlock*,SendToThreadBlock*> threadPool;
+	static ThreadPool<SendToThreadBlock*, SendToThreadBlock*> threadPool;
 
 };
 

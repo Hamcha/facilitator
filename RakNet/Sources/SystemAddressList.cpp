@@ -6,7 +6,6 @@
 
 SystemAddressList::SystemAddressList()
 {
-
 }
 SystemAddressList::SystemAddressList(SystemAddress system)
 {
@@ -21,14 +20,12 @@ void SystemAddressList::RandomizeOrder(void)
 	unsigned index, size, randIndex;
 	SystemAddress temp;
 	size = systemList.Size();
-	for (index=0; index < size; index++)
-	{
-		randIndex=index + (randomMT() % (size-index));
-		if (randIndex!=index)
-		{
-			temp=systemList[index];
-			systemList[index]=systemList[randIndex];
-			systemList[randIndex]=temp;
+	for (index = 0; index < size; index++) {
+		randIndex = index + (randomMT() % (size - index));
+		if (randIndex != index) {
+			temp = systemList[index];
+			systemList[index] = systemList[randIndex];
+			systemList[randIndex] = temp;
 		}
 	}
 }
@@ -36,7 +33,7 @@ void SystemAddressList::Serialize(RakNet::BitStream *out)
 {
 	out->Write((unsigned short) systemList.Size());
 	unsigned index;
-	for (index=0; index < systemList.Size(); index++)
+	for (index = 0; index < systemList.Size(); index++)
 		out->Write(systemList[index]);
 }
 bool SystemAddressList::Deserialize(RakNet::BitStream *in)
@@ -44,32 +41,26 @@ bool SystemAddressList::Deserialize(RakNet::BitStream *in)
 	unsigned short systemListSize;
 	SystemAddress systemAddress;
 	unsigned index;
-	if (in->Read(systemListSize)==false)
-	{
+	if (in->Read(systemListSize) == false) {
 		RakAssert(0);
 		return false;
 	}
 	systemList.Clear(false, __FILE__, __LINE__);
-	for (index=0; index < systemListSize; index++)
-	{
-		if (in->Read(systemAddress)==false)
-		{
+	for (index = 0; index < systemListSize; index++) {
+		if (in->Read(systemAddress) == false) {
 			RakAssert(0);
 			systemList.Clear(false, __FILE__, __LINE__);
 			return false;
 		}
 		systemList.Insert(systemAddress, __FILE__, __LINE__);
-
 	}
 	return true;
 }
 void SystemAddressList::RemoveSystem(SystemAddress system)
 {
 	unsigned i;
-	for (i=0; i < systemList.Size(); i++)
-	{
-		if (systemList[i]==system)
-		{
+	for (i = 0; i < systemList.Size(); i++) {
+		if (systemList[i] == system) {
 			systemList.RemoveAtIndex(i);
 			return;
 		}
@@ -84,8 +75,7 @@ bool SystemAddressList::Save(const char *filename)
 	RakNet::BitStream temp;
 	Serialize(&temp);
 	FILE *fp = fopen(filename, "wb");
-	if (fp)
-	{
+	if (fp) {
 		fwrite(temp.GetData(), (size_t) temp.GetNumberOfBytesUsed(), 1, fp);
 		fclose(fp);
 		return true;
@@ -96,32 +86,28 @@ bool SystemAddressList::Load(const char *filename)
 {
 	FILE *fp = NULL;
 	unsigned long fileSize;
-
-	if ( ( fp = fopen( filename, "rb" ) ) == 0 )
+	if ((fp = fopen(filename, "rb")) == 0)
 		return false;
-
-	fseek( fp, 0, SEEK_END );
-	fileSize = ftell( fp );
-	fseek( fp, 0, SEEK_SET );
-	if (fileSize==0)
-	{
+	fseek(fp, 0, SEEK_END);
+	fileSize = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	if (fileSize == 0) {
 		fclose(fp);
 		return false;
 	}
-	unsigned char *filedata = (unsigned char*) rakMalloc_Ex( fileSize, __FILE__, __LINE__ );
+	unsigned char *filedata = (unsigned char*) rakMalloc_Ex(fileSize, __FILE__, __LINE__);
 	fread(filedata, fileSize, 1, fp);
 	fclose(fp);
-
 	RakNet::BitStream bs(filedata, fileSize, false);
 	Deserialize(&bs);
-	rakFree_Ex(filedata, __FILE__, __LINE__ );
+	rakFree_Ex(filedata, __FILE__, __LINE__);
 	return true;
 }
 unsigned SystemAddressList::Size(void) const
 {
 	return systemList.Size();
 }
-SystemAddress& SystemAddressList::operator[] ( const unsigned int position ) const
+SystemAddress &SystemAddressList::operator[](const unsigned int position) const
 {
 	return systemList[position];
 }

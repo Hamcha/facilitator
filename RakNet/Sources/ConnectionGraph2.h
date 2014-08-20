@@ -41,26 +41,24 @@ public:
 	bool ConnectionExists(RakNetGUID g1, RakNetGUID g2);
 
 	/// \internal
-	struct SystemAddressAndGuid
-	{
+	struct SystemAddressAndGuid {
 		SystemAddress systemAddress;
 		RakNetGUID guid;
 	};
 	/// \internal
-	static int SystemAddressAndGuidComp( const SystemAddressAndGuid &key, const SystemAddressAndGuid &data );
+	static int SystemAddressAndGuidComp(const SystemAddressAndGuid &key, const SystemAddressAndGuid &data);
 
 	/// \internal
-	struct RemoteSystem
-	{
-		DataStructures::OrderedList<SystemAddressAndGuid,SystemAddressAndGuid,ConnectionGraph2::SystemAddressAndGuidComp> remoteConnections;
+	struct RemoteSystem {
+		DataStructures::OrderedList<SystemAddressAndGuid, SystemAddressAndGuid, ConnectionGraph2::SystemAddressAndGuidComp> remoteConnections;
 		RakNetGUID guid;
 	};
 	/// \internal
-	static int RemoteSystemComp( const RakNetGUID &key, RemoteSystem * const &data );
+	static int RemoteSystemComp(const RakNetGUID &key, RemoteSystem * const &data);
 
 protected:
 	/// \internal
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 	/// \internal
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
 	/// \internal

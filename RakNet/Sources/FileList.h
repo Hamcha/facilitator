@@ -20,12 +20,11 @@
 
 namespace RakNet
 {
-	class BitStream;
+class BitStream;
 }
 
 /// Represents once instance of a file
-struct FileListNode
-{
+struct FileListNode {
 	/// Name of the file
 	RakNet::RakString filename;
 
@@ -42,7 +41,7 @@ struct FileListNode
 	unsigned fileLengthBytes;
 
 	/// User specific data for whatever, describing this file.
-	FileListNodeContext context; 
+	FileListNodeContext context;
 
 	/// If true, data and dataLengthBytes should be empty. This is just storing the filename
 	bool isAReference;
@@ -61,20 +60,23 @@ public:
 	virtual ~FileListProgress() {}
 
 	/// First callback called when FileList::AddFilesFromDirectory() starts
-	virtual void OnAddFilesFromDirectoryStarted(FileList *fileList, char *dir) {
+	virtual void OnAddFilesFromDirectoryStarted(FileList *fileList, char *dir)
+	{
 		(void) fileList;
 		(void) dir;
 	}
 
 	/// Called for each directory, when that directory begins processing
-	virtual void OnDirectory(FileList *fileList, char *dir, unsigned int directoriesRemaining) {
+	virtual void OnDirectory(FileList *fileList, char *dir, unsigned int directoriesRemaining)
+	{
 		(void) fileList;
 		(void) dir;
 		(void) directoriesRemaining;
 	}
 
 	/// Called for each file, when that file begins processing
-	virtual void OnFile(FileList *fileList, char *dir, char *fileName, unsigned int fileSize) {
+	virtual void OnFile(FileList *fileList, char *dir, char *fileName, unsigned int fileSize)
+	{
 		(void) fileList;
 		(void) dir;
 		(void) fileName;
@@ -177,7 +179,7 @@ public:
 	/// \param[in] fileLength Length of the file
 	/// \param[in] context User defined byte to store with each file. Use for whatever you want.
 	/// \param[in] isAReference Means that this is just a reference to a file elsewhere - does not actually have any data
-	void AddFile(const char *filename, const char *fullPathToFile, const char *data, const unsigned dataLength, const unsigned fileLength, FileListNodeContext context, bool isAReference=false);
+	void AddFile(const char *filename, const char *fullPathToFile, const char *data, const unsigned dataLength, const unsigned fileLength, FileListNodeContext context, bool isAReference = false);
 
 	/// \brief Add a file, reading it from disk.
 	/// \param[in] filepath Complete path to the file, including the filename itself

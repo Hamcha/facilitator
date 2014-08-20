@@ -88,8 +88,7 @@ protected:
 	unsigned GetChannelIndexFromName(const char *channelName);
 
 	/// One of these structures is created per player
-	struct SystemAddressAndChannel
-	{
+	struct SystemAddressAndChannel {
 		/// The ID of the player
 		SystemAddress systemAddress;
 

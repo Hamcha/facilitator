@@ -21,11 +21,10 @@ class RakPeerInterface;
 #define MESSAGE_FILTER_MAX_MESSAGE_ID 256
 
 /// \internal Has to be public so some of the shittier compilers can use it.
-int RAK_DLL_EXPORT MessageFilterStrComp( char *const &key,char *const &data );
+int RAK_DLL_EXPORT MessageFilterStrComp(char *const &key, char *const &data);
 
 /// \internal Has to be public so some of the shittier compilers can use it.
-struct FilterSet
-{
+struct FilterSet {
 	bool banOnFilterTimeExceed;
 	bool kickOnDisallowedMessage;
 	bool banOnDisallowedMessage;
@@ -42,18 +41,17 @@ struct FilterSet
 };
 
 /// \internal Has to be public so some of the shittier compilers can use it.
-int RAK_DLL_EXPORT FilterSetComp( const int &key, FilterSet * const &data );
+int RAK_DLL_EXPORT FilterSetComp(const int &key, FilterSet * const &data);
 
 /// \internal Has to be public so some of the shittier compilers can use it.
-struct FilteredSystem
-{
+struct FilteredSystem {
 	SystemAddress systemAddress;
 	FilterSet *filter;
 	RakNetTime timeEnteredThisSet;
 };
 
 /// \internal Has to be public so some of the shittier compilers can use it.
-int RAK_DLL_EXPORT FilteredSystemComp( const SystemAddress &key, const FilteredSystem &data );
+int RAK_DLL_EXPORT FilteredSystemComp(const SystemAddress &key, const FilteredSystem &data);
 
 /// \defgroup MESSAGEFILTER_GROUP MessageFilter
 /// \brief Remote incoming packets from unauthorized systems
@@ -91,7 +89,7 @@ public:
 	/// \param[in] messageIDStart The first ID_* message to allow in the range.  Inclusive.
 	/// \param[in] messageIDEnd The last ID_* message to allow in the range.  Inclusive.
 	/// \param[in] filterSetID A user defined ID to represent a filter set.  If no filter with this ID exists, one will be created with default settings.
-	void SetAllowMessageID(bool allow, int messageIDStart, int messageIDEnd,int filterSetID);
+	void SetAllowMessageID(bool allow, int messageIDStart, int messageIDEnd, int filterSetID);
 
 	/// Allow an RPC function, by name
 	/// \param[in] allow True to allow an RPC call with this function name, false to disallow.  All RPCs are disabled by default.
@@ -158,7 +156,7 @@ public:
 	/// \param[in] An index between 0 and GetFilterSetCount()-1 inclusive
 	int GetFilterSetIDByIndex(unsigned index);
 
-    /// Delete a FilterSet.  All systems formerly subscribed to this filter are now unrestricted.
+	/// Delete a FilterSet.  All systems formerly subscribed to this filter are now unrestricted.
 	/// \param[in] filterSetID The ID of the filter set to delete.
 	void DeleteFilterSet(int filterSetID);
 
@@ -168,7 +166,7 @@ public:
 	virtual void Update(void);
 	virtual PluginReceiveResult OnReceive(Packet *packet);
 	virtual void OnNewConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, bool isIncoming);
-	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason );
+	virtual void OnClosedConnection(SystemAddress systemAddress, RakNetGUID rakNetGUID, PI2_LostConnectionReason lostConnectionReason);
 
 protected:
 
